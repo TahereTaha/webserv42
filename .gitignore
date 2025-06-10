@@ -1,0 +1,14 @@
+# binaries
+
+webserv
+test
+a.out
+**/*.o
+**/*.a
+**/*.d
+bin/
+
+# tmp files
+
+**/*.swp
+
