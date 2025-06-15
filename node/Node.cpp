@@ -23,7 +23,7 @@ void Node<T>::addChild(Node<T>* child)
 template <typename T>
 typename Node<T>::Type Node<T>::getNodeType() const
 {   
-    if (parent == nullptr)
+    if (parent == NULL)
         return ROOT;
     if (children.empty())
         return LEAF;
