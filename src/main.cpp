@@ -5,15 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/06 15:16:10 by tatahere          #+#    #+#             */
-/*   Updated: 2025/06/30 20:46:24 by tatahere         ###   ########.fr       */
+/*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
+/*   Updated: 2025/06/30 08:53:24 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string>
+#include <iostream>
+#include <exception>
 
-int	main(void)
+int	main(int ac, char **av)
 {
-	
+	try
+	{
+		
+	}
+	catch (std::exception& e)
+	{
+		cout << e.what() << std::endl;
+	}
 	return (0);
 }
