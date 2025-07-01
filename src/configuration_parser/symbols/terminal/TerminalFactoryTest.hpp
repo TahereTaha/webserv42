@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Symbol.hpp                                         :+:      :+:    :+:   */
+/*   TerminalFactoryTest.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 16:23:43 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 16:56:05 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 18:00:21 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 18:16:59 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include <string>
-#include <iostream>
+#include "TerminalFactory.hpp"
+#include "TestClass.hpp"
+#include "NumberToken.hpp"
 
-class Symbol
+class TerminalFactoryTest : public TerminalFactory
 {
 	private:
 	protected:
 	public:
-		Symbol(void) {};
-		// Symbol(const Symbol & src);
-		// virtual	Symbol & operator = (const Symbol & src);
-		virtual ~Symbol(void) = 0;
+		TerminalFactoryTest(std::string content);
+		virtual ~TerminalFactoryTest();
 };
 
+
+TerminalFactoryTest::TerminalFactoryTest(std::string content)
+	: TerminalFactory(content)
+{
+	_constructors.push_back(new TestPattern());
+	_constructors.push_back(new NumberToken());
+}

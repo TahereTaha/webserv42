@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Symbol.hpp                                         :+:      :+:    :+:   */
+/*   TestClass.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 16:23:43 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 16:56:05 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 17:27:45 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 18:12:47 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "TestClass.hpp"
+#include <cstring>
 
-#include <vector>
-#include <string>
-#include <iostream>
 
-class Symbol
+
+TestPattern::TestPattern()
 {
-	private:
-	protected:
-	public:
-		Symbol(void) {};
-		// Symbol(const Symbol & src);
-		// virtual	Symbol & operator = (const Symbol & src);
-		virtual ~Symbol(void) = 0;
-};
+}
 
+TestPattern::TestPattern(const std::string &src)
+{
+	_text = get_pattern(src, "test");
+}
+
+Terminal* TestPattern::clone(const std::string &str) const
+{
+	return (new TestPattern(str));
+}
