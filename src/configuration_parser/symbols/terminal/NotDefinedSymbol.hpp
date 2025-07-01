@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Symbol.hpp                                         :+:      :+:    :+:   */
+/*   NotDefinedSymbol.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 16:23:43 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 16:56:05 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 17:46:08 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 17:46:15 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include <string>
-#include <iostream>
-
-class Symbol
+#include <Terminal.hpp>
+class NotDefinedSymbol : public Terminal
 {
 	private:
 	protected:
 	public:
-		Symbol(void) {};
-		// Symbol(const Symbol & src);
-		// virtual	Symbol & operator = (const Symbol & src);
-		virtual ~Symbol(void) = 0;
+		NotDefinedSymbol(void);
+		NotDefinedSymbol(std::string str);
+		virtual Terminal* clone(const std::string &str) const;
 };
-

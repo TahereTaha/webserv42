@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Symbol.hpp                                         :+:      :+:    :+:   */
+/*   NumberToken.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 16:23:43 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 16:56:05 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 18:10:09 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 18:14:56 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+#include <Terminal.hpp>
 
-#include <vector>
-#include <string>
-#include <iostream>
-
-class Symbol
+class NumberToken : public Terminal
 {
 	private:
 	protected:
 	public:
-		Symbol(void) {};
-		// Symbol(const Symbol & src);
-		// virtual	Symbol & operator = (const Symbol & src);
-		virtual ~Symbol(void) = 0;
+		NumberToken(void);
+		NumberToken(std::string str);
+		virtual Terminal* clone(const std::string &str) const;
 };
 
+NumberToken::NumberToken(void)
+{
+	_text = "";
+}
+
+NumberToken::NumberToken(std::string str)
+{
+	_text = get_pattern(str, "0123456789");
+}

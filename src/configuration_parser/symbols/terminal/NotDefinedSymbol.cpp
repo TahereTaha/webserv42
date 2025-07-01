@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Symbol.hpp                                         :+:      :+:    :+:   */
+/*   NotDefinedSymbol.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 16:23:43 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 16:56:05 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 17:46:34 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 17:46:42 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "NotDefinedSymbol.hpp"
 
-#include <vector>
-#include <string>
-#include <iostream>
-
-class Symbol
+NotDefinedSymbol::NotDefinedSymbol(void)
 {
-	private:
-	protected:
-	public:
-		Symbol(void) {};
-		// Symbol(const Symbol & src);
-		// virtual	Symbol & operator = (const Symbol & src);
-		virtual ~Symbol(void) = 0;
-};
-
+	_text = "Not Defined";
+}
+NotDefinedSymbol::NotDefinedSymbol(std::string str)
+{
+	_text = str;
+}
+Terminal* NotDefinedSymbol::clone(const std::string &str) const
+{
+	return (new NotDefinedSymbol(str));
+}
