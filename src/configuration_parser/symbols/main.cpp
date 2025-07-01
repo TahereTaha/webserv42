@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   NumberToken.hpp                                    :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 18:10:09 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 18:14:56 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 19:12:39 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 19:25:01 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-#include <Terminal.hpp>
+#include "./terminal/TestFactory/TerminalFactoryTest.hpp"
 
-class NumberToken : public Terminal
+int main(void)
 {
-	private:
-	protected:
-	public:
-		NumberToken(void);
-		NumberToken(std::string str);
-		virtual Terminal* clone(const std::string &str) const;
-};
-
-NumberToken::NumberToken(void)
-{
-	_text = "";
-}
-
-NumberToken::NumberToken(std::string str)
-{
-	_text = get_pattern(str, "0123456789");
+	TerminalFactoryTest factory("test 1234");
+	std::cout << factory << std::endl;
+	return 0;
 }

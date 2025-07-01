@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   NotDefinedSymbol.cpp                               :+:      :+:    :+:   */
+/*   TerminalFactoryTest.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 17:46:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 17:46:42 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 18:00:21 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 19:32:27 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "NotDefinedSymbol.hpp"
+#pragma once
 
-NotDefinedSymbol::NotDefinedSymbol(void)
+#include "../TerminalFactory.hpp"
+
+
+class TerminalFactoryTest : public TerminalFactory
 {
-	_text = "Not Defined";
-}
-NotDefinedSymbol::NotDefinedSymbol(std::string str)
-{
-	_text = str;
-}
-Terminal* NotDefinedSymbol::clone(const std::string &str) const
-{
-	return (new NotDefinedSymbol(str));
-}
+	private:
+	protected:
+	public:
+		TerminalFactoryTest(std::string content);
+		~TerminalFactoryTest();
+};
+

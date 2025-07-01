@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   NotDefinedSymbol.hpp                               :+:      :+:    :+:   */
+/*   UndefinedSymbol.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 17:46:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 17:46:15 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/01 17:46:34 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/01 17:46:42 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "UndefinedSymbol.hpp"
 
-#include <Terminal.hpp>
-class NotDefinedSymbol : public Terminal
+UndefinedSymbol::UndefinedSymbol(void)
 {
-	private:
-	protected:
-	public:
-		NotDefinedSymbol(void);
-		NotDefinedSymbol(std::string str);
-		virtual Terminal* clone(const std::string &str) const;
-};
+	_text = "Not Defined";
+}
+UndefinedSymbol::UndefinedSymbol(std::string str)
+{
+	_text = str;
+}
+Terminal* UndefinedSymbol::clone(const std::string &str) const
+{
+	return (new UndefinedSymbol(str));
+}
