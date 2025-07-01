@@ -6,6 +6,9 @@ class TestFactory : public Terminal
 {
 	public:
 		TestFactory();
-		TestFactory(const std::string &src);
-		Terminal* clone(const std::string &str) const;
+		TestFactory(std::string src);
+		~TestFactory();
+
+		Terminal* clone() const;
+		void setText(const std::string &text);
 };

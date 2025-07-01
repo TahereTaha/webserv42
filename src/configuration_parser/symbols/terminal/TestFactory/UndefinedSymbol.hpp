@@ -19,6 +19,6 @@ class UndefinedSymbol : public Terminal
 	protected:
 	public:
 		UndefinedSymbol(void);
-		UndefinedSymbol(std::string str);
-		virtual Terminal* clone(const std::string &str) const;
+		Terminal* clone() const;
+		void setText(const std::string &text);
 };

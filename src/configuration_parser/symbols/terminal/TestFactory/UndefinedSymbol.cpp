@@ -14,13 +14,16 @@
 
 UndefinedSymbol::UndefinedSymbol(void)
 {
-	_text = "Not Defined";
+	_text = "";
 }
-UndefinedSymbol::UndefinedSymbol(std::string str)
+Terminal* UndefinedSymbol::clone() const
 {
-	_text = str;
+	return (new UndefinedSymbol(*this));
 }
-Terminal* UndefinedSymbol::clone(const std::string &str) const
+
+void UndefinedSymbol::setText(const std::string &text)
 {
-	return (new UndefinedSymbol(str));
+	_text = "";
+	if (text.empty())
+		return;
 }

@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:08:30 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 19:32:37 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/01 22:19:15 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ TerminalFactoryTest::TerminalFactoryTest(std::string content)
 
 TerminalFactoryTest::~TerminalFactoryTest()
 {
-	for (Symbol* symbol : _tokenVector)
-		delete symbol;
-	for (Terminal* constructor : _constructors)
-		delete constructor;
 }
+
+
 
 
 

@@ -12,16 +12,23 @@
 
 #include "TestFactory.hpp"
 
-TestFactory::TestFactory()
-{
-}
+TestFactory::TestFactory() {}
 
-TestFactory::TestFactory(const std::string &src)
+TestFactory::TestFactory(std::string src)
 {
 	_text = get_pattern(src, "test");
 }
 
-Terminal* TestFactory::clone(const std::string &str) const
+Terminal* TestFactory::clone() const
 {
-	return (new TestFactory(str));
+	return (new TestFactory(_text));
+}
+
+void TestFactory::setText(const std::string &text)
+{
+	_text = get_pattern(text, "test");
+}
+
+TestFactory::~TestFactory()
+{
 }
