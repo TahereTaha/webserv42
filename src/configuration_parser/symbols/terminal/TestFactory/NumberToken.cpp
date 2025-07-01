@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:08:00 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 19:08:10 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/01 22:09:57 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ NumberToken::NumberToken(void)
 	_text = "";
 }
 
-NumberToken::NumberToken(std::string str)
+Terminal* NumberToken::clone() const
 {
-	_text = get_pattern(str, "0123456789");
+	return new NumberToken(*this);
+}
+
+void NumberToken::setText(const std::string &text)
+{
+	_text = get_pattern(text, "0123456789");
 }

@@ -1,32 +1,27 @@
 #pragma once
 
 #include "../Symbol.hpp"
-#include "Terminal.hpp"
-#include <vector>
 #include "iostream"
+#include "./TestFactory/TypeTerminalVector.hpp"
 
 class TerminalFactory
 {
 	private:
-		TerminalFactory(const TerminalFactory & src);
-		int		AddNextSymbol(std::string content);
-		void	SymbolReplaceLast(Terminal *symbol);
+		TerminalFactory(const TerminalFactory &src);
+
+		int					pushBack(std::string content);
 	protected:
-		std::vector<Symbol *>	_tokenVector;
-		std::vector<Terminal*>	_constructors;
+		TerminalVector		_tokenVector;
+		TerminalVector		_constructors;
 	public:
 		TerminalFactory(void);
-		int Lexer(std::string content);
-		virtual ~TerminalFactory() = 0;
-		std::vector<Symbol *> getContent() const { return _tokenVector; }
+
+		virtual 			~TerminalFactory();
+
+		int 				Lexer(std::string content);
+		TerminalVector		getContent() const { return _tokenVector; }
 };
 
-std::ostream& operator<<(std::ostream& os, const TerminalFactory& tf) {
-    std::vector<Symbol*> content = tf.getContent();
+std::ostream& operator<<(std::ostream& os, const TerminalFactory& tf);
 
-    for (Symbol* symbol : content) {
-        if (Terminal* terminal = dynamic_cast<Terminal*>(symbol))
-            os << terminal->getText() << " ";
-    }
-    return os;
-}
+
