@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TestClass.cpp                                      :+:      :+:    :+:   */
+/*   TestFactory.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,21 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "TestClass.hpp"
-#include <cstring>
+#include "TestFactory.hpp"
 
-
-
-TestPattern::TestPattern()
+TestFactory::TestFactory()
 {
 }
 
-TestPattern::TestPattern(const std::string &src)
+TestFactory::TestFactory(const std::string &src)
 {
 	_text = get_pattern(src, "test");
 }
 
-Terminal* TestPattern::clone(const std::string &str) const
+Terminal* TestFactory::clone(const std::string &str) const
 {
-	return (new TestPattern(str));
+	return (new TestFactory(str));
 }
