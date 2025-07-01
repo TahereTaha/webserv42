@@ -23,114 +23,39 @@ alpha						=	high-alpha / low-alpha
 
 digit						=	%x30-39
 
-safe						=	"$" / "-" / "_" / "." / "+"
-
-extra						=	"!" / "*" / "'" / "(" / ")" / ","
-
-national					=	"{" / "}" / "|" / "\" / "^" / "~" / "[" / "]" / "`"
-
-punctuation					=	"<" / ">" / "#" / "%" / %x22 
-								; the %x22 is just the double quote.
-
-reserved					=	";" / "/" / "?" / ":" / "@" / "&" / "="
-
 hex-digit					=	digit / %x41-46 / %x61-66
 
-unreserved					=	alpha / digit / safe / extra
+safe						=	"-" / "_" / "."
 
-uchar						=	unreserved / escape
-
-xchar						=	unreserved / reserved / escape
+sub-delims					=	"!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / "="
 
 pct-encoded					=	"%" hex-digit hex-digit
+									; used to encode character that are alredy in use like the "{"
 
-sub-delims					=	"!" / "$" / "&" / "'" / "(" / ")" 
-							=/	"*" / "+" / "," / ";" / "="
+	;	all the token rules.
+c-wsp						=	1*(wsp / crlf)
 
-pchar						=	unreserved / pct-encoded / sub-delims / ":" / "@"
+control-character			=	"{" / "}" / ";" / "." ; "%"
 
 number						=	1*digit
 
-hex-number					=	1*hex-digit
-
-prefixed-number				=	number
-							=/	"0x" 1*hex-digit
-							=/	"0b" 1*("0" / "1")
-
-
-
-	;	url rules (here is only considerd the case of http uri).
-fragment					=	*(pchar / "/" / "?")
-
-query						=	*(pchar / "/" / "?")
-
-segment						=	*pchar
-
-path						=	*("/" segment)
-
-port						=	":" number
-
-reg-name					=	*(unreserved / pct-encoded / sub-delims)
-
-ipv6						=	;	lets supose that this magically works.
-							;	"[" hex-number 15(":" hex-number) "]"
-							;=/	"[" "::" hex-number *15(":" hex-number) "]"
-
-ipv4						=	number "." number "." number "." number
-
-ip							=	ipv4
-							=/	ipv6
-
-host						=	ip / reg-name
-
-authority					=	host *1port
-
-http-scheme-symbol			=	"http"
-
-scheme						=	http-scheme-symbol
-
-url							=	scheme ":" authority path *1("?" query) *1("#" fragment)
-
-	;	some location rules.
-index						=	"index" 1*(c-wsp path) *1c-wsp ";"
-
-auto-index					=	"auto_index" c-wsp ("yes" / "no") *!c-wsp ";"
-
-root						=	"root" c-wsp path *1c-wsp ";"
-
-return						=	"return" c-wsp number c-wsp (url / path) *1c-wsp ";"
-
-method						=	"get"
-							=/	"head"
-							=/	"post"
-							=/	"put"
-							=/	"delete"
-							=/	"connect"
-							=/	"options"
-							=/	"trace"
-							=/	"patch"
-
-methods-allowed-symbol		=	"methods_allowed"
-
-methods-allowed				=	methods-allowed-symbol 1*(c-wsp method) *1c-wsp ";"
-
-	;	location rules.
-location-directive			=	location
-							=/	return
-							=/	methods-allowed
-							=/	root
-							=/	auto-index
-							=/	index
+name						=	"server"
+							=/	"server_name"
+							=/	"listen"
+							=/	"error_page"
+							=/	"return"
 
 
-location-symbol				=	"location"
+text						=	1*(alpha / digit / safe / extra / sub-delims)
+							=/	pct-encoded
+							=/	%x22 *(%x01-7f) %x22
+									; this is only any text delimited by two double quotes.
 
-location					=	location-symbol c-wsp path
-								c-wsp "{"
-								1*(*1c-wsp location-directive)
-								*1c-wsp "}"
+	;	rules.
+	;	server directives.
+return						=	"return" c-wsp status-code-3xx c-wsp url *1c-wsp ";"
+							=/	"return" c-wsp status-code c-wsp string *1c-wsp ";"
 
-	;	somme server directives rules.
 size-unit					=	"B"
 							=/	"KB"
 							=/	"MB"
@@ -141,28 +66,18 @@ size-unit					=	"B"
 file-size					=	"0"
 							=/	number size-unit
 
-client-max-body-size-symbol	=	"client_max_body_size"
+client-max-body-size		=	"client_max_body_size" c-wsp file-size *1c-wsp ";"
 
-client-max-body-size		=	client-max-body-size-symbol c-wsp file-size *1c-wsp ";"
-
-error-code					=	number
-
-error-page-symbol			=	"error_page"
-
-error-page					=	error-page-symbol 1*(c-wsp error-code) c-wsp path *1c-wsp ";"
+error-page					=	"error_page" 1*(c-wsp status-code-error) c-wsp path *1c-wsp ";"
 
 socket						=	ip
 							=/	ip port
 							=/	port
 								;	this soket will alwais use http (tcp)
 
-listen-symbol				=	"listen"
+listen						=	"listen" 1*(c-wsp socket) *1c-wsp ";"
 
-listen						=	listen-symbol 1*(c-wsp socket) *1c-wsp ";"
-
-server-name-symbol			=	"server_name"
-
-server-name					=	server-name-symbol 1*(c-wsp reg-name) *1c-wsp ";"
+server-name					=	"server-name" 1*(c-wsp reg-name) *1c-wsp ";"
 
 	;	server rules.
 server-directive			=	server-name
@@ -170,11 +85,9 @@ server-directive			=	server-name
 							=/	error-page
 							=/	client-max-body-size
 							=/	location
+							=/	return
 
-
-server-symbol				=	"server"
-
-server						=	*1c-wsp server-simbol
+server						=	*1c-wsp "server"
 								*1c-wsp "{"
 								1*(*1c-wsp server-directive)
 								*1c-wsp "}" *1c-wsp
