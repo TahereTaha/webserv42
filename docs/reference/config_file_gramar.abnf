@@ -45,8 +45,8 @@ name						=	"server"
 							=/	"error_page"
 							=/	"return"
 
-
-text						=	1*(alpha / digit / safe / extra / sub-delims)
+string						=	1*(alpha / digit / safe / extra / sub-delims)
+							=/	name
 							=/	pct-encoded
 							=/	%x22 *(%x01-7f) %x22
 									; this is only any text delimited by two double quotes.
