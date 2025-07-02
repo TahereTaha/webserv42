@@ -3,12 +3,14 @@
 #include "../Terminal.hpp"
 #include <vector>
 
-class TerminalVector : public std::vector<Terminal*>
+typedef std::vector<Terminal*>::iterator TerminalIterator;
+
+class TerminalVector
 {
-	private:
 	public:
 		TerminalVector();
 		~TerminalVector();
+		std::vector<Terminal*> contents;
 
 		Terminal 			*match;
 		void 				setAll(std::string content);

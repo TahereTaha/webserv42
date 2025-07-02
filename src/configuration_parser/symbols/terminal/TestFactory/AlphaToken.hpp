@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TestFactory.cpp                                      :+:      :+:    :+:   */
+/*   AlphaTopken.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 17:27:45 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 18:12:47 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/02 02:18:44 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/02 02:19:23 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "TestFactory.hpp"
+#pragma once
 
-TestFactory::TestFactory() {}
+#include "../Terminal.hpp"
 
-TestFactory::TestFactory(std::string src)
+class AlphaToken : public Terminal
 {
-	_text = get_pattern(src, "test");
-}
-
-Terminal* TestFactory::clone() const
-{
-	return (new TestFactory(_text));
-}
-
-void TestFactory::setText(const std::string &text)
-{
-	_text = get_pattern(text, "test");
-}
-
-TestFactory::~TestFactory()
-{
-}
+	private:
+	protected:
+	public:
+		AlphaToken(void);
+		Terminal* clone() const;
+		void setText(const std::string &text);
+};
