@@ -12,4 +12,5 @@ class TerminalVector : public std::vector<Terminal*>
 
 		Terminal 			*match;
 		void 				setAll(std::string content);
+		void 				print();
 };
