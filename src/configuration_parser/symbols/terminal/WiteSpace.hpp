@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Terminal.hpp>
+#include "Terminal.hpp"
 
 class WiteSpace : public Terminal
 {

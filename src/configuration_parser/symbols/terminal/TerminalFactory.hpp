@@ -6,9 +6,13 @@
 class TerminalFactory
 {
 	private:
-		TerminalFactory(void);
-	protected:
-		std::vector<Symbol *>	_tokenVector;
+	protected:	
+		int					getTokenMatch(std::string content);
+		int 				getTokens(std::string content);
+		TerminalVector		_tokenVector;
+		TerminalVector		_constructors;
 	public:
-		virtual ~TerminalFactory() = 0;
+		TerminalFactory(void);
+		virtual 			~TerminalFactory();
+		void				printTokens();
 };
