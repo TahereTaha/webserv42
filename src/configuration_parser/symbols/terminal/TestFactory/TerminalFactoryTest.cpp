@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:08:30 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/01 22:19:15 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/02 02:03:46 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ TerminalFactoryTest::TerminalFactoryTest(std::string content)
 {
 	_constructors.push_back(new TestFactory());
 	_constructors.push_back(new NumberToken());
-	TerminalFactory::Lexer(content);
+	TerminalFactory::getTokens(content);
 }
 
-TerminalFactoryTest::~TerminalFactoryTest()
-{
-}
+TerminalFactoryTest::~TerminalFactoryTest() { }
 
 
 

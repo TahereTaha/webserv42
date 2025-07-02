@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:29:21 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/02 01:35:33 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/02 02:10:56 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,11 @@ void TerminalVector::setAll(std::string content)
 			match = *it;
 		}
 	}
+}
+
+void TerminalVector::print()
+{
+	for (TerminalVector::iterator it = this->begin(); it != this->end(); ++it)
+		std::cout << "[" << (*it)->getText() << "]";
+	std::cout << std::endl;
 }

@@ -8,20 +8,16 @@ class TerminalFactory
 {
 	private:
 		TerminalFactory(const TerminalFactory &src);
-
-		int					pushBack(std::string content);
-	protected:
+	protected:	
+		int					getTokenMatch(std::string content);
+		int 				getTokens(std::string content);
 		TerminalVector		_tokenVector;
 		TerminalVector		_constructors;
 	public:
 		TerminalFactory(void);
-
 		virtual 			~TerminalFactory();
-
-		int 				Lexer(std::string content);
-		TerminalVector		getContent() const { return _tokenVector; }
+		void				printTokens();
 };
 
-std::ostream& operator<<(std::ostream& os, const TerminalFactory& tf);
 
 
