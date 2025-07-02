@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TerminalFactoryTest.cpp                            :+:      :+:    :+:   */
+/*   AlphaNumericalToken.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 19:08:30 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/02 09:30:11 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/02 02:22:46 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/02 02:22:56 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "TerminalFactoryTest.hpp"
-#include "AlphaToken.hpp"
-#include "NumberToken.hpp"
 #include "AlphaNumericalToken.hpp"
 
-TerminalFactoryTest::TerminalFactoryTest(std::string content)
-	: TerminalFactory()
+AlphaNumericalToken::AlphaNumericalToken(void)
 {
-	_constructors.contents.push_back(new AlphaToken());
-	_constructors.contents.push_back(new NumberToken());
-	_constructors.contents.push_back(new AlphaNumericalToken());
-	TerminalFactory::getTokens(content);
+	_text = "";
 }
 
-TerminalFactoryTest::~TerminalFactoryTest() { }
+Terminal* AlphaNumericalToken::clone() const
+{
+	return new AlphaNumericalToken(*this);
+}
 
-
-
-
-
+void AlphaNumericalToken::setText(const std::string &text)
+{
+	std::string alpha = get_pattern(text, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	std::string number = get_pattern(text.substr(alpha.length()), "0123456789");
+	_text = alpha + number;
+}

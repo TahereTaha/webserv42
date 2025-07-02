@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   AlphaToken.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 19:12:39 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/02 02:20:18 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/02 02:18:56 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/02 02:19:14 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./terminal/TestFactory/TerminalFactoryTest.hpp"
+#include "AlphaToken.hpp"
 
-int main(void)
+AlphaToken::AlphaToken(void)
 {
-	TerminalFactoryTest factory("test 1234 abc 5678 defg90");
-	factory.printTokens();
-	return 0;
+	_text = "";
+}
+
+Terminal* AlphaToken::clone() const
+{
+	return new AlphaToken(*this);
+}
+
+void AlphaToken::setText(const std::string &text)
+{
+	_text = get_pattern(text, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 }

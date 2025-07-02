@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   AlphaNumericalToken.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 19:12:39 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/02 02:20:18 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/02 02:23:03 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/02 02:23:09 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./terminal/TestFactory/TerminalFactoryTest.hpp"
+#pragma once
 
-int main(void)
+#include "../TerminalFactory.hpp"
+#include "AlphaToken.hpp"
+#include "NumberToken.hpp"
+
+class AlphaNumericalToken : public Terminal
 {
-	TerminalFactoryTest factory("test 1234 abc 5678 defg90");
-	factory.printTokens();
-	return 0;
-}
+	private:
+	protected:
+	public:
+		AlphaNumericalToken(void);
+		Terminal* clone() const;
+		void setText(const std::string &text);
+};

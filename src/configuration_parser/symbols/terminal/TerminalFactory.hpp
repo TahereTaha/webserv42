@@ -18,6 +18,3 @@ class TerminalFactory
 		virtual 			~TerminalFactory();
 		void				printTokens();
 };
-
-
-
