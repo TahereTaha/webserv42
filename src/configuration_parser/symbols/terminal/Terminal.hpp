@@ -35,5 +35,5 @@ class Terminal : public Symbol
 };
 
 
-int get_match(const std::string &src, const std::string &pattern);
+int 		get_match(const std::string &src, const std::string &pattern);
 std::string get_pattern(const std::string &src, const std::string &pattern);
