@@ -12,5 +12,7 @@ class Return : public Terminal
 		Return(std::string str);
 		Return(const Return& other);
 		Return& operator=(const Return& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };
 

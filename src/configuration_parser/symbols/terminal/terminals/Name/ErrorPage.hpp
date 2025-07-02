@@ -12,5 +12,7 @@ class ErrorPage : public Terminal
 		ErrorPage(std::string str);
 		ErrorPage(const ErrorPage& other);
 		ErrorPage& operator=(const ErrorPage& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };
 

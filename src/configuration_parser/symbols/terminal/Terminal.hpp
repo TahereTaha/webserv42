@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stirng>
-#include <Symbol>
+#include <string>
+#include "Symbol.hpp"
 
 class Terminal : public Symbol
 {

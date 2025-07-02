@@ -8,11 +8,7 @@ Return::Return(void)
 
 Return::Return(std::string str)
 {
-	
-	if (str.length() > 5 && str.substr(0, 5) == "return")
-		this->_text = str.substr(0, 5);
-	else
-		this->_text = "";
+	setText(str);
 }
 
 Return::Return(const Return& other)
@@ -27,5 +23,18 @@ Return& Return::operator=(const Return& other)
 		this->_text = other._text;
 	}
 	return *this;
+}
+
+Symbol* Return::clone() const
+{
+	return new Return(*this);
+}
+
+void Return::setText(const std::string& str)
+{
+	if (str.length() > 5 && str.substr(0, 5) == "return")
+		this->_text = str.substr(0, 5);
+	else
+		this->_text = "";
 }
 

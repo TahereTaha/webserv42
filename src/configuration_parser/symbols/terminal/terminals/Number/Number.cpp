@@ -8,16 +8,7 @@ Number::Number(void)
 
 Number::Number(std::string str)
 {
-	int i = 0;
-
-	std::string::iterator it = str.begin();
-	
-	while (it != str.end() && isdigit(*it))
-	{
-		i++;
-		it++;
-	}
-	this->_text = str.substr(0, i);
+	setText(str);
 }
 
 Number::Number(const Number& other)
@@ -32,4 +23,23 @@ Number& Number::operator=(const Number& other)
 		this->_text = other._text;
 	}
 	return *this;
+}
+
+Symbol* Number::clone() const
+{
+	return new Number(*this);
+}
+
+void Number::setText(const std::string& str)
+{
+	int i = 0;
+
+	std::string::const_iterator it = str.begin();
+	
+	while (it != str.end() && isdigit(*it))
+	{
+		i++;
+		it++;
+	}
+	this->_text = str.substr(0, i);
 }

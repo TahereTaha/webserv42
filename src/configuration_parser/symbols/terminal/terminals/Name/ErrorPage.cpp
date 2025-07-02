@@ -8,11 +8,7 @@ ErrorPage::ErrorPage(void)
 
 ErrorPage::ErrorPage(std::string str)
 {
-	
-	if (str.length() > 9 && str.substr(0, 9) == "error_page")
-		this->_text = str.substr(0, 9);
-	else
-		this->_text = "";
+	setText(str);
 }
 
 ErrorPage::ErrorPage(const ErrorPage& other)
@@ -27,5 +23,18 @@ ErrorPage& ErrorPage::operator=(const ErrorPage& other)
 		this->_text = other._text;
 	}
 	return *this;
+}
+
+Symbol* ErrorPage::clone() const
+{
+	return new ErrorPage(*this);
+}
+
+void ErrorPage::setText(const std::string& str)
+{
+	if (str.length() > 9 && str.substr(0, 9) == "error_page")
+		this->_text = str.substr(0, 9);
+	else
+		this->_text = "";
 }
 

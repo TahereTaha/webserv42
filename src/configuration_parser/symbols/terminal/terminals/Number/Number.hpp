@@ -12,4 +12,6 @@ class Number : public Terminal
 		Number(std::string str);
 		Number(const Number& other);
 		Number& operator=(const Number& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };

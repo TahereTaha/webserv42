@@ -11,5 +11,7 @@ class Semicolon : public Terminal
 		Semicolon(std::string str);
 		Semicolon(const Semicolon& other);
 		Semicolon& operator=(const Semicolon& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };
 
