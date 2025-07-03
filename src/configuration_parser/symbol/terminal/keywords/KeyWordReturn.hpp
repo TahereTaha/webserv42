@@ -13,5 +13,6 @@ class KeyWordReturn : public ATerminal
 		KeyWordReturn(const KeyWordReturn& other);
 		KeyWordReturn& operator=(const KeyWordReturn& other);
 		virtual Symbol* clone() const;
+		size_t		getTerminalSizeOnStr(const std::string & str) const;
 };
 
