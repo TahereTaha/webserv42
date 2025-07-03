@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ErrorPage.cpp                                      :+:      :+:    :+:   */
+/*   AKeyword.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 12:24:29 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/03 12:39:41 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/03 14:22:10 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/03 15:01:27 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ErrorPage.hpp>
+#include "AKeyword.hpp"
 
-ErrorPage::ErrorPage(void)
+AKeyword::AKeyword(const std::string & str) : ATerminal()
 {
-	this->_text = "";
+	_keyword = str;
 }
 
-ErrorPage::ErrorPage(std::string str)
-{
-	_text = getFirstOcurrence(str, "error_page");
-}
+AKeyword::~AKeyword(void){}
 
-size_t ErrorPage::getTerminalSizeOnStr(const std::string & str) const
+size_t		AKeyword::getTerminalSizeOnStr(const std::string & str) const
 {
-	return getFirstOcurrence(str, "error_page").length();
+	return startsWith(str, _keyword) ? _keyword.length() : 0;
 }
