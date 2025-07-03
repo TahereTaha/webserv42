@@ -13,5 +13,6 @@ class KeyWordErrorPage : public ATerminal
 		KeyWordErrorPage(const KeyWordErrorPage& other);
 		KeyWordErrorPage& operator=(const KeyWordErrorPage& other);
 		virtual Symbol* clone() const;
+		size_t		getTerminalSizeOnStr(const std::string & str) const;
 };
 
