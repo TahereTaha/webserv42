@@ -31,9 +31,3 @@ size_t	getTerminalSizeOnStr(const std::string & str)
 		size = 10;
 	return size;
 }
-
-void KeyWordErrorPage::setText(const std::string& str)
-{
-	this->_text = str;
-}
-
