@@ -27,7 +27,7 @@ Symbol* KeyWordListen::clone() const
 size_t  KeyWordListen::getTerminalSizeOnStr(const std::string & str)
 {
 	size_t size = 0;
-	if (str.length() > 5 && str.substr(0, 5) == "error_page")
+	if (str.length() > 5 && str.substr(0, 5) == "listen")
 		size = 6;
 	return size;
 
