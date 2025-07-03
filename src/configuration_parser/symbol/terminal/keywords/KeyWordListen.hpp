@@ -13,5 +13,6 @@ class KeyWordListen : public ATerminal
 		KeyWordListen(const KeyWordListen& other);
 		KeyWordListen& operator=(const KeyWordListen& other);
 		virtual Symbol* clone() const;
+		size_t		getTerminalSizeOnStr(const std::string & str) const;
 };
 
