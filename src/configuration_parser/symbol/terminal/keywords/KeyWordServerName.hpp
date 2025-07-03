@@ -13,5 +13,6 @@ class KeyWordServerName : public ATerminal
 		KeyWordServerName(const KeyWordServerName& other);
 		KeyWordServerName& operator=(const KeyWordServerName& other);
 		virtual Symbol* clone() const;
+		size_t		getTerminalSizeOnStr(const std::string & str) const;
 };
 
