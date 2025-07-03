@@ -2,8 +2,6 @@
 
 #include <stddef.h>
 
-#include <iostream>
-
 #include <ATerminal.hpp>
 
 class Number : public ATerminal

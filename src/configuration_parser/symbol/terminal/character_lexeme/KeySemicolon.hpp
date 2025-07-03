@@ -8,8 +8,6 @@ class KeySemicolon : public ATerminal
 	protected:
 	public:
 		KeySemicolon(void);
-//		KeySemicolon(const KeySemicolon & src);
-//		KeySemicolon & operator = (const KeySemicolon & src); // maybe no need to redefine it.
 		~KeySemicolon(void);
 		
 		size_t		getTerminalSizeOnStr(const std::string & str) const;

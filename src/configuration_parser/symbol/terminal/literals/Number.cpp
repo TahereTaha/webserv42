@@ -19,12 +19,17 @@ Number::~Number(void)
 {
 }
 
-size_t	getTerminalSizeOnStr(const std::string & str)
+Symbol* Number::clone() const
+{
+	return new Number(*this);
+}
+
+size_t	Number::getTerminalSizeOnStr(const std::string & str)
 {
 	size_t					size = 0;
-	size_t					i = 0;
+	std::string::iterator	it = str.begin();
 
-	while (i < str.size() && isdigit(str[i]))
+	while (it != str.end() && isdigit(*it))
 	{
 		size++;
 		it++;
