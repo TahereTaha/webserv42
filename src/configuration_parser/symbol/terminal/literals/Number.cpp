@@ -1,14 +1,8 @@
 #include "Number.hpp"
 #include <cctype>
 
-Number::Number(void)
+Number::Number() : ATerminal()
 {
-	this->_text = "";
-}
-
-Number::Number(std::string str)
-{
-	setText(str);
 }
 
 Number::Number(const Number& other)
@@ -30,16 +24,3 @@ Symbol* Number::clone() const
 	return new Number(*this);
 }
 
-void Number::setText(const std::string& str)
-{
-	int i = 0;
-
-	std::string::const_iterator it = str.begin();
-	
-	while (it != str.end() && isdigit(*it))
-	{
-		i++;
-		it++;
-	}
-	this->_text = str.substr(0, i);
-}
