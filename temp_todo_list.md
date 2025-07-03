@@ -1,0 +1,21 @@
+- [ ] refactor what we have done and make it compile.
+	- [x] make a correct makefile.
+	- [x] move and rename all the files.
+		- [x] move all the lexems.
+		- [x] move all the factories.
+	- [ ] rewrite the code so it makes sense.
+		- [ ] rewrite all the lexemes.
+			- [x] rewrite the base classes.
+			- [ ] rewrite the literals.
+				- [x] rewrite the number.
+				- [ ] rewrite the text_charset_config_file.
+			- [ ] rewrite the character lexemes.
+				- [ ] rewrite the semicolon.
+			- [ ] rewrite the keywords.
+				- [ ] rewrite the server name.
+				- [ ] rewrite the server.
+		- [ ] rewrite factories.
+			- [ ] rewrite the base class.
+			- [ ] rewrite the sub clases.
+		- [ ] rewrite the lexer.
+	- [ ] make it all compile.

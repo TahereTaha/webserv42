@@ -1,9 +1,0 @@
-server {
-    location /user/*/profilepic.png {
-        proxy_pass http://localhost:8080/;
-    }
-
-    location ~ \.(gif|jpg|png)$ {
-        root /data/images;
-    }
-}

@@ -32,41 +32,41 @@ sub-delims					=	"!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / "="
 pct-encoded					=	"%" hex-digit hex-digit
 									; used to encode character that are alredy in use like the "{"
 
-	;	all the token rules.
+	;	all the lexeme rules.
 c-wsp						=	1*(wsp / crlf)
 
-control-character			=	"{" / "}" / ";" / "." ; "%"
+control-character			=	"{" / "}" / ";"
 
 number						=	1*digit
 
-name						=	"server"
+key-words					=	"server"
 							=/	"server_name"
 							=/	"listen"
 							=/	"error_page"
+							=/	"client_max_body_size"
+							=/	"location"
 							=/	"return"
+							=/	"limit_exept"
+							=/	"root"
+							=/	"auto_index"
+							=/	"index"
 
-string						=	1*(alpha / digit / safe / extra / sub-delims)
+text						=	1*(alpha / digit)
 							=/	name
 							=/	pct-encoded
-							=/	%x22 *(%x01-7f) %x22
-									; this is only any text delimited by two double quotes.
+							=/	%x22 *(%x01-ff) %x22 ; text delimited with double quotes
+							;	any character that dosent fit in any othe lexeme.
 
 	;	rules.
 	;	server directives.
-return						=	"return" c-wsp status-code-3xx c-wsp url *1c-wsp ";"
-							=/	"return" c-wsp status-code c-wsp string *1c-wsp ";"
+return						=	"return" c-wsp number c-wsp text *1c-wsp ";"
+									; the number is just a status code.
+									; and the text can be a uri or just plain text.
+									; refer to the statuc codes, uri abnf.
 
-size-unit					=	"B"
-							=/	"KB"
-							=/	"MB"
-							=/	"GB"
-							=/	"TB"
-							=/	"PB"
-
-file-size					=	"0"
-							=/	number size-unit
-
-client-max-body-size		=	"client_max_body_size" c-wsp file-size *1c-wsp ";"
+client-max-body-size		=	"client_max_body_size" c-wsp text *1c-wsp ";"
+									; the text is just a file size.
+									; refer to the size abnf.
 
 error-page					=	"error_page" 1*(c-wsp status-code-error) c-wsp path *1c-wsp ";"
 

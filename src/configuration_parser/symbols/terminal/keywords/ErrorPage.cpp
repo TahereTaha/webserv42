@@ -8,7 +8,6 @@ ErrorPage::ErrorPage(void)
 
 ErrorPage::ErrorPage(std::string str)
 {
-	
 	if (str.length() > 9 && str.substr(0, 9) == "error_page")
 		this->_text = str.substr(0, 9);
 	else
