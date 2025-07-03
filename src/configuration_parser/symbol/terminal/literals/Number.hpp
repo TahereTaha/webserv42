@@ -13,5 +13,5 @@ class Number : public ATerminal
 		Number(const Number& other);
 		Number& operator=(const Number& other);
 		virtual Symbol* clone() const;
-		
+		size_t		getTerminalSizeOnStr(const std::string & str) const;	
 };
