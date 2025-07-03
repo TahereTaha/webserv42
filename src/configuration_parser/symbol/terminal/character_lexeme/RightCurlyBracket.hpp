@@ -11,5 +11,7 @@ class RightCurlyBracket : public Terminal
 		RightCurlyBracket(std::string str);
 		RightCurlyBracket(const RightCurlyBracket& other);
 		RightCurlyBracket& operator=(const RightCurlyBracket& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };
 

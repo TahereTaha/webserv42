@@ -12,5 +12,7 @@ class Server : public Terminal
 		Server(std::string str);
 		Server(const Server& other);
 		Server& operator=(const Server& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };
 

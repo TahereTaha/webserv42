@@ -7,10 +7,7 @@ RightCurlyBracket::RightCurlyBracket(void)
 
 RightCurlyBracket::RightCurlyBracket(std::string str)
 {
-	if (!str.empty() && str[0] == '}')
-		this->_text = "}";
-	else
-		this->_text = "";
+	setText(str);
 }
 
 RightCurlyBracket::RightCurlyBracket(const RightCurlyBracket& other)
@@ -25,4 +22,17 @@ RightCurlyBracket& RightCurlyBracket::operator=(const RightCurlyBracket& other)
 		this->_text = other._text;
 	}
 	return *this;
+}
+
+Symbol* RightCurlyBracket::clone() const
+{
+	return new RightCurlyBracket(*this);
+}
+
+void RightCurlyBracket::setText(const std::string& str)
+{
+	if (!str.empty() && str[0] == '}')
+		this->_text = "}";
+	else
+		this->_text = "";
 }
