@@ -1,22 +1,22 @@
-#include "Number.hpp"
+#include <stddef.h>
+
+#include <string>
 #include <cctype>
 
-Number::Number() : ATerminal()
+#include <Number.hpp>
+
+Number::Number(void) : ATerminal()
 {
 }
 
-Number::Number(const Number& other)
-{
-	*this = other;
-}
+//
+//Number::Number(const Number & src) : ATerminal(src)
+//{
+//}
+//
 
-Number& Number::operator=(const Number& other)
+Number::~Number(void)
 {
-	if (this != &other)
-	{
-		this->_text = other._text;
-	}
-	return *this;
 }
 
 Symbol* Number::clone() const
