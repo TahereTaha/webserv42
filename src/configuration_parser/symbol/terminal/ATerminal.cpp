@@ -6,19 +6,20 @@ ATerminal::ATerminal(void) : ASymbol()
 	_text = "";
 }
 
-ATerminal::ATerminal(const ATerminal & src) : ASymbol()
-{
-	*this = src;
-}
-
-ATerminal & operator = (const ATerminal & src)
-{
-	if (this == &src)
-		return (*this);
-	this->_text = src._text;
-	return (*this);
-}
-
+//
+//ATerminal::ATerminal(const ATerminal & src) : ASymbol()
+//{
+//	*this = src;
+//}
+//
+//ATerminal & operator = (const ATerminal & src)
+//{
+//	if (this == &src)
+//		return (*this);
+//	this->_text = src._text;
+//	return (*this);
+//}
+//
 
 void	ATerminal::setText(const std::string & text)
 {

@@ -1,17 +1,21 @@
 #pragma once
 
-#include <iostream>
-#include "Terminal.hpp"
+#include <stddef.h>
 
-class Number : public Terminal
+#include <iostream>
+
+#include <ATerminal.hpp>
+
+class Number : public ATerminal
 {
 	private:
 	protected:
 	public:
 		Number(void);
-		Number(std::string str);
-		Number(const Number& other);
-		Number& operator=(const Number& other);
-		virtual Symbol* clone() const;
-		void setText(const std::string& str);
+//		Number(const Number & src);
+//		Number & operator = (const Number & src); // maybe no need to redefine it.
+		~Number(void);
+		
+		size_t		getTerminalSizeOnStr(const std::string & str) const;
+		ATerminal*	clone(void) const;
 };

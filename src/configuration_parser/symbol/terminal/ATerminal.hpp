@@ -15,8 +15,8 @@ class ATerminal : public ASymbol
 		std::string _text;
 	public:
 		ATerminal(void);
-		ATerminal(const ATerminal & src);
-		ATerminal & operator = (const ATerminal & src);
+//		ATerminal(const ATerminal & src);
+//		ATerminal & operator = (const ATerminal & src);
 		//	no need to have a destructor.
 		//it will be inherited by the base class (ASymbol) and set by the subclases.
 
