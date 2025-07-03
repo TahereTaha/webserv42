@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ErrorPage.cpp                                      :+:      :+:    :+:   */
+/*   AKeyword.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 12:24:29 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/03 12:39:41 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/03 12:40:41 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/03 12:42:08 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ErrorPage.hpp>
 
-ErrorPage::ErrorPage(void)
-{
-	this->_text = "";
-}
+#pragma once
 
-ErrorPage::ErrorPage(std::string str)
-{
-	_text = getFirstOcurrence(str, "error_page");
-}
+#include <stddef.h>
 
-size_t ErrorPage::getTerminalSizeOnStr(const std::string & str) const
+class AKeyword : public ATerminal
 {
-	return getFirstOcurrence(str, "error_page").length();
-}
+	private:
+	protected:
+	public:
+		AKeyword(void);
+		virtual ~AKeyword(void);
+
+		virtual size_t getTerminalSizeOnStr(const std::string & str) const = 0;
+		virtual ATerminal* clone(void) const = 0;
+};
