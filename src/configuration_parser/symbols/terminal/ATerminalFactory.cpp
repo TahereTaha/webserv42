@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TypeTerminalVector.cpp                             :+:      :+:    :+:   */
+/*   ATerminalFactory.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:29:21 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/02 09:31:45 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/03 11:57:34 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,18 @@ TerminalVector::~TerminalVector()
 void TerminalVector::setAll(std::string content)
 {
 	int longestLength = 0;
+	int	curent_length = 0;
 	match = nullptr;
 	for (TerminalIterator it = this->contents.begin(); it != this->contents.end(); ++it)
 	{
-		(*it)->setText(content);
-		if ((*it)->length() > longestLength)
+		current_length = (*it)->getTerminalSizeOnStr();
+		if ( current_length => longestLength)
 		{
-			longestLength = (*it)->length();
+			longestLength = current_length;
 			match = *it;
 		}
 	}
+	
 }
 
 void TerminalVector::print()
