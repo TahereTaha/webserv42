@@ -1,9 +1,8 @@
 #include "KeyWordReturn.hpp"
 #include <cctype>
 
-KeyWordReturn::KeyWordReturn(void)
+KeyWordReturn::KeyWordReturn(void) : ATerminal()
 {
-	this->_text = "";
 }
 
 KeyWordReturn::KeyWordReturn(const KeyWordReturn& other)
