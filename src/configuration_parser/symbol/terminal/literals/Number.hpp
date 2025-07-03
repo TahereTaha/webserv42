@@ -1,17 +1,17 @@
 #pragma once
 
 #include <iostream>
-#include "Terminal.hpp"
+#include "ATerminal.hpp"
 
-class Number : public Terminal
+class Number : public ATerminal
 {
 	private:
 	protected:
 	public:
-		Number(void);
+		Number();
 		Number(std::string str);
 		Number(const Number& other);
 		Number& operator=(const Number& other);
 		virtual Symbol* clone() const;
-		void setText(const std::string& str);
+		
 };
