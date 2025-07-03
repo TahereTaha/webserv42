@@ -1,31 +1,45 @@
-#include <stddef.h>
-
-#include <string>
+#include "Number.hpp"
 #include <cctype>
 
-#include <Number.hpp>
-
-Number::Number(void) : ATerminal()
+Number::Number(void)
 {
+	this->_text = "";
 }
 
-Number::Number(const Number & src) : ATerminal(src)
+Number::Number(std::string str)
 {
+	setText(str);
 }
 
-Number::~Number(void)
+Number::Number(const Number& other)
 {
+	*this = other;
 }
 
-size_t	getTerminalSizeOnStr(const std::string & str)
+Number& Number::operator=(const Number& other)
 {
-	size_t					size = 0;
-	std::string::iterator	it = str.begin();
+	if (this != &other)
+	{
+		this->_text = other._text;
+	}
+	return *this;
+}
 
+Symbol* Number::clone() const
+{
+	return new Number(*this);
+}
+
+void Number::setText(const std::string& str)
+{
+	int i = 0;
+
+	std::string::const_iterator it = str.begin();
+	
 	while (it != str.end() && isdigit(*it))
 	{
-		size++;
+		i++;
 		it++;
 	}
-	return (size);
+	this->_text = str.substr(0, i);
 }

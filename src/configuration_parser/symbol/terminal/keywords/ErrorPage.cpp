@@ -1,16 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ErrorPage.cpp                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 12:24:29 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/03 12:39:41 by capapes          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <ErrorPage.hpp>
+#include "ErrorPage.hpp"
+#include <cctype>
 
 ErrorPage::ErrorPage(void)
 {
@@ -19,10 +8,33 @@ ErrorPage::ErrorPage(void)
 
 ErrorPage::ErrorPage(std::string str)
 {
-	_text = getFirstOcurrence(str, "error_page");
+	setText(str);
 }
 
-size_t ErrorPage::getTerminalSizeOnStr(const std::string & str) const
+ErrorPage::ErrorPage(const ErrorPage& other)
 {
-	return getFirstOcurrence(str, "error_page").length();
+	*this = other;
 }
+
+ErrorPage& ErrorPage::operator=(const ErrorPage& other)
+{
+	if (this != &other)
+	{
+		this->_text = other._text;
+	}
+	return *this;
+}
+
+Symbol* ErrorPage::clone() const
+{
+	return new ErrorPage(*this);
+}
+
+void ErrorPage::setText(const std::string& str)
+{
+	if (str.length() > 9 && str.substr(0, 9) == "error_page")
+		this->_text = str.substr(0, 9);
+	else
+		this->_text = "";
+}
+

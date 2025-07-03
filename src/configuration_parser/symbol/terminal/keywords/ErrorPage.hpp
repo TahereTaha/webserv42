@@ -1,18 +1,18 @@
 #pragma once
 
 #include <iostream>
-#include <ATerminal.hpp>
-#include <StrMatchUtils.hpp>
+#include "Terminal.hpp"
 
-class ErrorPage : public ATerminal
+class ErrorPage : public Terminal
 {
 	private:
 	protected:
 	public:
 		ErrorPage(void);
-		~ErrorPage(void);
-
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ATerminal*	clone(void) const;
+		ErrorPage(std::string str);
+		ErrorPage(const ErrorPage& other);
+		ErrorPage& operator=(const ErrorPage& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };
 

@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AlphaNumericalToken.hpp                            :+:      :+:    :+:   */
+/*   ErrorPage.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 02:23:03 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/02 02:23:09 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/03 12:24:29 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/03 12:39:41 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include <ErrorPage.hpp>
 
-#include "../TerminalFactory.hpp"
-#include "AlphaToken.hpp"
-#include "NumberToken.hpp"
-
-class AlphaNumericalToken : public Terminal
+ErrorPage::ErrorPage(void)
 {
-	private:
-	protected:
-	public:
-		AlphaNumericalToken(void);
-		Terminal* clone() const;
-		void setText(const std::string &text);
-};
+	this->_text = "";
+}
+
+ErrorPage::ErrorPage(std::string str)
+{
+	_text = getFirstOcurrence(str, "error_page");
+}
+
+size_t ErrorPage::getTerminalSizeOnStr(const std::string & str) const
+{
+	return getFirstOcurrence(str, "error_page").length();
+}

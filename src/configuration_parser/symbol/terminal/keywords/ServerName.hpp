@@ -12,5 +12,7 @@ class ServerName : public Terminal
 		ServerName(std::string str);
 		ServerName(const ServerName& other);
 		ServerName& operator=(const ServerName& other);
+		virtual Symbol* clone() const;
+		void setText(const std::string& str);
 };
 

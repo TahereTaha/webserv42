@@ -8,11 +8,7 @@ Server::Server(void)
 
 Server::Server(std::string str)
 {
-	
-	if (str.length() > 5 && str.substr(0, 5) == "server")
-		this->_text = str.substr(0, 5);
-	else
-		this->_text = "";
+	setText(str);
 }
 
 Server::Server(const Server& other)
@@ -27,5 +23,18 @@ Server& Server::operator=(const Server& other)
 		this->_text = other._text;
 	}
 	return *this;
+}
+
+Symbol* Server::clone() const
+{
+	return new Server(*this);
+}
+
+void Server::setText(const std::string& str)
+{
+	if (str.length() > 5 && str.substr(0, 5) == "server")
+		this->_text = str.substr(0, 5);
+	else
+		this->_text = "";
 }
 
