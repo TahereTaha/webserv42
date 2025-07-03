@@ -6,15 +6,15 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/07/02 21:18:24 by tatahere         ###   ########.fr        #
+#    Updated: 2025/07/03 12:30:47 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ROOT_DIR	=	./
 
-BIN_DIR		=	$(ROOT_DIR)bin/
-SRC_DIR		=	$(ROOT_DIR)src/
-INC_DIR		=	$(ROOT_DIR)inc/
+BIN_DIR		=	bin/
+SRC_DIR		=	src/
+INC_DIR		=	inc/
 
 RM		=	rm -rf
 CXX		=	c++
@@ -41,7 +41,19 @@ CXXFLAGS	+=	$(CDEBUG)
 
 NAME	=	test
 
-OBJ		:=	main.o			\
+OBJ		:=	main.o						\
+			ALexer.o					\
+			ConfigFileLexer.o			\
+			ATerminal.o					\
+			ATerminalFactory.o			\
+			Number.o					\
+			TextCharSetConfigFile.o		\
+			WhiteSpace.o				\
+			KeyColon.o					\
+			KeyLeftCurlyBracket.o		\
+			KeyRightCurlyBracket.o		\
+			KeyWordServer.o				\
+			KeyWordServerName.o			\
 
 OBJ		:=	$(addprefix $(BIN_DIR), $(OBJ))
 
