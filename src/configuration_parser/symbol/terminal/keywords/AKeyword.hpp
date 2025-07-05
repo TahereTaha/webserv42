@@ -26,6 +26,6 @@ class AKeyword : public ATerminal
 		AKeyword(const std::string & src);
 		~AKeyword(void);
 
-		virtual size_t		getTerminalSizeOnStr(const std::string & str) const override;
+		virtual size_t		getTerminalSizeOnStr(const std::string & str) const override; // careful, override is C++11
 		virtual ATerminal* 	clone(void) const = 0;
 };
