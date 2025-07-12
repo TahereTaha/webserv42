@@ -5,8 +5,7 @@ URIParser::URIParser(std::string input)
 {
     _uri = URI();
     _input = input;
-    parse(); // Parse the URI when the object is created
-}
+    parse();
 
 URIParser::~URIParser(){}
 
@@ -44,27 +43,19 @@ void URIParser::parseScheme(const std::string& input, size_t& position)
     {
         std::string scheme = input.substr(position, schemeEnd - position);
         _uri.setScheme(scheme);
-        position = schemeEnd + 3; // Skip past "://"
+        position = schemeEnd + 3; 
     }
 }
 
 void URIParser::parseHost(const std::string& input, size_t& position)
 {
-    // Check if we're already at the end of the string
     if (position >= input.length())
         return; // No host
-    
-    // Check if we're already at a delimiter (/, ?, #)
     if (input[position] == '/' || input[position] == '?' || input[position] == '#')
         return; // No host
-    
-    // For host, we don't have a specific start character, so we handle it differently
-    // Find the end of the host
     size_t hostEnd = input.find_first_of(":/?#", position);
     if (hostEnd == std::string::npos)
         hostEnd = input.length();
-    
-    // Extract the host
     std::string host = input.substr(position, hostEnd - position);
     _uri.setHost(host);
     position = hostEnd;
@@ -75,24 +66,18 @@ void URIParser::parseComponent(const std::string& input, size_t& position,
                             char startChar, const std::string& endChars,
                             bool skipStartChar, void (URI::*setter)(std::string))
 {
-    // Check if we're at the end of the string
     if (position >= input.length())
         return; // No component
-    
-    // Check if we have the component (starts with startChar)
+
     if (input[position] == startChar)
     {
-        // Skip the start character if needed
         if (skipStartChar)
             position++;
-        
-        // Find the end of the component
         size_t endPos = input.find_first_of(endChars, position);
         
         if (endPos == std::string::npos)
             endPos = input.length();
-        
-        // Extract the component
+    
         if (endPos > position)
         {
             std::string component = input.substr(position, endPos - position);
@@ -100,7 +85,6 @@ void URIParser::parseComponent(const std::string& input, size_t& position,
             position = endPos;
         }
     }
-    // If there's no component (doesn't start with startChar), do nothing
 }
 
 void URIParser::parsePort(const std::string& input, size_t& position)
