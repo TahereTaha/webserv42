@@ -6,6 +6,7 @@ URIParser::URIParser(std::string input)
     _uri = URI();
     _input = input;
     parse();
+}
 
 URIParser::~URIParser(){}
 
@@ -27,16 +28,44 @@ void URIParser::parse()
     std::string input = getInput();
     size_t position = 0;
 
-    parseScheme(input, position);
-    parseHost(input, position);
-    parsePort(input, position);
-    parsePath(input, position);
-    parseQuery(input, position);
+    bool isRelativePath = false;
+    if (input[0] != '/' && input.find("://") == std::string::npos && 
+        input.substr(0, 2) != "//" && input[0] != '?')
+    {
+        // This might be a relative path like "../path"
+        size_t firstSlash = input.find("/");
+        size_t firstColon = input.find(":");
+        
+        if (firstColon == std::string::npos || 
+            (firstSlash != std::string::npos && firstColon > firstSlash))
+        {
+            isRelativePath = true;
+            _uri.setPath(input); 
+            _uri.setNormalizedPath(input);
+            _uri.setValid(true);
+            return;
+        }
+    }
+    
+    if (!isRelativePath)
+    {
+        parseScheme(input, position);
+        parseHost(input, position);
+        parsePort(input, position);
+        parsePath(input, position);
+        parseQuery(input, position);
+    }
 }
 
 void URIParser::parseScheme(const std::string& input, size_t& position)
 {
-    // Scheme is special because it ends with "://" instead of a single character
+    if (input.length() >= position + 2 && input.substr(position, 2) == "//")
+    {
+        // This is a protocol-relative URL, no scheme
+        position += 2;
+        return;
+    }
+    
     size_t schemeEnd = input.find("://", position);
     
     if (schemeEnd != std::string::npos)
@@ -47,12 +76,46 @@ void URIParser::parseScheme(const std::string& input, size_t& position)
     }
 }
 
+void URIParser::parseUserAuth(const std::string& input, size_t& position)
+{
+    if (position >= input.length())
+        return;
+    
+    size_t atPos = input.find("@", position);
+    if (atPos != std::string::npos && atPos > position)
+    {
+
+        size_t colonPos = input.find(":", position);
+        
+        if (colonPos != std::string::npos && colonPos < atPos)
+        {
+
+            std::string username = input.substr(position, colonPos - position);
+            std::string password = input.substr(colonPos + 1, atPos - colonPos - 1);
+            
+            _uri.setUsername(username);
+            _uri.setPassword(password);
+        }
+        else
+        {
+            // Only username, no password
+            std::string username = input.substr(position, atPos - position);
+            _uri.setUsername(username);
+        }
+        
+        position = atPos + 1;
+    }
+}
+
 void URIParser::parseHost(const std::string& input, size_t& position)
 {
     if (position >= input.length())
         return; // No host
     if (input[position] == '/' || input[position] == '?' || input[position] == '#')
         return; // No host
+
+    parseUserAuth(input, position);
+    
     size_t hostEnd = input.find_first_of(":/?#", position);
     if (hostEnd == std::string::npos)
         hostEnd = input.length();
@@ -61,7 +124,6 @@ void URIParser::parseHost(const std::string& input, size_t& position)
     position = hostEnd;
 }
 
-// Template method for parsing URI components
 void URIParser::parseComponent(const std::string& input, size_t& position, 
                             char startChar, const std::string& endChars,
                             bool skipStartChar, void (URI::*setter)(std::string))
