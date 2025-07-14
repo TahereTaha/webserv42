@@ -14,10 +14,14 @@ class URI
         std::string _port;
         std::string _path;
         std::string _normalizedPath;
+        std::string _decodedPath;
         std::string _query;
+        std::string _decodedQuery;
+
+        int hexToDecimal(char hex);
+        std::string percentDecode(const std::string& encoded);
 
         bool _isValid;
-        //make it canonical
         
         std::string normalizePath(const std::string& path);
         
@@ -45,6 +49,8 @@ class URI
         std::string getPort();
         std::string getPath();
         std::string getNormalizedPath();
+        std::string getDecodedPath();
         std::string getQuery();
+        std::string getDecodedQuery();
 
 };
