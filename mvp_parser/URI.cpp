@@ -41,6 +41,7 @@ void URI::setPath(std::string pathInput)
 {
     _path = pathInput;
     _normalizedPath = normalizePath(pathInput);
+    _decodedPath = percentDecode(_normalizedPath);
 }
 
 void URI::setNormalizedPath(std::string pathInput)
@@ -50,6 +51,7 @@ void URI::setNormalizedPath(std::string pathInput)
 void URI::setQuery(std::string queryInput)
 {
     _query = queryInput;
+    _decodedQuery = percentDecode(queryInput);
 }
 
 void URI::setValid(bool status)
@@ -95,6 +97,16 @@ std::string URI::getNormalizedPath()
 std::string URI::getQuery()
 {
     return _query;
+}
+
+std::string URI::getDecodedPath()
+{
+    return _decodedPath;
+}
+
+std::string URI::getDecodedQuery()
+{
+    return _decodedQuery;
 }
 
 
@@ -170,4 +182,48 @@ std::string URI::normalizePath(const std::string& path)
         normalizedPath += "/";
     
     return normalizedPath;
+}
+
+int URI::hexToDecimal(char hex) 
+{
+    if (hex >= '0' && hex <= '9')
+        return hex - '0';
+    if (hex >= 'A' && hex <= 'F')
+        return hex - 'A' + 10;
+    if (hex >= 'a' && hex <= 'f')
+        return hex - 'a' + 10;
+    return -1;
+}
+
+std::string URI::percentDecode(const std::string& encoded)
+{
+    std::string decoded;
+    for (size_t i = 0; i < encoded.length(); i++)
+    {
+        if (encoded[i] == '%' && i + 2 < encoded.length())
+        {
+            int digit1 = hexToDecimal(encoded[i+1]);
+            int digit2 = hexToDecimal(encoded[i+2]);
+            
+            if (digit1 != -1 && digit2 != -1)
+            {
+                char decodedChar = static_cast<char>((digit1 << 4) | digit2);
+                decoded += decodedChar;
+                i += 2; 
+            }
+            else
+            {
+                decoded += encoded[i];
+            }
+        }
+        else if (encoded[i] == '+')
+        {
+            decoded += ' ';
+        }
+        else
+        {
+            decoded += encoded[i];
+        }
+    }
+    return decoded;
 }
