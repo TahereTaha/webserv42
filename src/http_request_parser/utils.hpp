@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AKeyword.cpp                                       :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 14:22:10 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/03 15:01:27 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/17 13:47:49 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/17 13:48:02 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AKeyword.hpp"
+#pragma once
 
-AKeyword::AKeyword(const std::string & str) : ATerminal()
-{
-	_keyword = str;
-}
+#include <string>
 
-AKeyword::~AKeyword(void){}
-
-size_t		AKeyword::getTerminalSizeOnStr(const std::string & str) const
-{
-	return startsWith(str, _keyword) ? _keyword.length() : 0;
-}
+// Function to extract a field from the request line based on the given delimiter
+std::string getField(size_t& pos, const std::string& src, const std::string& delimiter);
