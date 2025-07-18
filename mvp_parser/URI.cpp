@@ -10,6 +10,8 @@ URI::URI()
     setPath("");
     setQuery("");
     setValid(false);
+    setHostIP(false);
+    setAbsolute(false);
 }
 
 URI::~URI(){}
@@ -57,6 +59,16 @@ void URI::setQuery(std::string queryInput)
 void URI::setValid(bool status)
 {
     _isValid = status;
+}
+
+void URI::setHostIP(bool isIP)
+{
+    _isHostIP = isIP;
+}
+
+void URI::setAbsolute(bool isAbsolute)
+{
+    _isAbsolute = isAbsolute;
 }
 
 std::string URI::getScheme()
@@ -107,6 +119,16 @@ std::string URI::getDecodedPath()
 std::string URI::getDecodedQuery()
 {
     return _decodedQuery;
+}
+
+bool URI::isHostIP()
+{
+    return _isHostIP;
+}
+
+bool URI::isAbsolute()
+{
+    return _isAbsolute;
 }
 
 

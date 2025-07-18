@@ -28,6 +28,15 @@ void URIParser::parse()
     std::string input = getInput();
     size_t position = 0;
 
+    // Determine if the URI is absolute or relative
+    bool isAbsolute = false;
+    if (input[0] == '/' || input.find("://") != std::string::npos || 
+        input.substr(0, 2) == "//")
+    {
+        isAbsolute = true;
+    }
+    _uri.setAbsolute(isAbsolute);
+
     bool isRelativePath = false;
     if (input[0] != '/' && input.find("://") == std::string::npos && 
         input.substr(0, 2) != "//" && input[0] != '?')
@@ -121,6 +130,11 @@ void URIParser::parseHost(const std::string& input, size_t& position)
         hostEnd = input.length();
     std::string host = input.substr(position, hostEnd - position);
     _uri.setHost(host);
+    
+    // Check if the host is an IPv4 address
+    bool isIPv4 = isIPv4Address(host);
+    _uri.setHostIP(isIPv4);
+    
     position = hostEnd;
 }
 
@@ -162,5 +176,52 @@ void URIParser::parsePath(const std::string& input, size_t& position)
 void URIParser::parseQuery(const std::string& input, size_t& position)
 {
     parseComponent(input, position, '?', "#", true, &URI::setQuery);
+}
+
+bool URIParser::isIPv4Address(const std::string& host)
+{
+    // IPv4 address format: a.b.c.d where a,b,c,d are numbers between 0-255
+    size_t start = 0;
+    int octetCount = 0;
+    
+    for (size_t i = 0; i <= host.length(); ++i)
+    {
+        if (i == host.length() || host[i] == '.')
+        {
+            // We've reached the end of an octet
+            if (i == start) // Empty octet
+                return false;
+            
+            // Extract the octet
+            std::string octet = host.substr(start, i - start);
+            
+            // Check if the octet contains only digits
+            for (size_t j = 0; j < octet.length(); ++j)
+            {
+                if (octet[j] < '0' || octet[j] > '9')
+                    return false;
+            }
+            
+            // Convert octet to integer and check range
+            int value = 0;
+            for (size_t j = 0; j < octet.length(); ++j)
+            {
+                // Check for leading zeros (except for 0 itself)
+                if (j == 0 && octet[j] == '0' && octet.length() > 1)
+                    return false;
+                
+                value = value * 10 + (octet[j] - '0');
+            }
+            
+            if (value < 0 || value > 255)
+                return false;
+            
+            octetCount++;
+            start = i + 1;
+        }
+    }
+    
+    // A valid IPv4 address must have exactly 4 octets
+    return octetCount == 4;
 }
 

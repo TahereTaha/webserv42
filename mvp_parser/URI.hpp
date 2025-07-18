@@ -22,6 +22,8 @@ class URI
         std::string percentDecode(const std::string& encoded);
 
         bool _isValid;
+        bool _isHostIP;
+        bool _isAbsolute;
         
         std::string normalizePath(const std::string& path);
         
@@ -41,6 +43,8 @@ class URI
         void setQuery(std::string queryInput);
         
         void setValid(bool status);
+        void setHostIP(bool isIP);
+        void setAbsolute(bool isAbsolute);
 
         std::string getScheme();
         std::string getUsername();
@@ -52,5 +56,7 @@ class URI
         std::string getDecodedPath();
         std::string getQuery();
         std::string getDecodedQuery();
+        bool isHostIP();
+        bool isAbsolute();
 
 };
