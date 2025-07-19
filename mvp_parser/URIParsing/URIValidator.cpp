@@ -3,6 +3,11 @@
 #include <sstream>
 #include <cctype>
 #include <cstring>
+#include <filesystem>
+
+// things to check:
+// - case sensitivity
+
 
 URIValidator::URIValidator(){}
 
@@ -111,12 +116,61 @@ bool URIValidator::validatePort(const std::string& port, bool hasColonAfterHost)
 
 bool URIValidator::validatePath(const std::string& path)
 {
-   
+    char c;
+    for (int i = 0; i < path.size(); i++)
+    {
+        c = tolower(path[i]);
+    
+        if (c == '%')
+        {
+            if (i + 2 >= path.size())
+                return false;
+        
+            char hex1 = tolower(path[i+1]);
+            char hex2 = tolower(path[i+2]);
+        
+            if (!((hex1 >= '0' && hex1 <= '9') || (hex1 >= 'a' && hex1 <= 'f')) ||
+                !((hex2 >= '0' && hex2 <= '9') || (hex2 >= 'a' && hex2 <= 'f')))
+                return false;
+    
+            i += 2;
+        }
+        else if (!((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || 
+                strchr("-._~!$&'()*+,;=:@/", c) != NULL))
+        {
+            return false;
+        }
+}
     return true;
 }
 
 bool URIValidator::validateQuery(const std::string& query)
 {
+    if (query.empty())
+        return true;  
+    char c;
+    for (int i = 0; i < query.size(); i++)
+    {
+        c = tolower(query[i]);
+        
+        if (c == '%')
+        {
+            if (i + 2 >= query.size())
+                return false;
     
+            char hex1 = tolower(query[i+1]);
+            char hex2 = tolower(query[i+2]);
+            
+            if (!((hex1 >= '0' && hex1 <= '9') || (hex1 >= 'a' && hex1 <= 'f')) ||
+                !((hex2 >= '0' && hex2 <= '9') || (hex2 >= 'a' && hex2 <= 'f')))
+                return false;
+            i += 2;
+        }
+        else if (!((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || 
+                  strchr("-._~!$&'()*+,;=:@/?", c) != NULL))
+        {
+            return false;
+        }
+    }
     return true;
 }
