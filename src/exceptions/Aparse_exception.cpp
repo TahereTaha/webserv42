@@ -1,6 +1,6 @@
 #include <string>
 #include <Aparse_exception.hpp>
-#include <parse_error_msg.h>
+#include <parse_errno_msg.h>
 
 Aparse_exception::Aparse_exception(t_parse_errno type)
 {
@@ -11,9 +11,9 @@ Aparse_exception::~Aparse_exception(void)
 {
 }
 
-Aparse_exception::makeErrorMsg(void)
-{
-}
+//void	Aparse_exception::makeErrorMsg(void)
+//{
+//}
 
 std::string	Aparse_exception::what(void) const 
 {
@@ -30,7 +30,7 @@ void		Aparse_exception::setErrorType(t_parse_errno newType)
 	this->_errorType = newType;
 }
 
-char		*Aparse_exception::strerror(void) const 
+const char		*Aparse_exception::strerror(void) const 
 {
 	return (g_parse_errno_msg_type[this->_errorType]);
 }

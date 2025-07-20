@@ -2,7 +2,6 @@
 
 KeyWordLimitExept::KeyWordLimitExept(void) : AKeyWord("limit_exept")
 {
-	this->_text = "";
 }
 
 KeyWordLimitExept::~KeyWordLimitExept(void)

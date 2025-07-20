@@ -2,7 +2,6 @@
 
 KeyWordLocation::KeyWordLocation(void) : AKeyWord("location")
 {
-	this->_text = "";
 }
 
 KeyWordLocation::~KeyWordLocation(void)

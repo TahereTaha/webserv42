@@ -9,9 +9,9 @@ class ASymbol
 		size_t	_line;
 		size_t	_column;
 	protected:
-	public:
 		ASymbol(void);
-		virtual ~ASymbol(void) = 0;
+	public:
+		virtual ~ASymbol(void);
 
 		void	setSize(size_t n);
 		void	setLine(size_t n);

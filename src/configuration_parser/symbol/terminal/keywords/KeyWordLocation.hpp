@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ASymbol.hpp>
-#include <ATeminal.hpp>
+#include <ATerminal.hpp>
 #include <AKeyWord.hpp>
 
 class KeyWordLocation : public AKeyWord
@@ -13,4 +13,4 @@ class KeyWordLocation : public AKeyWord
 		~KeyWordLocation(void);
 
 		ASymbol*	clone(void) const;
-}
+};

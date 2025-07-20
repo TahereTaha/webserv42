@@ -6,6 +6,10 @@ WhiteSpace::WhiteSpace(void) : ATerminal()
 {
 }
 
+WhiteSpace::~WhiteSpace(void)
+{
+}
+
 ASymbol* WhiteSpace::clone() const
 {
     return new WhiteSpace(*this);

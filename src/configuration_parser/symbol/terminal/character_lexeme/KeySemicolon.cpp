@@ -4,6 +4,10 @@ KeySemicolon::KeySemicolon(void) : ATerminal()
 {
 }
 
+KeySemicolon::~KeySemicolon(void)
+{
+}
+
 ASymbol* KeySemicolon::clone(void) const
 {
 	return (new KeySemicolon(*this));
