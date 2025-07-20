@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/07/03 12:30:47 by tatahere         ###   ########.fr        #
+#    Updated: 2025/07/20 17:47:59 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,15 @@ CXX		=	c++
 
 VPATH	= $(ROOT_DIR):
 VPATH	+= $(SRC_DIR):
-VPATH	+= $(SRC_DIR)/containers/:
-VPATH	+= $(SRC_DIR)/configuration_parser/:
-VPATH	+= $(SRC_DIR)/configuration_parser/symbol/:
-VPATH	+= $(SRC_DIR)/configuration_parser/symbol/terminal/:
-VPATH	+= $(SRC_DIR)/configuration_parser/symbol/terminal/character_tokens/:
-VPATH	+= $(SRC_DIR)/configuration_parser/symbol/terminal/keywords/:
-VPATH	+= $(SRC_DIR)/configuration_parser/symbol/terminal/literals/
+VPATH	+= $(SRC_DIR)containers:
+VPATH	+= $(SRC_DIR)configuration_parser:
+VPATH	+= $(SRC_DIR)configuration_parser/lexer:
+VPATH	+= $(SRC_DIR)configuration_parser/symbol:
+VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal:
+VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/character_lexeme:
+VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/keywords:
+VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/literals:
+VPATH	+= $(SRC_DIR)exceptions
 
 CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD
 
@@ -39,21 +41,38 @@ CXXFLAGS	+=	$(CINC)
 CDEBUG		:=	-g
 CXXFLAGS	+=	$(CDEBUG)
 
-NAME	=	test
+NAME	=	webserv
 
 OBJ		:=	main.o						\
+			Args.o						\
+			Parser.o					\
 			ALexer.o					\
 			ConfigFileLexer.o			\
+			ASymbol.o					\
 			ATerminal.o					\
 			ATerminalFactory.o			\
+										\
 			Number.o					\
-			TextCharSetConfigFile.o		\
+			TextConfigFile.o			\
 			WhiteSpace.o				\
-			KeyColon.o					\
+										\
+			KeySemicolon.o				\
 			KeyLeftCurlyBracket.o		\
 			KeyRightCurlyBracket.o		\
+										\
+			AKeyWord.o					\
 			KeyWordServer.o				\
 			KeyWordServerName.o			\
+			KeyWordListen.o				\
+			KeyWordClientMaxBodySize.o	\
+			KeyWordErrorPage.o			\
+			KeyWordLocation.o			\
+			KeyWordReturn.o				\
+			KeyWordLimitExept.o			\
+			KeyWordRoot.o				\
+			KeyWordAutoIndex.o			\
+			KeyWordIndex.o				\
+
 
 OBJ		:=	$(addprefix $(BIN_DIR), $(OBJ))
 

@@ -11,6 +11,6 @@ class KeySemicolon : public ATerminal
 		~KeySemicolon(void);
 		
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ATerminal*	clone(void) const;
+		ASymbol*	clone(void) const;
 };
 

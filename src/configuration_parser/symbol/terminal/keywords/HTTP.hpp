@@ -1,10 +1,10 @@
 #pragma once
 
 #include <iostream>
-#include <AKeyword.hpp>
+#include <AKeyWord.hpp>
 
 
-class HTTP : public AKeyword
+class HTTP : public AKeyWord
 {
 	private:
 	protected:

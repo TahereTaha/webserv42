@@ -6,14 +6,45 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/07/03 12:14:49 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:01:38 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <exception>
 
-int	main(void)
+#include <Parser.hpp>
+#include <Args.hpp>
+#include <textColors.h>
+
+int	main(int argc, char **argv)
 {
+	try
+	{
+		Args	args(argc, argv);
+		Parser	parser(args);
+		parser.readFile();
+		parser.scanning();
+		parser.syntaxAnalysis();
+		parser.semanticAnalysis();
+		parser.initializeServer();
+		std::cout << "starting web server." << std::endl;
+	}
+//	catch (const parse_error & e)
+//	{
+//		if (argc > 0)
+//			e.appendFrontToMsg();
+//		e.createMsg();
+//		std::cerr << e.what() << std::endl;
+//		return (1);
+//	}
+	catch (const std::exception & e)
+	{
+		if (argc > 0)
+			std::cerr << RED << e.what() << RESET << std::endl;
+		else
+			std::cerr << e.what() << std::endl;
+		return (1);
+	}
 	return (0);
 }
