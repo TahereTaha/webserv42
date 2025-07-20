@@ -23,7 +23,6 @@ class ATerminal : public ASymbol
 		//	this will find the size that the terminal should have on the string.
 		virtual size_t		getTerminalSizeOnStr(const std::string & str) const = 0;
 		
-		virtual ATerminal*	clone(void) const = 0;
 		
 		//	this only worw over the _text variable.
 		void		setText(const std::string & text);
