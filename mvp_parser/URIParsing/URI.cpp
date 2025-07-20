@@ -1,4 +1,5 @@
 #include "URI.hpp"
+#include "StringUtils.hpp"
 
 URI::URI()
 {
@@ -10,6 +11,9 @@ URI::URI()
     setPath("");
     setQuery("");
     setValid(false);
+    setHostIP(false);
+    setAbsolute(false);
+    setHasColonAfterHost(false);
 }
 
 URI::~URI(){}
@@ -57,6 +61,21 @@ void URI::setQuery(std::string queryInput)
 void URI::setValid(bool status)
 {
     _isValid = status;
+}
+
+void URI::setHostIP(bool isIP)
+{
+    _isHostIP = isIP;
+}
+
+void URI::setAbsolute(bool isAbsolute)
+{
+    _isAbsolute = isAbsolute;
+}
+
+void URI::setHasColonAfterHost(bool hasColon)
+{
+    _hasColonAfterHost = hasColon;
 }
 
 std::string URI::getScheme()
@@ -109,31 +128,26 @@ std::string URI::getDecodedQuery()
     return _decodedQuery;
 }
 
-
-std::vector<std::string> URI::split(const std::string& str, char delimiter)
+bool URI::isHostIP()
 {
-    std::vector<std::string> tokens;
-    std::string token;
-    
-    for (size_t i = 0; i < str.length(); i++)
-    {
-        if (str[i] == delimiter)
-        {
-            if (!token.empty())
-                tokens.push_back(token);
-            token.clear();
-        }
-        else
-        {
-            token += str[i];
-        }
-    }
-    
-    if (!token.empty())
-        tokens.push_back(token);
-    
-    return tokens;
+    return _isHostIP;
 }
+
+bool URI::isAbsolute()
+{
+    return _isAbsolute;
+}
+
+bool URI::hasColonAfterHost()
+{
+    return _hasColonAfterHost;
+}
+
+bool URI::isValid()
+{
+    return _isValid;
+}
+
 
 
 std::string URI::normalizePath(const std::string& path)
@@ -142,7 +156,7 @@ std::string URI::normalizePath(const std::string& path)
         return "";
     
     
-    std::vector<std::string> segments = split(path, '/');
+    std::vector<std::string> segments = StringUtils::split(path, '/');
     std::vector<std::string> normalizedSegments;
     
     for (size_t i = 0; i < segments.size(); i++)
@@ -184,16 +198,7 @@ std::string URI::normalizePath(const std::string& path)
     return normalizedPath;
 }
 
-int URI::hexToDecimal(char hex) 
-{
-    if (hex >= '0' && hex <= '9')
-        return hex - '0';
-    if (hex >= 'A' && hex <= 'F')
-        return hex - 'A' + 10;
-    if (hex >= 'a' && hex <= 'f')
-        return hex - 'a' + 10;
-    return -1;
-}
+
 
 std::string URI::percentDecode(const std::string& encoded)
 {
@@ -202,8 +207,8 @@ std::string URI::percentDecode(const std::string& encoded)
     {
         if (encoded[i] == '%' && i + 2 < encoded.length())
         {
-            int digit1 = hexToDecimal(encoded[i+1]);
-            int digit2 = hexToDecimal(encoded[i+2]);
+            int digit1 = StringUtils::hexToDecimal(encoded[i+1]);
+            int digit2 = StringUtils::hexToDecimal(encoded[i+2]);
             
             if (digit1 != -1 && digit2 != -1)
             {
