@@ -130,7 +130,7 @@ bool URIValidator::validatePath(const std::string& path)
             char hex2 = tolower(path[i+2]);
         
             if (!((hex1 >= '0' && hex1 <= '9') || (hex1 >= 'a' && hex1 <= 'f')) ||
-                !((hex2 >= '0' && hex2 <= '9') ||  (hex2 >= 'a' && hex2 <= 'f')))
+                !((hex2 >= '0' && hex2 <= '9') || (hex2 >= 'a' && hex2 <= 'f')))
                 return false;
     
             i += 2;
