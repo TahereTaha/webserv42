@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ASymbol.hpp>
-#include <ATeminal.hpp>
+#include <ATerminal.hpp>
 #include <AKeyWord.hpp>
 
 class KeyWordIndex : public AKeyWord
@@ -13,4 +13,4 @@ class KeyWordIndex : public AKeyWord
 		~KeyWordIndex(void);
 
 		ASymbol*	clone(void) const;
-}
+};

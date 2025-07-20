@@ -1,6 +1,6 @@
 #include <ALexer.hpp>
 #include <vector>
-#include <Aparse_exception.hpp>
+#include <parse_exception.hpp>
 
 ALexer::ALexer(void)
 {
@@ -43,7 +43,7 @@ std::vector<ASymbol*>	ALexer::tokenizeStr(const std::string & str) const
 			freeTerminalList(terminalList);
 			throw (e);
 		}
-		catch (const Aparse_exception & e)
+		catch (const parse_exception & e)
 		{
 			freeTerminalList(terminalList);
 			throw (e);

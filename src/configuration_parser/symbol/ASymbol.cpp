@@ -9,6 +9,10 @@ ASymbol::ASymbol(void)
 	this->_column = 0;
 }
 
+ASymbol::~ASymbol(void)
+{
+}
+
 void	ASymbol::setSize(size_t n)
 {
 	this->_size = n;

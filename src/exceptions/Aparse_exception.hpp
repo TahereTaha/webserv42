@@ -23,12 +23,12 @@ class Aparse_exception
 		t_parse_errno	_errorType;
 
 		std::string		_errorMsg;
-		char	*strerror(void) const ;
+		const char	*strerror(void) const ;
 		Aparse_exception(t_parse_errno type);
 	public:
-		~Aparse_exception(void);
+		virtual ~Aparse_exception(void);
 
-		virtual	void	makeErrorMsg(void);
+		virtual	void	makeErrorMsg(void) = 0;
 		std::string		what(void) const ;
 		
 		t_parse_errno	getErrorType(void) const ;

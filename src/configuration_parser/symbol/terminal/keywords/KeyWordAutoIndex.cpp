@@ -2,7 +2,6 @@
 
 KeyWordAutoIndex::KeyWordAutoIndex(void) : AKeyWord("auto_index")
 {
-	this->_text = "";
 }
 
 KeyWordAutoIndex::~KeyWordAutoIndex(void)

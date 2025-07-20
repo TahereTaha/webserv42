@@ -4,6 +4,10 @@ KeyRightCurlyBracket::KeyRightCurlyBracket(void) : ATerminal()
 {
 }
 
+KeyRightCurlyBracket::~KeyRightCurlyBracket(void)
+{
+}
+
 ASymbol*	KeyRightCurlyBracket::clone(void) const
 {
 	return new KeyRightCurlyBracket(*this);

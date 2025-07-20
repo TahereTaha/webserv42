@@ -2,7 +2,6 @@
 
 KeyWordIndex::KeyWordIndex(void) : AKeyWord("index")
 {
-	this->_text = "";
 }
 
 KeyWordIndex::~KeyWordIndex(void)

@@ -2,7 +2,6 @@
 
 KeyWordRoot::KeyWordRoot(void) : AKeyWord("root")
 {
-	this->_text = "";
 }
 
 KeyWordRoot::~KeyWordRoot(void)
