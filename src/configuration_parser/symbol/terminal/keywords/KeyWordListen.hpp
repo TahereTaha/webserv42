@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "ATerminal.hpp"
+#include <ATerminal.hpp>
 
 class KeyWordListen : public ATerminal
 {
@@ -9,10 +9,7 @@ class KeyWordListen : public ATerminal
 	protected:
 	public:
 		KeyWordListen(void);
-		KeyWordListen(std::string str);
-		KeyWordListen(const KeyWordListen& other);
-		KeyWordListen& operator=(const KeyWordListen& other);
-		virtual Symbol* clone() const;
+		virtual ASymbol* clone() const;
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
 };
 
