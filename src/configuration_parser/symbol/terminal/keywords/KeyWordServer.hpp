@@ -9,10 +9,7 @@ class KeyWordServer : public ATerminal
 	protected:
 	public:
 		KeyWordServer(void);
-		KeyWordServer(std::string str);
-		KeyWordServer(const KeyWordServer& other);
-		KeyWordServer& operator=(const KeyWordServer& other);
-		virtual Symbol* clone() const;
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
+		virtual ASymbol* clone() const;
+		size_t	getTerminalSizeOnStr(const std::string & str) const;
 };
 

@@ -4,12 +4,16 @@ KeySemicolon::KeySemicolon(void) : ATerminal()
 {
 }
 
-Symbol* KeySemicolon::clone(void) const
+KeySemicolon::~KeySemicolon(void)
+{
+}
+
+ASymbol* KeySemicolon::clone(void) const
 {
 	return (new KeySemicolon(*this));
 }
 
-size_t	 KeySemicolon::getTerminalSizeOnStr(const std::string& str)
+size_t	 KeySemicolon::getTerminalSizeOnStr(const std::string& str) const 
 {
 	if (!str.empty() && str[0] == ';')
 		return (1);

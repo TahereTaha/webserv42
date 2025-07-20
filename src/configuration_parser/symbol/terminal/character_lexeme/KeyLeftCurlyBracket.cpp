@@ -1,15 +1,19 @@
-#include <KeyKeyLeftCurlyBracket.hpp>
+#include <KeyLeftCurlyBracket.hpp>
 
-KeyLeftCurlyBracket::LeftCurlyBracket(void) : AToken()
+KeyLeftCurlyBracket::KeyLeftCurlyBracket(void) : ATerminal()
 {
 }
 
-Symbol* KeyLeftCurlyBracket::clone() const
+KeyLeftCurlyBracket::~KeyLeftCurlyBracket(void)
+{
+}
+
+ASymbol* KeyLeftCurlyBracket::clone() const
 {
     return new KeyLeftCurlyBracket(*this);
 }
 
-size_t		 KeyLeftCurlyBracket::getTerminalSizeOnStr(const std::string& str)
+size_t		 KeyLeftCurlyBracket::getTerminalSizeOnStr(const std::string& str) const 
 {
     if (!str.empty() && str[0] == '{')
 		return (1);

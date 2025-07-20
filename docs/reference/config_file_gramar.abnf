@@ -23,19 +23,13 @@ alpha						=	high-alpha / low-alpha
 
 digit						=	%x30-39
 
-hex-digit					=	digit / %x41-46 / %x61-66
-
-safe						=	"-" / "_" / "."
-
-sub-delims					=	"!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / "="
-
-pct-encoded					=	"%" hex-digit hex-digit
-									; used to encode character that are alredy in use like the "{"
+safe-char					=	"!" / %x23-3a / %x3c-7a / "|" / "~"
+							;	any printable character that are not control chharacters.
 
 	;	all the lexeme rules.
 c-wsp						=	1*(wsp / crlf)
 
-control-character			=	"{" / "}" / ";"
+control-character			=	"{" / "}" / ";" ; / " " / '"'
 
 number						=	1*digit
 
@@ -51,11 +45,8 @@ key-words					=	"server"
 							=/	"auto_index"
 							=/	"index"
 
-text						=	1*(alpha / digit)
-							=/	name
-							=/	pct-encoded
-							=/	%x22 *(%x01-ff) %x22 ; text delimited with double quotes
-							;	any character that dosent fit in any othe lexeme.
+text						=	1*(alpha / digit / safe-char)
+							=/	%x22 *(%x20-7e) %x22 ; text delimited with double quotes
 
 	;	rules.
 	;	server directives.

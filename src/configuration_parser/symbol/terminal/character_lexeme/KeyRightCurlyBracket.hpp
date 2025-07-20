@@ -11,6 +11,6 @@ class KeyRightCurlyBracket : public ATerminal
 		~KeyRightCurlyBracket(void);
 
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ATerminal*	clone(void) const;
+		ASymbol*	clone(void) const;
 };
 

@@ -1,47 +1,97 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ATerminalFactory.cpp                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 01:29:21 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/03 11:57:34 by tatahere         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <ATerminalFactory.hpp>
+#include <stddef.h>
+#include <parse_exception.hpp>
 
-#include "TypeTerminalVector.hpp"
-
-TerminalVector::TerminalVector() {
-	match = nullptr;
+ATerminalFactory::ATerminalFactory(void)
+{
 }
 
-TerminalVector::~TerminalVector()
+ATerminalFactory::~ATerminalFactory(void)
 {
-	for (TerminalIterator it = this->contents.begin(); it != this->contents.end(); ++it)
-		delete *it;
-}
+	size_t	vector_size = 0;
+	size_t	i = 0;
 
-void TerminalVector::setAll(std::string content)
-{
-	int longestLength = 0;
-	int	curent_length = 0;
-	match = nullptr;
-	for (TerminalIterator it = this->contents.begin(); it != this->contents.end(); ++it)
+	vector_size = this->terminals.size();
+	while (i < vector_size)
 	{
-		current_length = (*it)->getTerminalSizeOnStr();
-		if ( current_length => longestLength)
+		delete (this->terminals[i]);
+		i++;
+	}
+}
+
+void ATerminalFactory::addTerminalToFactory(ATerminal * terminal)
+{
+	terminals.push_back(terminal);
+}
+
+ATerminal*	ATerminalFactory::createTerminal(const std::string & str)
+{
+	size_t		terminal_size = 0;
+	ATerminal*	match = NULL;
+	ATerminal*	new_terminal = NULL;
+	
+	//	find the match
+	{
+		size_t	i = 0;
+		size_t	vector_size = 0;
+		size_t	terminal_current_size = 0;
+
+		vector_size = this->terminals.size();
+		while (i < vector_size)
 		{
-			longestLength = current_length;
-			match = *it;
+			terminal_current_size = this->terminals[i]->getTerminalSizeOnStr(str);
+			if (terminal_current_size > terminal_size)
+			{
+				terminal_size = terminal_current_size;
+				match = this->terminals[i];
+			}
+			i++;
+		}
+		if (terminal_size == 0)
+		{
+			if (str[0] == '"')
+				throw (parse_exception(UNCLOSED_QUOTE));
+			else
+				throw (parse_exception(UNRECOGNIZE_CHARACTER));
 		}
 	}
-	
+
+	//	make a new terminal
+	{
+		std::string	text;
+
+		text = str.substr(0, terminal_size);
+		new_terminal = dynamic_cast<ATerminal *>(match->clone());
+		new_terminal->setText(text);
+		new_terminal->setLine(this->_line);
+		new_terminal->setColumn(this->_column);
+		new_terminal->setSize(terminal_size);
+
+		this->updateIndex(text);
+	}
+	return (new_terminal);
 }
 
-void TerminalVector::print()
+void	ATerminalFactory::updateIndex(const std::string & str)
 {
-	for (TerminalIterator it = this->contents.begin(); it != this->contents.end(); ++it)
-		std::cout << "[" << (*it)->getText() << "]";
-	std::cout << std::endl;
+	char	*c_str = (char *) str.c_str();
+	size_t	i = 0;
+
+	while (c_str[i])
+	{
+		if (c_str[i] == '\n')
+		{
+			this->_line++;
+			this->_column = 0;
+		}
+		else
+			this->_column++;
+		i++;
+	}
+}
+
+void	ATerminalFactory::resetIndex(void)
+{
+	this->_line = 0;
+	this->_column = 0;
 }
