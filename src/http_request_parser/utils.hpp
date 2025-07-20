@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AKeyword.hpp                                       :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 12:40:41 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/20 17:53:43 by tatahere         ###   ########.fr       */
+/*   Created: 2025/07/17 13:47:49 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/20 18:08:04 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #pragma once
 
-#include <ATerminal.hpp>
-#include <StrMatchUtils.hpp>
+#include <string>
 
-class AKeyWord : public ATerminal
-{
-	private:
-		AKeyword();
-	protected:
-		std::string	_keyword;
-		AKeyword(const std::string & src);
-	public:
-		~AKeyword(void);
-
-		virtual size_t		getTerminalSizeOnStr(const std::string & str) const override; // careful, override is C++11
-		virtual ATerminal* 	clone(void) const = 0;
-};
+// Function to extract a field from the request line based on the given delimiter
+std::string getField(size_t& pos, const std::string& src, const std::string& delimiter);
