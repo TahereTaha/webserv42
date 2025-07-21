@@ -10,7 +10,7 @@ WhiteSpace::~WhiteSpace(void)
 {
 }
 
-ASymbol* WhiteSpace::clone() const
+ATerminal* WhiteSpace::clone() const
 {
     return new WhiteSpace(*this);
 }

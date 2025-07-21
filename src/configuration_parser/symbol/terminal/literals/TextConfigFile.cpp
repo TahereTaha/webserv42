@@ -14,7 +14,7 @@ TextConfigFile::~TextConfigFile(void)
 {
 }
 
-ASymbol* TextConfigFile::clone() const
+ATerminal* TextConfigFile::clone() const
 {
 	return new TextConfigFile(*this);
 }

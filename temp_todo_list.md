@@ -20,9 +20,9 @@
 
 
 - [x] make it compile
-- [ ] refactor some code.
+- [x] refactor some code.
 	- [x] make all the keywords desendent from AKeyWord.
-	- [ ] move the clone to the tokens.
+	- [x] move the clone to the tokens.
 - [ ] check that it is tokenizing correctly.
 - [ ] fix errors.
 	- [ ] the text is not geting the correct text with quotes.

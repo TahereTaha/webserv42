@@ -8,7 +8,7 @@ KeySemicolon::~KeySemicolon(void)
 {
 }
 
-ASymbol* KeySemicolon::clone(void) const
+ATerminal* KeySemicolon::clone(void) const
 {
 	return (new KeySemicolon(*this));
 }

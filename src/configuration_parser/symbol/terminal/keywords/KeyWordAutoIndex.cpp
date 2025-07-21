@@ -8,7 +8,7 @@ KeyWordAutoIndex::~KeyWordAutoIndex(void)
 {
 }
 
-ASymbol*	KeyWordAutoIndex::clone(void) const
+ATerminal*	KeyWordAutoIndex::clone(void) const
 {
 	return (new KeyWordAutoIndex(*this));
 }

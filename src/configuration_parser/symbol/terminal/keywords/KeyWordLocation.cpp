@@ -8,7 +8,7 @@ KeyWordLocation::~KeyWordLocation(void)
 {
 }
 
-ASymbol*	KeyWordLocation::clone(void) const
+ATerminal*	KeyWordLocation::clone(void) const
 {
 	return (new KeyWordLocation(*this));
 }

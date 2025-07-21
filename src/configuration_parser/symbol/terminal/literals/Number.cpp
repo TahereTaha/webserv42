@@ -14,7 +14,7 @@ Number::~Number(void)
 {
 }
 
-ASymbol* Number::clone() const
+ATerminal* Number::clone() const
 {
 	return new Number(*this);
 }

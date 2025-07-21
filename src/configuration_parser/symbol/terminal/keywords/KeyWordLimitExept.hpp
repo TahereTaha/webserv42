@@ -1,6 +1,5 @@
 #pragma once
 
-#include <ASymbol.hpp>
 #include <ATerminal.hpp>
 #include <AKeyWord.hpp>
 
@@ -12,5 +11,5 @@ class KeyWordLimitExept : public AKeyWord
 		KeyWordLimitExept(void);
 		~KeyWordLimitExept(void);
 
-		ASymbol*	clone(void) const;
+		ATerminal*	clone(void) const;
 };

@@ -8,7 +8,7 @@ KeyWordLimitExept::~KeyWordLimitExept(void)
 {
 }
 
-ASymbol*	KeyWordLimitExept::clone(void) const
+ATerminal*	KeyWordLimitExept::clone(void) const
 {
 	return (new KeyWordLimitExept(*this));
 }

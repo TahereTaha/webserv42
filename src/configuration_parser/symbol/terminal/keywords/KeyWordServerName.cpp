@@ -9,7 +9,7 @@ KeyWordServerName::~KeyWordServerName(void)
 {
 }
 
-ASymbol* KeyWordServerName::clone() const
+ATerminal* KeyWordServerName::clone() const
 {
 	return new KeyWordServerName(*this);
 }

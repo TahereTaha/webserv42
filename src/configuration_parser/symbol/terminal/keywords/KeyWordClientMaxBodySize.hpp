@@ -1,7 +1,5 @@
 #pragma once
 
-#include <ASymbol.hpp>
-#include <ATerminal.hpp>
 #include <AKeyWord.hpp>
 
 class KeyWordClientMaxBodySize : public AKeyWord
@@ -12,5 +10,5 @@ class KeyWordClientMaxBodySize : public AKeyWord
 		KeyWordClientMaxBodySize(void);
 		~KeyWordClientMaxBodySize(void);
 
-		ASymbol*	clone(void) const;
+		ATerminal*	clone(void) const;
 };

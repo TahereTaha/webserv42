@@ -20,5 +20,4 @@ class ASymbol
 		size_t	getLine(void) const;
 		size_t	getColumn(void) const;
 		
-		virtual ASymbol*	clone(void) const = 0;
 };

@@ -9,7 +9,7 @@ KeyWordErrorPage::~KeyWordErrorPage(void)
 {
 }
 
-ASymbol* KeyWordErrorPage::clone() const
+ATerminal* KeyWordErrorPage::clone() const
 {
 	return new KeyWordErrorPage(*this);
 }

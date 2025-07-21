@@ -8,7 +8,7 @@ KeyRightCurlyBracket::~KeyRightCurlyBracket(void)
 {
 }
 
-ASymbol*	KeyRightCurlyBracket::clone(void) const
+ATerminal*	KeyRightCurlyBracket::clone(void) const
 {
 	return new KeyRightCurlyBracket(*this);
 }

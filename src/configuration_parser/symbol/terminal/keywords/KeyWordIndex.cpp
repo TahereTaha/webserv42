@@ -8,7 +8,7 @@ KeyWordIndex::~KeyWordIndex(void)
 {
 }
 
-ASymbol*	KeyWordIndex::clone(void) const
+ATerminal*	KeyWordIndex::clone(void) const
 {
 	return (new KeyWordIndex(*this));
 }

@@ -11,6 +11,6 @@ class KeyWordReturn : public AKeyWord
 		KeyWordReturn(void);
 		~KeyWordReturn(void);
 		
-		ASymbol* clone() const;
+		ATerminal* clone() const;
 };
 

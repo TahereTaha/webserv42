@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <ASymbol.hpp>
+#include <ATerminal.hpp>
 #include <ATerminalFactory.hpp>
 
 class ALexer
@@ -14,5 +15,5 @@ class ALexer
 	public:
 		~ALexer(void);
 
-		std::vector<ASymbol*>	tokenizeStr(const std::string & str) const ;
+		std::vector<ATerminal*>	tokenizeStr(const std::string & str) const ;
 };
