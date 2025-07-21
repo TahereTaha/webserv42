@@ -1,15 +1,17 @@
 #pragma once
 
 #include <iostream>
-#include "ATerminal.hpp"
+#include <AKeyWord.hpp>
 
-class KeyWordServerName : public ATerminal
+class KeyWordServerName : public AKeyWord
 {
 	private:
 	protected:
 	public:
 		KeyWordServerName(void);
-		virtual ASymbol* clone() const;
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
+		~KeyWordServerName(void);
+		
+
+		ASymbol* clone() const;
 };
 

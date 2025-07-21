@@ -18,9 +18,16 @@
 		- text
 		- number
 
-- [ ] add scaning to the parser.
-	- [ ] go through each line and run the lexer on it.
-	- [ ] remove 
+
+- [x] make it compile
+- [ ] refactor some code.
+	- [x] make all the keywords desendent from AKeyWord.
+	- [ ] move the clone to the tokens.
+- [ ] check that it is tokenizing correctly.
+- [ ] fix errors.
+	- [ ] the text is not geting the correct text with quotes.
+- [ ] format beter the error msg.
+- [ ] get on with the parser.
 
 - [ ] web server
 	- [x] read the arguments.

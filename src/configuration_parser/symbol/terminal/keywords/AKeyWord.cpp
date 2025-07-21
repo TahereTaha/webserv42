@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:22:10 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/20 17:54:17 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:12:00 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ bool startsWith(const std::string& str, const std::string& toFind, bool caseSens
 
 AKeyWord::AKeyWord(void)
 {
+	this->_text = "";
 }
 
 AKeyWord::AKeyWord(const std::string & str) : ATerminal(),  _keyWord(str)
 {
+	this->_text = "";
 }
 
 size_t		AKeyWord::getTerminalSizeOnStr(const std::string & str) const
