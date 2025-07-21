@@ -1,8 +1,8 @@
 #pragma once
 
-#include <ATerminal.hpp>
+#include <AKeyWord.hpp>
 
-class KeySemicolon : public ATerminal
+class KeySemicolon : public AKeyWord
 {
 	private:
 	protected:
@@ -10,7 +10,6 @@ class KeySemicolon : public ATerminal
 		KeySemicolon(void);
 		~KeySemicolon(void);
 		
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
 		ASymbol*	clone(void) const;
 };
 

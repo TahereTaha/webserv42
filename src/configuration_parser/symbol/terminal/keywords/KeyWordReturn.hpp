@@ -1,15 +1,16 @@
 #pragma once
 
 #include <iostream>
-#include "ATerminal.hpp"
+#include <AKeyWord.hpp>
 
-class KeyWordReturn : public ATerminal
+class KeyWordReturn : public AKeyWord
 {
 	private:
 	protected:
 	public:
 		KeyWordReturn(void);
-		virtual		ASymbol* clone() const;
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
+		~KeyWordReturn(void);
+		
+		ASymbol* clone() const;
 };
 

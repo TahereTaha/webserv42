@@ -1,15 +1,16 @@
 #pragma once
 
 #include <iostream>
-#include "ATerminal.hpp"
+#include <AKeyWord.hpp>
 
-class KeyWordErrorPage : public ATerminal
+class KeyWordErrorPage : public AKeyWord
 {
 	private:
 	protected:
 	public:
 		KeyWordErrorPage(void);
-		virtual	ASymbol* clone() const;
-		size_t	getTerminalSizeOnStr(const std::string & str) const;
+		~KeyWordErrorPage(void);
+
+		ASymbol* clone() const;
 };
 
