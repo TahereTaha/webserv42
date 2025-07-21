@@ -13,7 +13,7 @@ class Number : public ATerminal
 		~Number(void);
 		
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ASymbol*	clone(void) const;
+		ATerminal*	clone(void) const;
 
 		int			getValue(void) const;
 };

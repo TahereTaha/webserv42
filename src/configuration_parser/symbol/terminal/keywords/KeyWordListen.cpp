@@ -9,7 +9,7 @@ KeyWordListen::~KeyWordListen(void)
 {
 }
 	
-ASymbol* KeyWordListen::clone() const
+ATerminal* KeyWordListen::clone() const
 {
 	return new KeyWordListen(*this);
 }

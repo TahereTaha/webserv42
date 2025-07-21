@@ -9,7 +9,7 @@ KeyWordReturn::~KeyWordReturn(void)
 {
 }
 
-ASymbol* KeyWordReturn::clone() const
+ATerminal* KeyWordReturn::clone() const
 {
 	return new KeyWordReturn(*this);
 }

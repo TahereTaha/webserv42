@@ -8,7 +8,7 @@ KeyWordRoot::~KeyWordRoot(void)
 {
 }
 
-ASymbol*	KeyWordRoot::clone(void) const
+ATerminal*	KeyWordRoot::clone(void) const
 {
 	return (new KeyWordRoot(*this));
 }

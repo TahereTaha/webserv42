@@ -11,6 +11,6 @@ class KeyWordErrorPage : public AKeyWord
 		KeyWordErrorPage(void);
 		~KeyWordErrorPage(void);
 
-		ASymbol* clone() const;
+		ATerminal* clone() const;
 };
 

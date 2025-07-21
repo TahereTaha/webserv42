@@ -11,5 +11,5 @@ class WhiteSpace : public ATerminal
 		~WhiteSpace(void);
 		
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ASymbol*	clone(void) const;
+		ATerminal*	clone(void) const;
 };

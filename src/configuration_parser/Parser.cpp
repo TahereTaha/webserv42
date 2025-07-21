@@ -33,9 +33,9 @@ void	Parser::readFile(void)
 	}
 }
 
-void	Parser::addTerminalsToList(std::vector<ASymbol*> line)
+void	Parser::addTerminalsToList(std::vector<ATerminal*> line)
 {
-	std::vector<ASymbol*>::iterator	lineIt = line.begin();
+	std::vector<ATerminal*>::iterator	lineIt = line.begin();
 	
 	while (lineIt != line.end())
 	{

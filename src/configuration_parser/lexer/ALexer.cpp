@@ -11,7 +11,7 @@ ALexer::~ALexer(void)
 	delete (this->_factory);
 }
 
-static void	freeTerminalList(const std::vector<ASymbol*> & terminalList)
+static void	freeTerminalList(const std::vector<ATerminal*> & terminalList)
 {
 	size_t	vector_size = 0;
 	size_t	i = 0;
@@ -24,10 +24,10 @@ static void	freeTerminalList(const std::vector<ASymbol*> & terminalList)
 	}
 }
 
-std::vector<ASymbol*>	ALexer::tokenizeStr(const std::string & str) const 
+std::vector<ATerminal*>	ALexer::tokenizeStr(const std::string & str) const 
 {
-	ASymbol*			terminal;
-	std::vector<ASymbol*>	terminalList;
+	ATerminal*			terminal;
+	std::vector<ATerminal*>	terminalList;
 	size_t				i = 0;
 	size_t				str_size = 0;
 

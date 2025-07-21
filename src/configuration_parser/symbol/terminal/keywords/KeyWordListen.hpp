@@ -11,6 +11,6 @@ class KeyWordListen : public AKeyWord
 		KeyWordListen(void);
 		~KeyWordListen(void);
 		
-		virtual ASymbol* clone() const;
+		ATerminal* clone() const;
 };
 

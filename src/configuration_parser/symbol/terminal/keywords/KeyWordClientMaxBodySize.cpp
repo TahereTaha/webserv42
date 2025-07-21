@@ -8,7 +8,7 @@ KeyWordClientMaxBodySize::~KeyWordClientMaxBodySize(void)
 {
 }
 
-ASymbol*	KeyWordClientMaxBodySize::clone(void) const
+ATerminal*	KeyWordClientMaxBodySize::clone(void) const
 {
 	return (new KeyWordClientMaxBodySize(*this));
 }

@@ -10,6 +10,6 @@ class KeySemicolon : public AKeyWord
 		KeySemicolon(void);
 		~KeySemicolon(void);
 		
-		ASymbol*	clone(void) const;
+		ATerminal*	clone(void) const;
 };
 
