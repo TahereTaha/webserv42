@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TextCharSetConfigFile.hpp                          :+:      :+:    :+:   */
+/*   Block.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 02:23:03 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/03 13:10:22 by tatahere         ###   ########.fr       */
+/*   Created: 2025/07/03 15:31:18 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/07 11:17:41 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "../TerminalFactory.hpp"
-#include "AlphaToken.hpp"
-#include "TextCharSetConfigFileToken.hpp"
+#include <ATerminal.hpp>
 
-class AlphaNumericalToken : public Terminal
+class Block : public ATerminal
 {
 	private:
 	protected:
 	public:
-		TextCharSetConfigFile(void);
-		TextCharSetConfigFile(const TextCharSetConfigFile & src);
-		TextCharSetConfigFile & operator = (const TextCharSetConfigFile & src);
-		TextCharSetConfigFile(void);
+		Block(void);
+		~Block(void) {}
 
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ATerminal*	clone(void) const;
+		virtual ATerminal* clone(void) const override
+		{
+			return new Block(*this);
+		}
+
+		size_t getTerminalSizeOnStr(const std::string & str) const
 };
-

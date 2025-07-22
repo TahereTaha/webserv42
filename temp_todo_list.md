@@ -1,21 +1,91 @@
-- [ ] refactor what we have done and make it compile.
-	- [x] make a correct makefile.
-	- [x] move and rename all the files.
-		- [x] move all the lexems.
-		- [x] move all the factories.
-	- [ ] rewrite the code so it makes sense.
-		- [ ] rewrite all the lexemes.
-			- [x] rewrite the base classes.
-			- [ ] rewrite the literals.
-				- [x] rewrite the number.
-				- [ ] rewrite the text_charset_config_file.
-			- [ ] rewrite the character lexemes.
-				- [ ] rewrite the semicolon.
-			- [ ] rewrite the keywords.
-				- [ ] rewrite the server name.
-				- [ ] rewrite the server.
-		- [ ] rewrite factories.
-			- [ ] rewrite the base class.
-			- [ ] rewrite the sub clases.
-		- [ ] rewrite the lexer.
-	- [ ] make it all compile.
+- [ ] finish the parsing for the config file.
+	- lexemes to parse.
+		- server
+		- server_name
+		- listen
+		- client_max_body_size
+		- error_page
+		- location
+		- return
+		- limit_exept
+		- root
+		- auto_index
+		- index
+		- ;
+		- {
+		- }
+		- white_space
+		- text
+		- number
+
+
+- [x] make it compile
+- [x] refactor some code.
+	- [x] make all the keywords desendent from AKeyWord.
+	- [x] move the clone to the tokens.
+- [ ] check that it is tokenizing correctly.
+- [ ] fix errors.
+	- [ ] the text is not geting the correct text with quotes.
+- [ ] format beter the error msg.
+- [ ] get on with the parser.
+
+- [ ] web server
+	- [x] read the arguments.
+	- [ ] parse the file.
+		- [x] read the file.
+		- [ ] tokenize.
+		- [ ] parse.
+		- [ ] check
+		- [ ] init.
+	- [ ] make a solid error managment.
+		- [x] set cool colors.
+		- [ ] parse exception.
+			- [x] base class.
+				- [ ] add a strerror_parse_exepiton
+				- [x] types
+					- [ ] unrecognise character.
+					- [ ] unclosed quote.
+					- [ ] multi_error.
+			- [ ] parse exeption.
+				- [ ] make error msg type.
+				- [ ] make error msg place.
+				- [ ] make error msg tip.
+				- [ ] make error msg.
+		- [ ] error please provide only a config file.
+	- [ ] set up the server.
+
+
+
+error msg 1:
+- error kind
+- place
+- visual aid
+- tips
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

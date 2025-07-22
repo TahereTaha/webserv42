@@ -18,14 +18,14 @@ class URI
         std::string _query;
         std::string _decodedQuery;
 
-        int hexToDecimal(char hex);
         std::string percentDecode(const std::string& encoded);
 
         bool _isValid;
+        bool _isHostIP;
+        bool _isAbsolute;
+        bool _hasColonAfterHost;
         
         std::string normalizePath(const std::string& path);
-        
-        std::vector<std::string> split(const std::string& str, char delimiter);
 
     public:
         URI();
@@ -41,6 +41,9 @@ class URI
         void setQuery(std::string queryInput);
         
         void setValid(bool status);
+        void setHostIP(bool isIP);
+        void setAbsolute(bool isAbsolute);
+        void setHasColonAfterHost(bool hasColon);
 
         std::string getScheme();
         std::string getUsername();
@@ -52,5 +55,9 @@ class URI
         std::string getDecodedPath();
         std::string getQuery();
         std::string getDecodedQuery();
+        bool isHostIP();
+        bool isAbsolute();
+        bool hasColonAfterHost();
+        bool isValid();
 
 };

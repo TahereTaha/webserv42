@@ -28,6 +28,15 @@ void URIParser::parse()
     std::string input = getInput();
     size_t position = 0;
 
+    // Determine if the URI is absolute or relative
+    bool isAbsolute = false;
+    if (input[0] == '/' || input.find("://") != std::string::npos || 
+        input.substr(0, 2) == "//")
+    {
+        isAbsolute = true;
+    }
+    _uri.setAbsolute(isAbsolute);
+
     bool isRelativePath = false;
     if (input[0] != '/' && input.find("://") == std::string::npos && 
         input.substr(0, 2) != "//" && input[0] != '?')
@@ -121,6 +130,15 @@ void URIParser::parseHost(const std::string& input, size_t& position)
         hostEnd = input.length();
     std::string host = input.substr(position, hostEnd - position);
     _uri.setHost(host);
+    // Check if the host is an IPv4 address
+    bool isIPv4 = isIPv4Address(host);
+    _uri.setHostIP(isIPv4);
+    
+    if (hostEnd < input.length() && input[hostEnd] == ':')
+    {
+        _uri.setHasColonAfterHost(true);
+    }
+    
     position = hostEnd;
 }
 
@@ -151,7 +169,14 @@ void URIParser::parseComponent(const std::string& input, size_t& position,
 
 void URIParser::parsePort(const std::string& input, size_t& position)
 {
+    size_t startPos = position;
+    
     parseComponent(input, position, ':', "/?#", true, &URI::setPort);
+    
+    if (position > startPos && !_uri.getPort().empty())
+    {
+        _uri.setHasColonAfterHost(false);
+    }
 }
 
 void URIParser::parsePath(const std::string& input, size_t& position)
