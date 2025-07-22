@@ -11,4 +11,4 @@ public:
     static int hexToDecimal(char hex);
 };
 
-#endif // STRING_UTILS_HPP
+#endif
