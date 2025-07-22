@@ -1,18 +1,16 @@
 #pragma once
 
 #include <iostream>
-#include "ATerminal.hpp"
+#include <AKeyWord.hpp>
 
-class KeyWordListen : public ATerminal
+class KeyWordListen : public AKeyWord
 {
 	private:
 	protected:
 	public:
 		KeyWordListen(void);
-		KeyWordListen(std::string str);
-		KeyWordListen(const KeyWordListen& other);
-		KeyWordListen& operator=(const KeyWordListen& other);
-		virtual Symbol* clone() const;
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
+		~KeyWordListen(void);
+		
+		ATerminal* clone() const;
 };
 

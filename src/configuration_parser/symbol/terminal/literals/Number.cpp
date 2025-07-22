@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cctype>
+#include <cstdlib>
 
 #include <Number.hpp>
 
@@ -9,30 +10,28 @@ Number::Number(void) : ATerminal()
 {
 }
 
-//
-//Number::Number(const Number & src) : ATerminal(src)
-//{
-//}
-//
-
 Number::~Number(void)
 {
 }
 
-Symbol* Number::clone() const
+ATerminal* Number::clone() const
 {
 	return new Number(*this);
 }
 
-size_t	Number::getTerminalSizeOnStr(const std::string & str)
+size_t	Number::getTerminalSizeOnStr(const std::string & str) const 
 {
-	size_t					size = 0;
-	std::string::iterator	it = str.begin();
+	size_t	i = 0;
+	char	*c_str = (char *) str.c_str();
 
-	while (it != str.end() && isdigit(*it))
+	while (std::isdigit(c_str[i]))
 	{
-		size++;
-		it++;
+		i++;
 	}
-	return (size);
+	return (i);
+}
+
+int		Number::getValue(void) const
+{
+	return (atoi(this->_text.c_str()));
 }

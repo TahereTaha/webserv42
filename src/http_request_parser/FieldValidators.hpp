@@ -5,6 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD:src/configuration_parser/symbol/terminal/keywords/EmptyLine.hpp
+/*   Created: 2025/07/03 15:03:18 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/07 11:18:10 by tatahere         ###   ########.fr       */
+=======
 /*   Created: 2025/07/17 15:15:06 by capapes           #+#    #+#             */
 /*   Updated: 2025/07/22 14:47:42 by capapes          ###   ########.fr       */
 /*                                                                            */

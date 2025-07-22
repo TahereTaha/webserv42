@@ -19,6 +19,8 @@ class URIParser
         void parseComponent(const std::string& input, size_t& position, 
                           char startChar, const std::string& endChars,
                           bool skipStartChar, void (URI::*setter)(std::string));
+        
+        bool isIPv4Address(const std::string& host);
 
     public:
         URIParser(std::string input);

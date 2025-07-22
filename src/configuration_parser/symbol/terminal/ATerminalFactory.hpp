@@ -1,19 +1,25 @@
 #pragma once
 
-#include "../Terminal.hpp"
+#include <ATerminal.hpp>
+#include <string>
 #include <vector>
 
-typedef std::vector<Terminal*>::iterator TerminalIterator;
-
-class TerminalVector
+class ATerminalFactory
 {
 	private:
-		Terminal 			*match;
-		void 				setAll(std::string content);
+		size_t	_line;
+		size_t	_column;
+		std::vector<ATerminal *>	terminals;
+	protected:
+		void	addTerminalToFactory(ATerminal * terminal);
+		
+		void	updateIndex(const std::string & str);
+		ATerminalFactory(void);
 	public:
-		TerminalVector();
-		~TerminalVector();
-		std::vector<Terminal*> contents;
+		~ATerminalFactory(void);
 
-		void 				print();
+		ATerminal*	createTerminal(const std::string & str);
+
+		void	resetIndex(void);
 };
+

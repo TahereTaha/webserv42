@@ -1,8 +1,8 @@
 #pragma once
 
-#include <ATerminal.hpp>
+#include <AKeyWord.hpp>
 
-class KeyLeftCurlyBracket : public ATerminal
+class KeyLeftCurlyBracket : public AKeyWord
 {
 	private:
 	protected:
@@ -10,6 +10,5 @@ class KeyLeftCurlyBracket : public ATerminal
 		KeyLeftCurlyBracket(void);
 		~KeyLeftCurlyBracket(void);
 		
-		size_t		getTerminalSizeOnStr(const std::string & str) const;
 		ATerminal*	clone(void) const;
 };
