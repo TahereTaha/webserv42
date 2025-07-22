@@ -6,26 +6,26 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/17 15:14:18 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/22 15:19:14 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 
-void isValidFieldName(const std::string& fieldName) {
-	if (fieldName.empty() || fieldName.size() > 255) 
-		throw std::runtime_error("Invalid field name: " + fieldName);
-	for (char c : fieldName)
-		if (!isalnum(c) && c != '-' && c != '_') 
-			throw std::runtime_error("Invalid field name: " + fieldName);
+void isValidHeaderKey(const std::string& headerKey) {
+	if (headerKey.empty() || headerKey.size() > 255) 
+		throw std::runtime_error("Invalid field name: " + headerKey);
+	for (size_t i = 0; i < headerKey.size(); ++i)
+		if (!isalnum(headerKey[i]) && headerKey[i] != '-' && headerKey[i] != '_') 
+			throw std::runtime_error("Invalid field name: " + headerKey);
 }
 
-void isValidfieldValue(const std::string& fieldValue) {
-	if (fieldValue.empty() || fieldValue.size() > 1024) 
-		throw std::runtime_error("Invalid field value: " + fieldValue);
-	for (char c : fieldValue)
-		if (!isprint(c)) 
-			throw std::runtime_error("Invalid field value: " + fieldValue);
+void isValidHeaderValue(const std::string& headerValue) {
+	if (headerValue.empty() || headerValue.size() > 1024) 
+		throw std::runtime_error("Invalid field value: " + headerValue);
+	for (size_t i = 0; i < headerValue.size(); ++i)
+		if (!isprint(headerValue[i])) 
+			throw std::runtime_error("Invalid field value: " + headerValue);
 }
 
 void isValidMethod(const std::string& method, int &statusCode)
