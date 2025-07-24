@@ -49,10 +49,11 @@ ATerminal*	ATerminalFactory::createTerminal(const std::string & str)
 		}
 		if (terminal_size == 0)
 		{
-			if (str[0] == '"')
-				throw (parse_exception(UNCLOSED_QUOTE));
-			else
-				throw (parse_exception(UNRECOGNIZE_CHARACTER));
+			parse_exception	e(UNRECOGNIZE_CHARACTER);
+			e.setLine(this->_line);
+			e.setColumn(this->_column);
+			e.setSize(0);
+			throw (e);
 		}
 	}
 
