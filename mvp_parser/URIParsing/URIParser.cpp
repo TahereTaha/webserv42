@@ -1,4 +1,5 @@
 #include "URIParser.hpp"
+#include "URIValidator.hpp"
 #include <Kernel/mach/mach_types.h>
 
 URIParser::URIParser(std::string input)
@@ -6,6 +7,8 @@ URIParser::URIParser(std::string input)
     _uri = URI();
     _input = input;
     parse();
+    URIValidator validator;
+    validator.validate(&_uri);
 }
 
 URIParser::~URIParser(){}

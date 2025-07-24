@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 13:20:20 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/20 18:06:33 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:26:07 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <stdexcept>
 
-// Function to extract a field from the request line based on the given delimiter
 std::string getField(size_t& pos, const std::string& src, const std::string& delimiter)
 {
 	size_t nextPos = src.find(delimiter, pos);
