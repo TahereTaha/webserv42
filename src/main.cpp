@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/07/20 19:51:29 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:29:28 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 	}
 	catch (parse_exception & e)
 	{
-		e.makeErrorMsg();
+//		e.makeErrorMsg();
 		std::cerr << e.what() << std::endl;
 		return (1);
 	}

@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <WhiteSpace.hpp>
 #include <ConfigFileLexer.hpp>
+#include <parse_exception.hpp>
 
 #include <stddef.h>
 
@@ -29,6 +30,7 @@ void	Parser::readFile(void)
 	std::string	line;
 	while (std::getline(file, line))
 	{
+		line += "\n";
 		this->_configFileContent.push_back(line);
 	}
 }
@@ -59,10 +61,20 @@ void	Parser::scanning(void)
 
 	size_t	i = 0;
 	size_t	vector_size = this->_configFileContent.size();
-	while (i < vector_size)
+	try
 	{
-		this->addTerminalsToList(lexer.tokenizeStr(this->_configFileContent[i]));
-		i++;
+		while (i < vector_size)
+		{
+			this->addTerminalsToList(lexer.tokenizeStr(this->_configFileContent[i]));
+			i++;
+		}
+	}
+	catch (parse_exception & e)
+	{
+		e.tryPromote(this->_configFileContent[e.getLine()]);
+		e.makeErrorMsg(this->_configFileName, this->_configFileContent);
+		//throw (multy_parse_excepiton(e));
+		throw (e);
 	}
 }
 

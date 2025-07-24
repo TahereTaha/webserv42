@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/07/20 19:17:33 by tatahere         ###   ########.fr        #
+#    Updated: 2025/07/24 13:03:40 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/keywords:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/literals:
 VPATH	+= $(SRC_DIR)exceptions
 
-CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD
+CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD -g
 
 CINC		:=	-I$(BIN_DIR)
 CINC		+=	-I$(INC_DIR)
@@ -71,7 +71,6 @@ OBJ		:=	main.o						\
 			KeyWordAutoIndex.o			\
 			KeyWordIndex.o				\
 										\
-			Aparse_exception.o			\
 			parse_exception.o			\
 										\
 			Args.o						\
