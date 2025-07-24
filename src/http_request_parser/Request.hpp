@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 12:28:40 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/22 15:40:56 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/24 12:36:33 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ typedef struct RequestRawFields {
 class Request {
 	public:
 		Request(const std::string& rawRequest);
-		ControlData getControlData() const { return _controlData; }
-		Headers getHeaders() const { return _headers; }
-		std::string getBody() const { return _body; }
+		ControlData getControlData() 	const { return _controlData; }
+		Headers 	getHeaders() 		const { return _headers; }
+		std::string getBody() 			const { return _body; }
 
 	private:
 
@@ -55,9 +55,7 @@ class Request {
 		void 						getControlData(std::string& rawControlData);
 		void 						getControlDataFields(const std::string& src);
 		void 						validateControlData();
-
 		void 						getHeaders(const std::string& rawHeaders);
-
 		void 						parseRequest(const std::string& rawRequest);
 		RequestRawFields 			getRequestFields(const std::string& rawRequest);
 };
