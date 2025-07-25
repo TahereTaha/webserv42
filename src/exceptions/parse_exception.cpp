@@ -1,3 +1,5 @@
+#include <textColors.h>
+
 #include <parse_exception.hpp>
 #include <iostream>
 #include <cassert>
@@ -35,6 +37,7 @@ static std::string	getHighlight(std::string line, size_t column, size_t size)
 	std::ostringstream	highlight;
 	size_t				i = 0;
 
+	highlight << GREEN;
 	while (i < line.size() && i < column)
 	{
 		if (line[i] == '\t')
@@ -58,6 +61,7 @@ static std::string	getHighlight(std::string line, size_t column, size_t size)
 		size--;
 	}
 	highlight << "\n";
+	highlight << RESET;
 	return (highlight.str());
 }
 
@@ -107,7 +111,7 @@ void	parse_exception::makeErrorMsg(	const std::string & fileName, \
 	std::ostringstream	errorMsg;
 
 	//	adding the error type.
-	errorMsg << this->strerror() << "\n";
+	errorMsg << "\n" << CYAN << this->strerror() << RESET << "\n";
 	//	adding the positon
 	errorMsg << fileName << ":" << this->getLine() + 1 <<  ":" << this->getColumn() + 1 << "\n";
 	//	some visual aid to the position

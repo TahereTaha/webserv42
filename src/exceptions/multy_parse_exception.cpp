@@ -1,5 +1,7 @@
 #include <sstream>
 
+#include <textColors.h>
+
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
 
@@ -27,7 +29,7 @@ void	multy_parse_exception::makeErrorMsg(const std::string & fileName, \
 {
 	std::ostringstream	errorMsg;
 
-	errorMsg << "there are: " << this->_errorVector.size() << " errors.\n";
+	errorMsg << "\nthere are: " << RED << this->_errorVector.size() << " errors" << RESET << ".\n";
 
 	size_t	i = 0;
 	while (i < this->_errorVector.size())
