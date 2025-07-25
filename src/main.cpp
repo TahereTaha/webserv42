@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/07/23 18:29:28 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:41:14 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <Parser.hpp>
 #include <Args.hpp>
 #include <textColors.h>
-#include <parse_exception.hpp>
+#include <multy_parse_exception.hpp>
 
 int	main(int argc, char **argv)
 {
@@ -31,9 +31,8 @@ int	main(int argc, char **argv)
 		parser.initializeServer();
 		std::cout << "starting web server." << std::endl;
 	}
-	catch (parse_exception & e)
+	catch (multy_parse_exception & e)
 	{
-//		e.makeErrorMsg();
 		std::cerr << e.what() << std::endl;
 		return (1);
 	}

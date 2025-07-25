@@ -5,6 +5,7 @@
 #include <WhiteSpace.hpp>
 #include <ConfigFileLexer.hpp>
 #include <parse_exception.hpp>
+#include <multy_parse_exception.hpp>
 
 #include <stddef.h>
 
@@ -72,9 +73,11 @@ void	Parser::scanning(void)
 	catch (parse_exception & e)
 	{
 		e.tryPromote(this->_configFileContent[e.getLine()]);
-		e.makeErrorMsg(this->_configFileName, this->_configFileContent);
-		//throw (multy_parse_excepiton(e));
-		throw (e);
+
+		multy_parse_exception	multy_e(e);
+
+		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
+		throw (multy_e);
 	}
 }
 

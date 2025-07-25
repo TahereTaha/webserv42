@@ -17,7 +17,7 @@
 	- text
 	- number
 
-- [ ] make the parse error class.
+- [x] make the parse error class.
 	- [x] add methods for seting the row and colum and size.
 	- [x] add method for promoting the error in case it is a character not recognized.
 	- [x] add the make error msg
@@ -27,12 +27,8 @@
 			- [x] print out line or lines.
 				- [x] replace all tabs with 4 spaces.
 				- [x] make a hiligter.
+- [x] make the multy error.
 - [ ] give it a more coherent color scheme.
-- [ ] make the multy error.
-
-- [ ] make the multy error class.
-	- [ ] add some other basic variables and methods.
-
 
 - [x] make it compile
 - [x] refactor some code.
@@ -48,7 +44,6 @@
 		- [ ] show the parse tree.
 - [ ] fix errors.
 	- [ ] the text is not geting the correct text with quotes.
-- [ ] format beter the error msg.
 - [ ] get on with the parser.
 
 - [ ] web server

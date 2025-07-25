@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/07/24 13:03:40 by tatahere         ###   ########.fr        #
+#    Updated: 2025/07/25 11:38:08 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ OBJ		:=	main.o						\
 			KeyWordIndex.o				\
 										\
 			parse_exception.o			\
+			multy_parse_exception.o			\
 										\
 			Args.o						\
 			Parser.o					\
