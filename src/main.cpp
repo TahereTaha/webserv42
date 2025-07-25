@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/07/25 11:41:14 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:18:51 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 	}
 	catch (multy_parse_exception & e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << e.what() << std::flush;
 		return (1);
 	}
 	catch (const std::exception & e)
