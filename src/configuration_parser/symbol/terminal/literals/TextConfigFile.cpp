@@ -71,3 +71,8 @@ std::string		TextConfigFile::getValue(void) const
 {
 	return (this->_text);
 }
+
+const char	*TextConfigFile::what(void) const 
+{
+	return ("text");
+}

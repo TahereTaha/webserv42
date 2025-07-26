@@ -12,3 +12,8 @@ ATerminal*	KeyWordIndex::clone(void) const
 {
 	return (new KeyWordIndex(*this));
 }
+
+const char	*KeyWordIndex::what(void) const 
+{
+	return ("index");
+}

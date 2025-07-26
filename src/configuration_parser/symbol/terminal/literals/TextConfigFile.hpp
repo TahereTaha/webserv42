@@ -11,6 +11,7 @@ class TextConfigFile : public ATerminal
 		TextConfigFile(void);
 		~TextConfigFile(void);
 
+		const char	*what(void) const ;
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
 		ATerminal*	clone(void) const;
 

@@ -12,3 +12,8 @@ ATerminal*	KeyWordRoot::clone(void) const
 {
 	return (new KeyWordRoot(*this));
 }
+
+const char	*KeyWordRoot::what(void) const 
+{
+	return ("root");
+}

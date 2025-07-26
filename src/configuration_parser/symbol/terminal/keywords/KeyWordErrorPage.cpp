@@ -13,3 +13,8 @@ ATerminal* KeyWordErrorPage::clone() const
 {
 	return new KeyWordErrorPage(*this);
 }
+
+const char	*KeyWordErrorPage::what(void) const 
+{
+	return ("error_page");
+}

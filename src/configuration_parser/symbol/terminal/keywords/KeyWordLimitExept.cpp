@@ -12,3 +12,8 @@ ATerminal*	KeyWordLimitExept::clone(void) const
 {
 	return (new KeyWordLimitExept(*this));
 }
+
+const char	*KeyWordLimitExept::what(void) const 
+{
+	return ("limit_exept");
+}

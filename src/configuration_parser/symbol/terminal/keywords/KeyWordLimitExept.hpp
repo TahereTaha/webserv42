@@ -11,5 +11,6 @@ class KeyWordLimitExept : public AKeyWord
 		KeyWordLimitExept(void);
 		~KeyWordLimitExept(void);
 
+		const char	*what(void) const ;
 		ATerminal*	clone(void) const;
 };

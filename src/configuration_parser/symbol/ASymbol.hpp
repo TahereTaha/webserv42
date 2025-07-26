@@ -13,6 +13,8 @@ class ASymbol
 	public:
 		virtual ~ASymbol(void);
 
+		virtual const char	*what(void) const = 0;
+
 		void	setSize(size_t n);
 		void	setLine(size_t n);
 		void	setColumn(size_t n);

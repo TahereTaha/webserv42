@@ -12,3 +12,8 @@ ATerminal*	KeyWordClientMaxBodySize::clone(void) const
 {
 	return (new KeyWordClientMaxBodySize(*this));
 }
+
+const char	*KeyWordClientMaxBodySize::what(void) const 
+{
+	return ("client_cax_body_size");
+}

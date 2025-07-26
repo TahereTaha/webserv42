@@ -10,5 +10,6 @@ class KeyWordClientMaxBodySize : public AKeyWord
 		KeyWordClientMaxBodySize(void);
 		~KeyWordClientMaxBodySize(void);
 
+		const char	*what(void) const ;
 		ATerminal*	clone(void) const;
 };

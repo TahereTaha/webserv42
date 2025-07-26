@@ -11,6 +11,7 @@ class KeyWordErrorPage : public AKeyWord
 		KeyWordErrorPage(void);
 		~KeyWordErrorPage(void);
 
+		const char	*what(void) const ;
 		ATerminal* clone() const;
 };
 
