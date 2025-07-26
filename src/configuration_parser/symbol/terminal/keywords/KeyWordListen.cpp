@@ -13,3 +13,9 @@ ATerminal* KeyWordListen::clone() const
 {
 	return new KeyWordListen(*this);
 }
+
+const char	*KeyWordListen::what(void) const 
+{
+	return ("listen");
+}
+

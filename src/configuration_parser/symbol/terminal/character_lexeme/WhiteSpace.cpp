@@ -33,3 +33,8 @@ size_t	 WhiteSpace::getTerminalSizeOnStr(const std::string& str) const
 	}
 	return (i);
 }
+
+const char	*WhiteSpace::what(void) const 
+{
+	return ("white_space");
+}

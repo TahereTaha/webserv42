@@ -35,3 +35,8 @@ int		Number::getValue(void) const
 {
 	return (atoi(this->_text.c_str()));
 }
+
+const char	*Number::what(void) const 
+{
+	return ("number");
+}

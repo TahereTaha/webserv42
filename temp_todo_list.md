@@ -17,27 +17,9 @@
 	- text
 	- number
 
-- [x] make the parse error class.
-	- [x] add methods for seting the row and colum and size.
-	- [x] add method for promoting the error in case it is a character not recognized.
-	- [x] add the make error msg
-		- [x] make the display of the error type.
-		- [x] make the error location.
-		- [x] make the visual aid for the error location.
-			- [x] print out line or lines.
-				- [x] replace all tabs with 4 spaces.
-				- [x] make a hiligter.
-- [x] make the multy error.
-- [ ] give it a more coherent color scheme.
 
-- [x] make it compile
-- [x] refactor some code.
-	- [x] make all the keywords desendent from AKeyWord.
-	- [x] move the clone to the tokens.
-	- [ ] change error handeling making it return multi error in all cases.
-		- [ ] erase the base class and just implement multi_parse_error and parse_error.
 - [ ] check that it is tokenizing correctly.
-	- [ ] add a method of what to all symbols.
+	- [x] add a method of what to all symbols.
 	- [ ] add a debuging option for printing extra information on the parsing prosses.
 		- [ ] show the file.
 		- [ ] show the token list.

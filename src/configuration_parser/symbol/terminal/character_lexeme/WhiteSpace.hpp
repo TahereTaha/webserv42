@@ -10,6 +10,7 @@ class WhiteSpace : public ATerminal
 		WhiteSpace(void);
 		~WhiteSpace(void);
 		
+		const char	*what(void) const ;
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
 		ATerminal*	clone(void) const;
 };
