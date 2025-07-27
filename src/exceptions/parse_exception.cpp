@@ -114,7 +114,7 @@ void	parse_exception::makeErrorMsg(	const std::string & fileName, \
 	errorMsg << "\n" << CYAN << this->strerror() << RESET << "\n";
 	//	adding the positon
 	errorMsg << fileName << ":" << this->getLine() + 1 <<  ":" << this->getColumn() + 1 << "\n";
-	//	some visual aid to the position
+	//	some visual aid to the position.
 	errorMsg << getPosVisualAid(fileContent, this->getLine(), this->getColumn(), this->getSize());
 	this->_errorMsg = errorMsg.str();
 }

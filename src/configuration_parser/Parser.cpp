@@ -1,4 +1,3 @@
-
 #include <Parser.hpp>
 #include <iostream>
 #include <fstream>
@@ -80,22 +79,22 @@ void	Parser::scanning(void)
 		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
 		throw (multy_e);
 	}
-	this->printTerminalList();
+	//	this->printTerminalList();
 }
 
-void	Parser::syntaxAnalysis(void)
+void	Parser::parsing(void)
 {
-	std::cout << "->syntax analysis" << std::endl;
+	std::cout << "\t-> parsing" << std::endl;
 }
 
-void	Parser::semanticAnalysis(void)
+void	Parser::analysis(void)
 {
-	std::cout << "->semantic analysis" << std::endl;
+	std::cout << "\t-> analysis" << std::endl;
 }
 
-void	Parser::generateIR(void)
+void	Parser::transpiling(void)
 {
-	std::cout << "->initializing the server." << std::endl;
+	std::cout << "\t-> transpiling" << std::endl;
 }
 
 void	Parser::printTerminalList(void) const 
