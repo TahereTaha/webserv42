@@ -26,7 +26,7 @@ class Parser
 		~Parser(void);
 		void	readFile(void);
 		void	scanning(void);
-		void	syntaxAnalysis(void);
-		void	semanticAnalysis(void);
-		void	generateIR(void);
+		void	parsing(void);
+		void	analysis(void);
+		void	transpiling(void);
 };

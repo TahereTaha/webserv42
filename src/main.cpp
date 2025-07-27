@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/07/27 16:12:42 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:56:44 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	main(int argc, char **argv)
 		Parser	parser(args);
 		parser.readFile();
 		parser.scanning();
-		parser.syntaxAnalysis();
-		parser.semanticAnalysis();
-		parser.generateIR();
+		parser.parsing();
+		parser.analysis();
+		parser.transpiling();
 		std::cout << "starting web server." << std::endl;
 	}
 	catch (multy_parse_exception & e)

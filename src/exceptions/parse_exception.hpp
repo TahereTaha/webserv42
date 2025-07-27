@@ -28,7 +28,6 @@ class parse_exception
 		size_t		_column;
 		size_t		_size;
 
-		
 		const char	*strerror(void) const ;
 	protected:
 	public:
