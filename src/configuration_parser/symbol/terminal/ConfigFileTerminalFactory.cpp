@@ -40,8 +40,8 @@ ConfigFileTerminalFactory::ConfigFileTerminalFactory(void)
 	this->addTerminalToFactory(new KeyRightCurlyBracket());
 	this->addTerminalToFactory(new KeySemicolon());
 	
-	this->addTerminalToFactory(new TextConfigFile());
 	this->addTerminalToFactory(new Number());
+	this->addTerminalToFactory(new TextConfigFile());
 	
 	this->addTerminalToFactory(new WhiteSpace());
 }
