@@ -37,7 +37,7 @@ static size_t	get_quoted_section_len(char *str)
 		i++;
 	else
 		return (0);
-	while (str[i] >= ' ' && str[i] <= '~')
+	while (str[i] >= ' ' && str[i] <= '~' && str[i] != '"')
 	{
 		i++;
 	}
