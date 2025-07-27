@@ -18,6 +18,8 @@ class Parser
 //		tree<ASymbol*>		_AST;
 
 		void	addTerminalsToList(std::vector<ATerminal*> line);
+
+		void	printTerminalList(void) const ;
 	protected:
 	public:
 		Parser(const Args & args);
@@ -26,5 +28,5 @@ class Parser
 		void	scanning(void);
 		void	syntaxAnalysis(void);
 		void	semanticAnalysis(void);
-		void	initializeServer(void);
+		void	generateIR(void);
 };

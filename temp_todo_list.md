@@ -17,13 +17,12 @@
 	- text
 	- number
 
-
 - [ ] check that it is tokenizing correctly.
 	- [x] add a method of what to all symbols.
 	- [ ] add a debuging option for printing extra information on the parsing prosses.
-		- [ ] show the file.
-		- [ ] show the token list.
+		- [x] show the token list.
 		- [ ] show the parse tree.
+- [ ] change the token text to accept eider text or a quoted string and not >>""some"thing"<<
 - [ ] fix errors.
 	- [ ] the text is not geting the correct text with quotes.
 - [ ] get on with the parser.
