@@ -13,3 +13,8 @@ ATerminal* KeyWordReturn::clone() const
 {
 	return new KeyWordReturn(*this);
 }
+
+const char	*KeyWordReturn::what(void) const 
+{
+	return ("return");
+}

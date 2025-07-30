@@ -12,3 +12,8 @@ ATerminal*	KeyWordAutoIndex::clone(void) const
 {
 	return (new KeyWordAutoIndex(*this));
 }
+
+const char	*KeyWordAutoIndex::what(void) const 
+{
+	return ("auto_index");
+}

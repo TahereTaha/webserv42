@@ -11,5 +11,6 @@ class KeyWordAutoIndex : public AKeyWord
 		KeyWordAutoIndex(void);
 		~KeyWordAutoIndex(void);
 
+		const char	*what(void) const ;
 		ATerminal*	clone(void) const;
 };

@@ -11,5 +11,6 @@ class KeyWordLocation : public AKeyWord
 		KeyWordLocation(void);
 		~KeyWordLocation(void);
 
+		const char	*what(void) const ;
 		ATerminal*	clone(void) const;
 };

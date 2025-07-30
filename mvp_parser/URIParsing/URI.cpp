@@ -11,48 +11,62 @@ URI::URI()
     setPath("");
     setQuery("");
     setValid(false);
-    setHostIP(false);
-    setAbsolute(false);
     setHasColonAfterHost(false);
 }
 
 URI::~URI(){}
 
-void URI::setScheme(std::string schemeInput)
+void URI::setScheme(const std::string& schemeInput)
 {
     _scheme = schemeInput;
 }
 
-void URI::setUsername(std::string usernameInput)
+void URI::setUsername(const std::string& usernameInput)
 {
     _username = usernameInput;
 }
 
-void URI::setPassword(std::string passwordInput)
+void URI::setPassword(const std::string& passwordInput)
 {
     _password = passwordInput;
 }
 
-void URI::setHost(std::string hostInput)
+void URI::setHost(const std::string& hostInput)
 {
-    _host = hostInput;
-}
-void URI::setPort(std::string portInput)
-{
-    _port = portInput;
-}
-void URI::setPath(std::string pathInput)
-{
-    _path = pathInput;
-    _normalizedPath = normalizePath(pathInput);
-    _decodedPath = percentDecode(_normalizedPath);
+    _host.setHostname(hostInput);
 }
 
-void URI::setNormalizedPath(std::string pathInput)
+void URI::setHost(const Host& host)
 {
-    _normalizedPath = pathInput;
+    _host = host;
 }
-void URI::setQuery(std::string queryInput)
+
+void URI::setPort(const std::string& portInput)
+{
+    _port.setPortString(portInput);
+}
+
+void URI::setPort(const Port& port)
+{
+    _port = port;
+}
+
+void URI::setPath(const std::string& pathInput)
+{
+    _path.setPath(pathInput);
+}
+
+void URI::setPath(const Path& path)
+{
+    _path = path;
+}
+
+void URI::setNormalizedPath(const std::string& pathInput)
+{
+    _path.setNormalizedPath(pathInput);
+}
+
+void URI::setQuery(const std::string& queryInput)
 {
     _query = queryInput;
     _decodedQuery = percentDecode(queryInput);
@@ -63,142 +77,100 @@ void URI::setValid(bool status)
     _isValid = status;
 }
 
-void URI::setHostIP(bool isIP)
-{
-    _isHostIP = isIP;
-}
-
-void URI::setAbsolute(bool isAbsolute)
-{
-    _isAbsolute = isAbsolute;
-}
-
 void URI::setHasColonAfterHost(bool hasColon)
 {
     _hasColonAfterHost = hasColon;
 }
 
-std::string URI::getScheme()
+std::string URI::getScheme() const
 {
     return _scheme;
 }
 
-std::string URI::getUsername()
+std::string URI::getUsername() const
 {
     return _username;
 }
 
-std::string URI::getPassword()
+std::string URI::getPassword() const
 {
     return _password;
 }
 
-std::string URI::getHost()
+Host URI::getHost() const
 {
     return _host;
 }
 
-std::string URI::getPort()
+std::string URI::getHostString() const
+{
+    return _host.getHostname();
+}
+
+bool URI::isHostIP() const
+{
+    return _host.isIP();
+}
+
+Port URI::getPort() const
 {
     return _port;
 }
 
-std::string URI::getPath()
+std::string URI::getPortString() const
+{
+    return _port.getPortString();
+}
+
+int URI::getPortNumber() const
+{
+    return _port.getPortNumber();
+}
+
+Path URI::getPath() const
 {
     return _path;
 }
 
-std::string URI::getNormalizedPath()
+std::string URI::getPathString() const
 {
-    return _normalizedPath;
+    return _path.getPath();
 }
 
-std::string URI::getQuery()
+std::string URI::getNormalizedPath() const
+{
+    return _path.getNormalizedPath();
+}
+
+std::string URI::getDecodedPath() const
+{
+    return _path.getDecodedPath();
+}
+
+bool URI::isAbsolute() const
+{
+    return _path.isAbsolute();
+}
+
+std::string URI::getQuery() const
 {
     return _query;
 }
 
-std::string URI::getDecodedPath()
-{
-    return _decodedPath;
-}
-
-std::string URI::getDecodedQuery()
+std::string URI::getDecodedQuery() const
 {
     return _decodedQuery;
 }
 
-bool URI::isHostIP()
-{
-    return _isHostIP;
-}
-
-bool URI::isAbsolute()
-{
-    return _isAbsolute;
-}
-
-bool URI::hasColonAfterHost()
+bool URI::hasColonAfterHost() const
 {
     return _hasColonAfterHost;
 }
 
-bool URI::isValid()
+bool URI::isValid() const
 {
     return _isValid;
 }
-
-
-
-std::string URI::normalizePath(const std::string& path)
-{
-    if (path.empty())
-        return "";
-    
-    
-    std::vector<std::string> segments = StringUtils::split(path, '/');
-    std::vector<std::string> normalizedSegments;
-    
-    for (size_t i = 0; i < segments.size(); i++)
-    {
-        const std::string& segment = segments[i];
-        
-        if (segment.empty() || segment == ".")
-        {
-            
-            continue;
-        }
-        else if (segment == "..")
-        {
-            
-            if (!normalizedSegments.empty())
-                normalizedSegments.pop_back();
-        }
-        else
-        {
-            normalizedSegments.push_back(segment);
-        }
-    }
-    
-    std::string normalizedPath;
-    
-    if (!path.empty() && path[0] == '/')
-        normalizedPath = "/";
-    
-    for (size_t i = 0; i < normalizedSegments.size(); i++)
-    {
-        if (i > 0)
-            normalizedPath += "/";
-        normalizedPath += normalizedSegments[i];
-    }
-    
-    if (path.length() > 1 && path[path.length() - 1] == '/' && !normalizedPath.empty() && normalizedPath[normalizedPath.length() - 1] != '/')
-        normalizedPath += "/";
-    
-    return normalizedPath;
-}
-
-
 
 std::string URI::percentDecode(const std::string& encoded)
 {

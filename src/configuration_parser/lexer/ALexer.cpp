@@ -43,7 +43,7 @@ std::vector<ATerminal*>	ALexer::tokenizeStr(const std::string & str) const
 			freeTerminalList(terminalList);
 			throw (e);
 		}
-		catch (const parse_exception & e)
+		catch (parse_exception & e)
 		{
 			freeTerminalList(terminalList);
 			throw (e);

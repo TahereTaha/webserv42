@@ -11,5 +11,6 @@ class KeyWordIndex : public AKeyWord
 		KeyWordIndex(void);
 		~KeyWordIndex(void);
 
+		const char	*what(void) const ;
 		ATerminal*	clone(void) const;
 };
