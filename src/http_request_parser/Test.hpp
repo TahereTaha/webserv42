@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.cpp                                          :+:      :+:    :+:   */
+/*   Test.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/17 13:20:20 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/24 14:26:07 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/28 14:09:11 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/28 15:02:42 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// documentation
+#pragma once
+#include <iostream>
+#include "Request.hpp"
+#include "Headers.hpp"
+#include "ControlData.hpp"
+#include "Schemas.hpp"
 
 
-#include <stdexcept>
+struct TestCase {
+    std::string raw;
+    Request expected;
 
-std::string getField(size_t& pos, const std::string& src, const std::string& delimiter)
-{
-	size_t nextPos = src.find(delimiter, pos);
-	if (nextPos == std::string::npos)
-		throw std::runtime_error("Delimiter not found in the string");
-	std::string field = src.substr(pos, nextPos - pos);
-	pos = nextPos + delimiter.length();
-	return field;
-}
+    TestCase(const std::string &r, const Request &req)
+        : raw(r), expected(req) {}
+};

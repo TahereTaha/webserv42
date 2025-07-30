@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:58:15 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/22 15:58:17 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/28 13:55:32 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@
 // VCHAR          = %x21-7E
 // CRLF           = %x0D %x0A
 
-
-
-void isValidHeaderKey(const std::string& HeaderKey);
-void isValidHeaderValue(const std::string& HeaderValue);
-void isValidMethod(const std::string& method, int &statusCode);
-void isValidProtocolVersion(const std::string& version, int &statusCode);
-void isValidRequestTarget(const std::string& target, int &statusCode);
+bool isValidKey(const std::string& key);
+bool isValidValue(const std::string& value);
+bool validMethod(const std::string& method);
+bool isValidRequest(const std::string& target);
+bool isValidProtocol(const std::string& version);

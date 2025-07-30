@@ -5,137 +5,86 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 12:31:51 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/24 12:10:29 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/28 13:20:26 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/30 18:06:04 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "FieldValidators.hpp"
+#include <stdio.h>
 #include <iostream>
 
-Request::Request(const std::string& rawRequest) {
-	try {
-		parseRequest(rawRequest);
-	} catch (const std::runtime_error& e) {
-		std::cerr << "Error parsing request: " << e.what() << std::endl;	
-	}
+Request::Request()
+    : controlData(), headers(), body(""), errorCode(0) {}
+
+Request::Request(const ControlData& cd, const Headers& h, const std::string& b)
+    : controlData(cd), headers(h), body(b), errorCode(0) {}
+
+Request::Request(const Request& other)
+    : controlData(other.controlData),
+      headers(other.headers),
+      body(other.body),
+      errorCode(other.errorCode) {}
+
+Request& Request::operator=(const Request& other) {
+    if (this != &other) {
+        controlData = other.controlData;
+        headers = other.headers;
+        body = other.body;
+        errorCode = other.errorCode;
+    }
+    return *this;
 }
 
-void Request::parseRequest(const std::string& rawRequest) {
-	RequestRawFields 	raw;
-	
-	raw = getRequestFields(rawRequest);
-	getControlData(raw.controlData);
-	getHeaders(raw.headers);
-	_body = raw.body;
+bool Request::operator==(const Request& other) const {
+    return controlData == other.controlData &&
+           headers == other.headers &&
+           body == other.body &&
+           errorCode == other.errorCode;
 }
 
-RequestRawFields Request::getRequestFields(const std::string& rawRequest)
-{
-	RequestRawFields 	raw;
-	size_t 				pos 	= 0;
-	
-	try 
-	{
-		raw.controlData = getField(pos, rawRequest, END_OF_LINE);
-		raw.headers = getField(pos, rawRequest, END_OF_HEADERS);
-		raw.body = rawRequest.substr(pos);
-	}
-	catch (const std::runtime_error& e) {
-		statusCode = 400; // Bad Request
-		throw std::runtime_error("Malformed request: " + std::string(e.what()));
-	}
+Request::~Request() {}
 
-	return raw;
+
+void Request::setControlData(const ControlData& cd) {
+    controlData = cd;
 }
 
-// =====================================================================
-// 								CONTROL DATA
-// =====================================================================
-
-void Request::getControlData(std::string& rawControlData)
-{
-	getControlDataFields(rawControlData);
-	validateControlData();
+void Request::setHeaders(const Headers& h) {
+    headers = h;
 }
 
-void Request::getControlDataFields(const std::string& src)
-{
-	size_t pos = 0;
-
-	try {
-		_controlData.method = getField(pos, src, " ");
-		_controlData.requestTarget = getField(pos, src, " ");
-		_controlData.httpVersion = src.substr(pos);
-	}
-	catch (const std::runtime_error& e) {
-		statusCode = 400; // Bad Request
-		throw std::runtime_error("Malformed request line: " + std::string(e.what()));
-	}
+void Request::setBody(const std::string& b) {
+    body = b;
 }
 
-void Request::validateControlData()
-{
-	isValidMethod(_controlData.method, statusCode);
-	isValidRequestTarget(_controlData.requestTarget, statusCode);
-	isValidProtocolVersion(_controlData.httpVersion, statusCode);
+void Request::setErrorCode(int code) {
+    errorCode = code;
 }
 
-// =====================================================================
-// 								HEADERS
-// =====================================================================
-
-#define headerPair std::pair<std::string, std::string>
-
-
-inline void addFieldToHeaders(headerPair &pair, Headers& headers)
-{
-	std::string key 		= pair.first;
-	std::string value 	= pair.second;
-
-	if (headers.find(key) != headers.end())
-		headers[key] += ", " + value;
-	else
-		headers[key] = value;
+const ControlData& Request::getControlData() const {
+    return controlData;
 }
 
-inline headerPair getHeaderField(const std::string& line)
-{
-	size_t 		pos 	= 0;
-	headerPair 	pair;
-
-	pair.first 	= getField(pos, line, ":");
-	pair.second = line.substr(pos);
-	
-	isValidHeaderKey(pair.first);
-	isValidHeaderValue(pair.second);
-	return pair;
+const Headers& Request::getHeaders() const {
+    return headers;
 }
 
-void addFieldsToHeaders(std::string rawHeaders, Headers& _headers)
-{
-	std::string	line;
-	headerPair	pair;
-	size_t 		pos 		= 0;
-	size_t 		endPos 		= rawHeaders.length();
-
-	rawHeaders += END_OF_LINE;
-	while (pos < endPos) {
-		line = getField(pos, rawHeaders, END_OF_LINE);
-		if (line.empty())
-			continue;
-		pair = getHeaderField(line);
-		addFieldToHeaders(pair, _headers);
-	}
+const std::string& Request::getBody() const {
+    return body;
 }
 
-void Request::getHeaders(const std::string& rawHeaders)
-{
-	try {
-		addFieldsToHeaders(rawHeaders, _headers);
-	} catch (const std::runtime_error& e) {
-		statusCode = 400; // Bad Request
-		throw std::runtime_error("Error parsing headers: " + std::string(e.what()));
-	}
+int Request::getErrorCode() const {
+    return errorCode;
 }
+
+Request* Request::activeRequest = NULL;
+void Request::setActiveRequest(Request* r) {
+	activeRequest = r;
+}
+
+void Request::setActiveError(int code) {
+	if (activeRequest)
+		activeRequest->setErrorCode(code);
+}
+
