@@ -12,3 +12,8 @@ ATerminal*	KeyWordLocation::clone(void) const
 {
 	return (new KeyWordLocation(*this));
 }
+
+const char	*KeyWordLocation::what(void) const 
+{
+	return ("location");
+}

@@ -11,5 +11,6 @@ class KeyWordRoot : public AKeyWord
 		KeyWordRoot(void);
 		~KeyWordRoot(void);
 
+		const char	*what(void) const ;
 		ATerminal*	clone(void) const;
 };

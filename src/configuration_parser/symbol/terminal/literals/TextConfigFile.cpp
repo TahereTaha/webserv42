@@ -37,7 +37,7 @@ static size_t	get_quoted_section_len(char *str)
 		i++;
 	else
 		return (0);
-	while (str[i] >= ' ' && str[i] <= '~')
+	while (str[i] >= ' ' && str[i] <= '~' && str[i] != '"')
 	{
 		i++;
 	}
@@ -70,4 +70,9 @@ size_t	TextConfigFile::getTerminalSizeOnStr(const std::string & str) const
 std::string		TextConfigFile::getValue(void) const
 {
 	return (this->_text);
+}
+
+const char	*TextConfigFile::what(void) const 
+{
+	return ("text");
 }

@@ -10,6 +10,7 @@ class KeyRightCurlyBracket : public AKeyWord
 		KeyRightCurlyBracket(void);
 		~KeyRightCurlyBracket(void);
 
+		const char	*what(void) const ;
 		ATerminal*	clone(void) const;
 };
 

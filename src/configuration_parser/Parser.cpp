@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <WhiteSpace.hpp>
 #include <ConfigFileLexer.hpp>
+#include <parse_exception.hpp>
+#include <multy_parse_exception.hpp>
 
 #include <stddef.h>
 
@@ -29,6 +31,7 @@ void	Parser::readFile(void)
 	std::string	line;
 	while (std::getline(file, line))
 	{
+		line += "\n";
 		this->_configFileContent.push_back(line);
 	}
 }
@@ -59,25 +62,52 @@ void	Parser::scanning(void)
 
 	size_t	i = 0;
 	size_t	vector_size = this->_configFileContent.size();
-	while (i < vector_size)
+	try
 	{
-		this->addTerminalsToList(lexer.tokenizeStr(this->_configFileContent[i]));
-		i++;
+		while (i < vector_size)
+		{
+			this->addTerminalsToList(lexer.tokenizeStr(this->_configFileContent[i]));
+			i++;
+		}
 	}
+	catch (parse_exception & e)
+	{
+		e.tryPromote(this->_configFileContent[e.getLine()]);
+
+		multy_parse_exception	multy_e(e);
+
+		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
+		throw (multy_e);
+	}
+	//	this->printTerminalList();
 }
 
-void	Parser::syntaxAnalysis(void)
+void	Parser::parsing(void)
 {
-	std::cout << "->syntax analysis" << std::endl;
+	std::cout << "\t-> parsing" << std::endl;
 }
 
-void	Parser::semanticAnalysis(void)
+void	Parser::analysis(void)
 {
-	std::cout << "->semantic analysis" << std::endl;
+	std::cout << "\t-> analysis" << std::endl;
 }
 
-void	Parser::initializeServer(void)
+void	Parser::transpiling(void)
 {
-	std::cout << "->initializing the server." << std::endl;
+	std::cout << "\t-> transpiling" << std::endl;
 }
 
+void	Parser::printTerminalList(void) const 
+{
+	std::cout << "this is the termital list:" << std::endl;
+
+	size_t	i = 0;
+	while (i < this->_terminalList.size())
+	{
+		std::cout << "  " << this->_terminalList[i]->what() << "  ";
+		i++;
+		if (i < this->_terminalList.size())
+			std::cout << "|";
+	}
+	std::cout << std::endl;
+}

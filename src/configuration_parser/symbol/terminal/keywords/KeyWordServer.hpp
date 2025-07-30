@@ -11,6 +11,7 @@ class KeyWordServer : public AKeyWord
 		KeyWordServer(void);
 		~KeyWordServer(void);
 		
+		const char	*what(void) const ;
 		ATerminal* clone() const;
 };
 

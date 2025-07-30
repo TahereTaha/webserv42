@@ -1,32 +1,23 @@
-- [ ] finish the parsing for the config file.
-	- lexemes to parse.
-		- server
-		- server_name
-		- listen
-		- client_max_body_size
-		- error_page
-		- location
-		- return
-		- limit_exept
-		- root
-		- auto_index
-		- index
-		- ;
-		- {
-		- }
-		- white_space
-		- text
-		- number
+- lexemes to parse.
+	- server
+	- server_name
+	- listen
+	- client_max_body_size
+	- error_page
+	- location
+	- return
+	- limit_exept
+	- root
+	- auto_index
+	- index
+	- ;
+	- {
+	- }
+	- white_space
+	- text
+	- number
 
 
-- [x] make it compile
-- [x] refactor some code.
-	- [x] make all the keywords desendent from AKeyWord.
-	- [x] move the clone to the tokens.
-- [ ] check that it is tokenizing correctly.
-- [ ] fix errors.
-	- [ ] the text is not geting the correct text with quotes.
-- [ ] format beter the error msg.
 - [ ] get on with the parser.
 
 - [ ] web server
@@ -40,18 +31,10 @@
 	- [ ] make a solid error managment.
 		- [x] set cool colors.
 		- [ ] parse exception.
-			- [x] base class.
-				- [ ] add a strerror_parse_exepiton
-				- [x] types
-					- [ ] unrecognise character.
-					- [ ] unclosed quote.
-					- [ ] multi_error.
-			- [ ] parse exeption.
-				- [ ] make error msg type.
-				- [ ] make error msg place.
-				- [ ] make error msg tip.
-				- [ ] make error msg.
-		- [ ] error please provide only a config file.
+			- [x] types
+				- [ ] unrecognise character.
+				- [ ] unclosed quote.
+		- [ ] multy parse exception.
 	- [ ] set up the server.
 
 
@@ -71,9 +54,12 @@ error msg 1:
 
 
 
-
-
-
+errors: 3
+unclosed quote.
+docs/configfile2.conf:16:10
+	server_name "server_name ;
+				^~~~~~~~~~~~~~~
+tip: multy line quoted strings are not suported try to close it before the end of the line.
 
 
 

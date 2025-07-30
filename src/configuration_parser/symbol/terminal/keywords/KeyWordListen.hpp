@@ -11,6 +11,7 @@ class KeyWordListen : public AKeyWord
 		KeyWordListen(void);
 		~KeyWordListen(void);
 		
+		const char	*what(void) const ;
 		ATerminal* clone() const;
 };
 

@@ -18,13 +18,15 @@ class Parser
 //		tree<ASymbol*>		_AST;
 
 		void	addTerminalsToList(std::vector<ATerminal*> line);
+
+		void	printTerminalList(void) const ;
 	protected:
 	public:
 		Parser(const Args & args);
 		~Parser(void);
 		void	readFile(void);
 		void	scanning(void);
-		void	syntaxAnalysis(void);
-		void	semanticAnalysis(void);
-		void	initializeServer(void);
+		void	parsing(void);
+		void	analysis(void);
+		void	transpiling(void);
 };
