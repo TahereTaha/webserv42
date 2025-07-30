@@ -6,82 +6,61 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/24 14:30:08 by capapes          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:56:25 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
-
+#include <iostream>
 
 // =====================================================================
 // 					GENERIC FIELD VALIDATORS
 // =====================================================================
-void isValidLength(const std::string& str, size_t maxLength, size_t minLength) {
-	if (str.empty() || str.size() > maxLength || str.size() < minLength)
-		throw std::runtime_error("Invalid field name: " + str);
+
+inline bool isValidLength(const std::string& str, size_t maxLength, size_t minLength) {
+    return !(str.empty() || str.size() > maxLength || str.size() < minLength);
 }
 
-void isValidCharSet(const std::string& str, bool (*fn)(const char &c)) {
-	for (size_t i = 0; i < str.size(); ++i) {
-		if (!fn(str[i]))
-			throw std::runtime_error("Invalid character in field: " + str);
-	}
+inline bool isValidCharSet(const std::string& str, bool (*fn)(const char& c)) {
+    for (size_t i = 0; i < str.size(); ++i)
+        if (!fn(str[i])) return false;
+    return true;
 }
 
 // =====================================================================
 // 					KEYS AND VALUES VALID CHARACTERS
 // =====================================================================
-bool keyValidChar(const char& c) {
+inline bool keyValidChar(const char& c) {
 	return isalnum(c) || c == '-' || c == '_';
 }
 
-bool valueValidChar(const char& c) {
-	return isprint(c);
+inline bool valueValidChar(const char& c) {
+	return isprint(c) && c != '\r' && c != '\n' && c != ':';
 }
 
 // =====================================================================
 // 					VALIDATORS FOR REQUEST HEADERS FIELDS
 // =====================================================================
-void isValidHeaderKey(const std::string& headerKey) {
-	isValidLength(headerKey, 256, 1);
-	isValidCharSet(headerKey, keyValidChar);
+bool isValidKey(const std::string& key) {
+	return 	isValidLength(key, 256, 1) && isValidCharSet(key, keyValidChar);
 }
 
-void isValidHeaderValue(const std::string& headerValue) {
-	isValidLength(headerValue, 8192, 1);
-	isValidCharSet(headerValue, valueValidChar);
+bool isValidValue(const std::string& value) {
+	return isValidLength(value, 8192, 1) && isValidCharSet(value, valueValidChar);
 }
 
 // =====================================================================
 // 					VALIDATORS FOR CONTROL DATA FIELDS
 // =====================================================================
 
-void isValidMethod(const std::string& method, int &statusCode)
-{
-	if (method == "GET" || method == "POST");
-	else
-	{
-		statusCode = 501; // Not Implemented
-		throw std::runtime_error("Invalid HTTP method: " + method);
-	}
+bool validMethod(const std::string& method) {
+	return method == "GET" || method == "POST" || method == "PUT" || method == "DELETE";
 }
 
-void isValidProtocolVersion(const std::string& version, int &statusCode)
-{
-	if (version == "HTTP/1.1" || version == "HTTP/1.0");
-	else
-	{
-		statusCode = 505; // HTTP Version Not Supported
-		throw std::runtime_error("Invalid HTTP version: " + version);
-	}
+bool isValidRequest(const std::string& target) {
+	return !target.empty();
 }
 
-void isValidRequestTarget(const std::string& target, int &statusCode)
-{
-	if (target == "*" || !target.empty());
-	else
-	{
-		statusCode = 400; // Bad Request
-		throw std::runtime_error("Invalid request target: " + target);
-	}
+bool isValidProtocol(const std::string& version) {
+	return version == "HTTP/1.1" || version == "HTTP/2.0";
 }

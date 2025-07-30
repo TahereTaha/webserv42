@@ -5,59 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 12:28:40 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/24 12:36:33 by capapes          ###   ########.fr       */
+/*   Created: 2025/07/28 13:17:20 by capapes           #+#    #+#             */
+/*   Updated: 2025/07/30 18:06:22 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-
 #include <string>
-
-#include <string>
-#include "utils.hpp"
-#include <stdexcept>
-#include <map>
-
-#define END_OF_HEADERS "\r\n\r\n"
-#define END_OF_LINE "\r\n"
-
-typedef std::map<std::string, std::string> Headers;
-
-typedef struct ControlData {
-	std::string method;
-	std::string requestTarget;
-	std::string httpVersion;
-} ControlData;
-
-typedef struct RequestRawFields {
-	std::string controlData;
-	std::string headers;
-	std::string body;
-} RequestRawFields;
+#include "ControlData.hpp"
+#include "Headers.hpp"
 
 class Request {
-	public:
-		Request(const std::string& rawRequest);
-		ControlData getControlData() 	const { return _controlData; }
-		Headers 	getHeaders() 		const { return _headers; }
-		std::string getBody() 			const { return _body; }
+public:
+    Request();
+    Request(const ControlData& cd, const Headers& h, const std::string& b);
+    Request(const Request& other);
+    Request& operator=(const Request& other);
+    ~Request();
 
-	private:
+    bool                operator==(const Request& other) const;
+    void 				setControlData(const ControlData& cd);
+    void 				setHeaders(const Headers& h);
+    void 				setBody(const std::string& b);
+    void 				setErrorCode(int code);
 
-		ControlData 	_controlData;
-		Headers 		_headers;
-		std::string 	_body;
-		int 			statusCode;
-		
+    const ControlData& 	getControlData() 	const;
+    const Headers& 		getHeaders() 		const;
+    const std::string& 	getBody() 			const;
+    int 				getErrorCode() 		const;
+	static void 		setActiveRequest(Request* r);
+    static void 		setActiveError(int code);
 
-		
-		void 						getControlData(std::string& rawControlData);
-		void 						getControlDataFields(const std::string& src);
-		void 						validateControlData();
-		void 						getHeaders(const std::string& rawHeaders);
-		void 						parseRequest(const std::string& rawRequest);
-		RequestRawFields 			getRequestFields(const std::string& rawRequest);
+private:
+    ControlData 		controlData;
+    Headers 			headers;
+    std::string 		body;
+    int 				errorCode;
+
+	static Request* 	activeRequest;
 };
-
-std::ostream& operator<<(std::ostream& os, const Request& request);
