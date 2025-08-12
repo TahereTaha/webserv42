@@ -6,14 +6,25 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/30 18:12:27 by capapes          ###   ########.fr       */
+/*   Updated: 2025/08/12 14:33:23 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 #include "Schemas.hpp"
 #include "Request.hpp"
+#include "URIParser.hpp"
+#include <limits.h>
 
+
+// =====================================================================
+// 	Condiional Schemas flags
+// =====================================================================
+enum SchemaFlags {    
+    NONE            = 0,        // No flags
+    OPTIONAL_SPACES = 1 << 0,   // Allow spaces before and after the delimiter
+    IS_REQUIRED     = 1 << 1,   // Field is required cannot be empty
+};
 
 // =====================================================================
 // 	Common schema functions
@@ -35,36 +46,27 @@ std::string remove_leading(const std::string& str, const std::string& chars = " 
     return str.substr(start);
 }
 
-
-inline std::string getField(size_t& pos, const std::string& raw, const std::string& delimiter)
+inline std::string getField(size_t& pos, const std::string& raw, const std::string& delimiter, bool optionalSpaces = false)
 {
-	if (delimiter.empty())
-		return raw.substr(pos);
+    
 	size_t endPos = raw.find(delimiter, pos);
 	if (endPos == std::string::npos)
-		return ("");
+		return (""); // No delimiter found
+        
 	std::string field = raw.substr(pos, endPos - pos);
 	pos = endPos + delimiter.size();
-    field = remove_leading(field);
-    field = remove_trailing(field);
-    if (field.empty())
+    if (optionalSpaces)
     {
-        return "";
+        field = remove_leading(field);
+        field = remove_trailing(field);
     }
-	return field;
+	return (field); // Field may be empty after trimming
 }
 
 std::string extractAndValidate(size_t& pos, const std::string& raw, const SchemaItem& item) {
-    std::string value = getField(pos, raw, item.delimiter);
+    std::string value = getField(pos, raw, item.delimiter, item.flags);
 
-    if (!item.isRequired && value.empty())
-        return value;
-    if (item.fn && !item.fn(value))
-    {
-        Request::setActiveError(item.errorCode);
-        throw std::runtime_error(item.error);
-    }
-    if (value.empty() && item.isRequired)
+    if ((item.flags & IS_REQUIRED && value.empty()) || (item.fn && !item.fn(value)))
     {
         Request::setActiveError(item.errorCode);
         throw std::runtime_error(item.error);
@@ -85,24 +87,24 @@ std::string extractAndValidate(size_t& pos, const std::string& raw, const Schema
 // =====================================================================
 
 static SchemaItem controlDataItems[] = {
-    { SP, validMethod, "Invalid HTTP method", 501, true },
-    { SP, isValidRequest, "Invalid request target", 400, true },
-    { "", isValidProtocol, "Invalid HTTP version", 505, true }
+    { SP, validMethod, "Invalid HTTP method", 501, IS_REQUIRED },
+    { SP, isValidRequest, "Invalid request target", 400, IS_REQUIRED },
+    { "", isValidProtocol, "Invalid HTTP version", 505, IS_REQUIRED }
 };
 
 static SchemaItem headersItems[] = {
-    { ":", isValidKey, "Invalid header key", 400, true },
-    { END_OF_LINE, isValidValue, "Invalid header value", 400, true }
+    { ":", isValidKey, "Invalid header key", 400, IS_REQUIRED },
+    { END_OF_LINE, isValidValue, "Invalid header value", 400, IS_REQUIRED | OPTIONAL_SPACES }
 };
 
 static SchemaItem HeaderBlock[] = {
-	{ END_OF_LINE, NULL, "Invalid request line", 400, true },
-	{ "", NULL, "Invalid headers", 400, false },
+	{ END_OF_LINE, NULL, "Invalid request line", 400, IS_REQUIRED},
+	{ "", NULL, "Invalid headers", 400, NONE },
 };
 
 static SchemaItem requestItems[] = {
-    { END_OF_HEADERS, NULL, "Invalid request", 400, true },
-    { "", NULL, "Invalid body", 400, false }
+    { END_OF_HEADERS, NULL, "Invalid request", 400, IS_REQUIRED },
+    { "", NULL, "Invalid body", 400, NONE }
 };
 
 
@@ -116,9 +118,65 @@ ControlData validateControlData(const std::string& raw) {
 
     result.method        = extractAndValidate(pos, raw, controlDataItems[0]);
     result.requestTarget = extractAndValidate(pos, raw, controlDataItems[1]);
+    result.uri           = URIParser(result.requestTarget).getURI();
+    if (!result.uri.isValid()) {
+        Request::setActiveError(400);
+        throw std::runtime_error("Invalid URI in request target");
+    }
     result.httpVersion   = extractAndValidate(pos, raw, controlDataItems[2]);
 
     return result;
+}
+
+long string_to_long(const std::string& s, size_t* pos = 0, int base = 10) {
+    char* end;
+    errno = 0;
+    long result = std::strtol(s.c_str(), &end, base);
+
+    if (pos) {
+        *pos = end - s.c_str();
+    }
+    if (errno == ERANGE || result > LONG_MAX || result < LONG_MIN) {
+        throw std::out_of_range("string_to_long: value out of range");
+    }
+    if (end == s.c_str()) {
+        throw std::invalid_argument("string_to_long: no conversion could be performed");
+    }
+    return result;
+}
+
+bool isValidContentLength(const std::string& contentLength) {
+    if (contentLength.empty()) return false;
+    std::string::const_iterator it = contentLength.begin();
+    for (;it != contentLength.end(); ++it) {
+        if (!isdigit(*it)) {
+            Request::setActiveError(400);
+            throw std::runtime_error("Invalid Content-Length header value");
+        }
+    }
+    long length = string_to_long(contentLength);
+    return length >= 0 && length <= INT_MAX;
+}
+
+Headers specificHeadersValidation(Headers& headers)
+{
+    if (headers.has("Host") == false || headers.has("Content-Length") == false)
+    {
+        Request::setActiveError(400);
+        throw std::runtime_error("Missing Host or COntent-Lenth header");
+    }
+    URI hostURI = URIParser(headers.get("Host")).getURI();
+    if (!hostURI.isValid())
+    {
+        Request::setActiveError(400);
+        throw std::runtime_error("Invalid Host header value");
+    }
+    std::string contentLength = headers.get("Content-Length");
+    if (!isValidContentLength(contentLength))
+    {
+        Request::setActiveError(400);
+        throw std::runtime_error("Invalid Content-Length header value");
+    }
 }
 
 Headers validateHeaders(const std::string& raw) {
@@ -128,10 +186,17 @@ Headers validateHeaders(const std::string& raw) {
     size_t pos = 0;
     while (pos < raw.size())  
     {
+        if (raw[pos] == '\r' || raw[pos] == '\n') {
+            pos++;
+            continue;
+        }
         std::string key   = extractAndValidate(pos, raw, headersItems[0]);
         std::string value = extractAndValidate(pos, raw, headersItems[1]);
         result.add(key, value);
     }
+    
+   
+    
     return result;
 }
 
@@ -144,7 +209,7 @@ Request validateRequest(const std::string& raw) {
     Request::setActiveError(0);
     try {
         std::string headers = extractAndValidate(pos, raw, requestItems[0]);
-        headers += END_OF_LINE; // Ensure headers end with a newline
+        headers += END_OF_LINE;
 
         std::string controlBlock = extractAndValidate(headerPos, headers, HeaderBlock[0]);
         req.setControlData(validateControlData(controlBlock));

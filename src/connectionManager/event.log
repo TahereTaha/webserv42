@@ -1,0 +1,35 @@
+[2025-08-07 13:43:05] [SOCKET] Socket created on port 8080
+[2025-08-07 13:43:05] [SOCKET] Socket created on port 8081
+[2025-08-07 13:43:05] [SOCKET] Socket created on port 8082
+[2025-08-07 13:43:05] [EPOLL] Added socket to epoll: 4
+[2025-08-07 13:43:05] [EPOLL] Added socket to epoll: 5
+[2025-08-07 13:43:05] [EPOLL] Added socket to epoll: 6
+[2025-08-07 13:43:05] 
+
+
+[SERVER] Server started
+[2025-08-07 13:43:07] [CONNECTION] Handling new connection on socket: 4
+[2025-08-07 13:43:07] [EPOLL] Added new connection to epoll: 8
+[2025-08-07 13:43:12] [EVENT] Closing idle connection: 8
+[2025-08-07 13:43:13] [CONNECTION] Handling new connection on socket: 4
+[2025-08-07 13:43:13] [EPOLL] Added new connection to epoll: 8
+[2025-08-07 13:43:18] [EVENT] Closing idle connection: 8
+[2025-08-07 13:45:14] 
+
+
+[SERVER] Server started
+[2025-08-07 13:45:14] [SOCKET] Socket created on port 8080
+[2025-08-07 13:45:14] [SOCKET] Socket created on port 8081
+[2025-08-07 13:45:14] [SOCKET] Socket created on port 8082
+[2025-08-07 13:45:14] [EPOLL] Added socket to epoll: 4
+[2025-08-07 13:45:14] [EPOLL] Added socket to epoll: 5
+[2025-08-07 13:45:14] [EPOLL] Added socket to epoll: 6
+[2025-08-07 13:45:20] [CONNECTION] Handling new connection on socket: 4
+[2025-08-07 13:45:20] [EPOLL] Added new connection to epoll: 8
+[2025-08-07 13:45:24] [EVENT] Handling read event for client: 8
+[2025-08-07 13:45:28] [CONNECTION] Handling new connection on socket: 6
+[2025-08-07 13:45:28] [EPOLL] Added new connection to epoll: 9
+[2025-08-07 13:45:30] [EVENT] Handling read event for client: 9
+[2025-08-07 13:45:39] [EVENT] Handling read event for client: 9
+[2025-08-07 13:46:19] [EVENT] Closing idle connection: 8
+[2025-08-07 13:46:29] [EVENT] Closing idle connection: 9
