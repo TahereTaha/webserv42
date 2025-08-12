@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 12:36:50 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/28 16:34:42 by capapes          ###   ########.fr       */
+/*   Updated: 2025/08/12 13:27:58 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 
 #pragma once
 #include <string>
+#include "../../mvp_parser/URIParsing/URI.hpp"
 
 struct ControlData {
     std::string method;
     std::string requestTarget;
     std::string httpVersion;
+    URI         uri;
 
     ControlData()
         : method(""), requestTarget(""), httpVersion("") {}

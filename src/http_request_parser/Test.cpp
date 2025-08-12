@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:51:48 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/30 18:20:54 by capapes          ###   ########.fr       */
+/*   Updated: 2025/08/04 12:02:39 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ testCases getTestCases() {
     // Case 2: POST with JSON body
     {
         Headers hdrs;
+        hdrs["Host"] = "example.com";
         hdrs["Content-Type"] = "application/json";
         hdrs["Content-Length"] = "34";
         Request req(ControlData("POST", "/submit", "HTTP/1.1"), hdrs, "{\"key\":\"value\"}");
         cases.push_back(TestCase(
-            "POST /submit HTTP/1.1\r\nContent-Type: application/json\r\nContent-Length: 34\r\n\r\n{\"key\":\"value\"}",
+            "POST /submit HTTP/1.1\r\nHost: example.com\r\nContent-Type: application/json\r\nContent-Length: 34\r\n\r\n{\"key\":\"value\"}",
             req
         ));
     }
@@ -52,10 +53,11 @@ testCases getTestCases() {
     // Case 3: PUT with Authorization
     {
         Headers hdrs;
+        hdrs["Host"] = "example.com";
         hdrs["Authorization"] = "Bearer token123";
-        Request req(ControlData("PUT", "/update", "HTTP/2.0"), hdrs, "");
+        Request req(ControlData("PUT", "/update", "HTTP/1.1"), hdrs, "");
         cases.push_back(TestCase(
-            "PUT /update HTTP/2.0\r\nAuthorization: Bearer token123\r\n\r\n",
+            "PUT /update HTTP/1.1\r\nHost: example.com\r\nAuthorization: Bearer token123\r\n\r\n",
             req
         ));
     }
@@ -64,9 +66,9 @@ testCases getTestCases() {
     {
         Headers hdrs;
         hdrs["Host"] = "example.com";
-        Request req(ControlData("HEAD", "/check", "HTTP/1.1"), hdrs, "");
+        Request req(ControlData("POST", "/check", "HTTP/1.1"), hdrs, "");
         cases.push_back(TestCase(
-            "HEAD /check HTTP/1.1\r\nHost: example.com\r\n\r\n",
+            "POST /check HTTP/1.1\r\nHost: example.com\r\n\r\n",
             req
         ));
     }
@@ -101,6 +103,7 @@ testCases getTestCases() {
     {
         Headers hdrs;
         Request req(ControlData("GET", "/index.html", "HTTP/1.1"), hdrs, "");
+        req.setErrorCode(400); // Expected: invalid, Host header required
         cases.push_back(TestCase(
             "GET /index.html HTTP/1.1\r\n\r\n",
             req // Expected: invalid (Host required by HTTP/1.1)
@@ -112,6 +115,7 @@ testCases getTestCases() {
         Headers hdrs;
         hdrs["Host"] = "example.com";
         Request req(ControlData("FOO", "/test", "HTTP/1.1"), hdrs, "");
+        req.setErrorCode(501); // Expected: invalid, method not standard
         cases.push_back(TestCase(
             "FOO /test HTTP/1.1\r\nHost: example.com\r\n\r\n",
             req // Expected: invalid (method not standard)
@@ -123,6 +127,7 @@ testCases getTestCases() {
         Headers hdrs;
         hdrs["Host"] = "example.com";
         Request req(ControlData("GET", "", "HTTP/1.1"), hdrs, "");
+        req.setErrorCode(400); // Expected: invalid, no path
         cases.push_back(TestCase(
             "GET  HTTP/1.1\r\nHost: example.com\r\n\r\n",
             req // Expected: invalid (no path)
@@ -134,6 +139,7 @@ testCases getTestCases() {
         Headers hdrs;
         hdrs["Host"] = "";
         Request req(ControlData("GET", "/test", "HTTP/1.1"), hdrs, "");
+        req.setErrorCode(400); // Expected: invalid, empty header value
         cases.push_back(TestCase(
             "GET /test HTTP/1.1\r\nHost:\r\n\r\n",
             req // Expected: invalid (empty header value)
@@ -151,26 +157,23 @@ void testRunner()
 {
     testCases cases = getTestCases();
    
+   int i =0;
 	for (testCases::const_iterator it = cases.begin(); it != cases.end(); ++it) {
 		const TestCase& test = *it;
+        i++;
+        std::cout << BOLD << "\nCASE NUMBER " <<  i  << std::endl;
 		try {
 			Request req = validateRequest(test.raw);
-            // std::cout << "Testing: " << test.raw << std::endl;
-            // ControlData controlData = req.getControlData();
-            // Headers headers = req.getHeaders();
-            // std::cout << "Control Data: " << controlData.method << " "
-            //             << controlData.requestTarget << " "
-            //             << controlData.httpVersion << std::endl;
-            // std::cout << "Headers: " << std::endl;  
-            // for (Headers::const_iterator it = headers.begin(); it != headers.end(); ++it) {
-            //     std::cout << "  " << it->first << ": " << it->second << std::endl;
-            // }
-            // std::cout << "Body: " << req.getBody() << std::endl;
-            
+
 			if (req == test.expected)
 				std::cout << TEST_PASSED << "Test passed: \n" << RESET << test.raw << std::endl;
 			else if (req.getErrorCode() != test.expected.getErrorCode())
+            {
+                std::cout << TEST_FAILED << "Test failed: expected error code "
+                          << test.expected.getErrorCode() << ", got " << req.getErrorCode() << "\n"
+                          << RESET << test.raw << std::endl;
 				std::cout << TEST_FAILED << "Test failed: " << RESET << test.raw << std::endl;
+            }
             else
                 std::cout << TEST_PASSED << "Test passed \n" << RESET << test.raw << std::endl;
 		} catch (const std::exception& e) {
