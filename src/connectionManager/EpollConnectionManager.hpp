@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/07 12:03:17 by capapes          ###   ########.fr       */
+/*   Updated: 2025/08/12 14:59:46 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 #include <sstream>
 #include <algorithm>
 #include <map>
-#include <ctime>    // for time_t and time()
-#include <sys/time.h> // for gettimeofday() if you need milliseconds
+#include <ctime>    
+#include <sys/time.h> 
+#include "../http_request_parser/Request.hpp"
 
 struct Connection {
     int          fd;
     std::string  readBuffer;
+    Request      request;
     std::string  writeBuffer;
     bool         keepAlive;
     double       lastActive;
@@ -48,4 +50,5 @@ class EpollConnectionManager {
         void handleWrite(int clientfd);
         void cleanupIdleConnections(const double &now);
         void closeConnection(int fd);
+        void badRequest(int fd);
 };

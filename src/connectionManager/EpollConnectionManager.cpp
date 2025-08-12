@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/07 13:45:01 by capapes          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:00:34 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <cerrno>
 #include <cstdio>
 #include "Event.hpp"
+#include "../http_request_parser/Schemas.hpp"
+
 
 
 // =====================================================================
@@ -116,6 +118,16 @@ void EpollConnectionManager::handleNewConnection(Socket *sock) {
         perror("accept");
 }
 
+void EpollConnectionManager::badRequest(int fd) {
+    std::ostringstream oss;
+    oss << fd;
+    std::ostringstream oss2;
+    oss2 << connections[fd].request.getErrorCode();
+    EventLog::log(EPOLL_EVENT, "Request error for client " + oss.str() + ": " + oss2.str());
+    connections[fd].readBuffer.clear();
+    connections[fd].writeBuffer = "HTTP/1.1 " + std::to_string(connections[fd].request.getErrorCode()) + " Error\r\n\r\n";
+    setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
+}
 
 void EpollConnectionManager::handleRead(int clientfd) {
     char buf[4096];
@@ -131,8 +143,9 @@ void EpollConnectionManager::handleRead(int clientfd) {
     }
     if (bytesRead == 0)
         closeConnection(clientfd);
-    std::string &buffer = connections[clientfd].readBuffer;
-    std::cout << "Received data from client " << clientfd << ": " << buffer << "\n";
+    connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
+    if (connections[clientfd].request.getErrorCode() != 0) 
+        badRequest(clientfd);
 }
 
 void EpollConnectionManager::handleWrite(int clientfd) {
