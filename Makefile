@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/07/27 15:58:26 by tatahere         ###   ########.fr        #
+#    Updated: 2025/08/28 18:20:04 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ CXX		=	c++
 VPATH	= $(ROOT_DIR):
 VPATH	+= $(SRC_DIR):
 VPATH	+= $(SRC_DIR)containers:
+VPATH	+= $(SRC_DIR)containers/tree:
 VPATH	+= $(SRC_DIR)configuration_parser:
 VPATH	+= $(SRC_DIR)configuration_parser/lexer:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol:

@@ -17,12 +17,12 @@ class Tree
 		T						_content;
 		std::vector<Tree<T>*>	_children;
 		Tree<T>*				_parent;
-		
-		Tree(void);
-		Tree(const T& content);
+
 	protected:
 	public:
 
+		Tree(void);
+		Tree(const T& content);
 		~Tree();
 
 		void			addTreeAsChild(Tree<T>* newChildTree);
@@ -57,13 +57,13 @@ class Tree
 				iterator(Tree<T> *node);
 				~iterator(void);
 
-				Tree<T>		*operator * (const Tree::iterator& iter) const ;
+				Tree<T>		*operator * (void) const ;
 
-				Tree<T>::iterator	&operator ++ (void);
-				Tree<T>::iterator	operator ++ (int);
+				iterator	&operator ++ (void);
+				iterator	operator ++ (int);
 
 				int			operator == (const Tree<T>::iterator &iter);
-		}
+		};
 		Tree<T>::iterator	begin(void) const ;
 		Tree<T>::iterator	end(void) const ;
 };

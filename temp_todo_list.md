@@ -21,6 +21,12 @@
 - [ ] get on with the parser.
 	- [x] modify the tree container.
 	- [ ] parse.
+		- [x] make it compile with the tree container.
+		- [ ] parse each token.
+			- [	] manage the server directive.
+				- [ ] consume all the server directives with the "{...}".
+				- [ ] error on servers without context.
+				- [ ] error on servers with contexts not closed.
 
 - [ ] web server
 	- [x] read the arguments.
