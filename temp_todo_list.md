@@ -19,14 +19,16 @@
 
 
 - [ ] get on with the parser.
+	- [x] modify the tree container.
+	- [ ] parse.
 
 - [ ] web server
 	- [x] read the arguments.
 	- [ ] parse the file.
 		- [x] read the file.
-		- [ ] tokenize.
+		- [x] tokenize.
 		- [ ] parse.
-		- [ ] check
+		- [ ] check.
 		- [ ] init.
 	- [ ] make a solid error managment.
 		- [x] set cool colors.
