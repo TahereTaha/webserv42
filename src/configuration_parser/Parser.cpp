@@ -12,6 +12,7 @@
 Parser::Parser(const Args & args)
 {
 	this->_configFileName = args.getConfigFileName();
+	this->_AST = new Tree<ASymbol *>();
 	std::cout << "parsing:" << std::endl;
 }
 
@@ -79,7 +80,7 @@ void	Parser::scanning(void)
 		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
 		throw (multy_e);
 	}
-	//	this->printTerminalList();
+	this->printTerminalList();
 }
 
 void	Parser::parsing(void)

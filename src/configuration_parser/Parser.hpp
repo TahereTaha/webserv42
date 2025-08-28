@@ -6,20 +6,21 @@
 #include <ASymbol.hpp>
 #include <ATerminal.hpp>
 #include <Args.hpp>
+#include <Tree.hpp>
 
-//	this class in responsible for reading the file and seting up all the needed
-//	object for the web server to run.
+//	this class in responsible for transforming the file in the IR for the web server to execute.
 class Parser
 {
 	private:
-		std::string			_configFileName;
+		std::string					_configFileName;
 		std::vector<std::string>	_configFileContent;
-		std::vector<ATerminal*>	_terminalList;		//	this for the future make it nested in a tree 
-//		tree<ASymbol*>		_AST;
+		std::vector<ATerminal*>		_terminalList;
+		Tree<ASymbol*>				*_AST;
+
 
 		void	addTerminalsToList(std::vector<ATerminal*> line);
-
 		void	printTerminalList(void) const ;
+
 	protected:
 	public:
 		Parser(const Args & args);

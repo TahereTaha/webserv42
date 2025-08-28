@@ -1,4 +1,4 @@
-#include "node.hpp"
+#include "Tree.hpp"
 #include <cassert>
 
 template <typename T>
@@ -34,9 +34,9 @@ void	Tree<T>::addTreeAsChild(Tree<T>* newChildTree)
 template <typename T>
 treeNodeType	Tree<T>::getNodeType(void) const
 {
-    if (parent == NULL)
+    if (this->_parent == NULL)
         return ROOT;
-    if (children.empty())
+    if (this->_children.empty())
         return LEAF;
     return BRANCH;
 }
@@ -44,13 +44,13 @@ treeNodeType	Tree<T>::getNodeType(void) const
 //	three navigation.
 
 template <typename T>
-Tree<T>		*Tree<T>::getParentNode(void)
+Tree<T>		*Tree<T>::getParentNode(void) const
 {
 	return (this->_parent);
 }
 
 template <typename T>
-Tree<T>		*Tree<T>::getChildNode(size_t index) const ;
+Tree<T>		*Tree<T>::getChildNode(size_t index) const 
 {
 	if (index >= this->_children.size())
 		return (NULL);
@@ -58,17 +58,17 @@ Tree<T>		*Tree<T>::getChildNode(size_t index) const ;
 }
 
 template <typename T>
-Tree<T>		*Tree<T>::operator [] (size_t index)
+Tree<T>		*Tree<T>::operator [] (size_t index) const 
 {
 	return (this->getChildNode(index));
 }
 
 template <typename T>
-Tree<T>		*Tree<T>::getRootNode(void)
+Tree<T>		*Tree<T>::getRootNode(void) const 
 {
 	if (this->getNodeType() == ROOT)
 		return (this);
-	tree<T>	*node;
+	Tree<T>	*node;
 	node = this;
 	while (node->getNodeType() != ROOT)
 	{
@@ -132,7 +132,7 @@ Tree<T>		*Tree<T>::getLeftMostLeafNode(void) const
 //	content manipulation.
 
 template <typename T>
-void		Tree<T>::setConent(const T& content)
+void		Tree<T>::setContent(const T& content)
 {
 	this->_content = content;
 }
@@ -152,7 +152,7 @@ T			Tree<T>::operator * (void) const
 //	thre iterator.
 
 template <typename T>
-Tree<T>::iterator::iterator(const Tree<T>& node)
+Tree<T>::iterator::iterator(Tree<T> *node)
 {
 	this->_node = node;
 }
@@ -163,13 +163,13 @@ Tree<T>::iterator::~iterator(void)
 }
 
 template <typename T>
-Tree<T>		Tree<T>::iterator::operator * (const Tree<T>::iterator& iter) const
+Tree<T>		*Tree<T>::iterator::operator * (void) const
 {
 	return (*(this->_node));
 }
 
 template <typename T>
-Tree<T>::iterator	&Tree<T>::iterator::operator ++ (void)
+typename Tree<T>::iterator	&Tree<T>::iterator::operator ++ (void)
 {
 	Tree<T>	*nextNode;
 	Tree<T>	*rightBranchNode;
@@ -195,7 +195,7 @@ Tree<T>::iterator	&Tree<T>::iterator::operator ++ (void)
 }
 
 template <typename T>
-Tree<T>::iterator	Tree<T>::iterator::operator ++ (int)
+typename Tree<T>::iterator	Tree<T>::iterator::operator ++ (int)
 {
 	Tree<T>::iterator	tmp(*this);
 	
@@ -232,13 +232,13 @@ int			Tree<T>::iterator::operator == (const Tree<T>::iterator &iter)
 }
 
 template <typename T>
-Tree<T>::iterator	Tree<T>::iterator::begin(void) const 
+typename Tree<T>::iterator	Tree<T>::begin(void) const 
 {
 	return (Tree<T>::iterator(this->getLeftMostLeafNode()));
 }
 
 template <typename T>
-Tree<T>::ierator	Tree<T>::iterator::end() const 
+typename Tree<T>::iterator	Tree<T>::end() const 
 {
 	return (Tree<T>::iterator(this->getRootNode()));
 }
