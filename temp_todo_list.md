@@ -22,9 +22,11 @@
 	- [x] make the tree compile with the tree container.
 	- [ ] parse each token.
 		- [	] manage the server directive.
+			- [x] read that it starts with a server keyword.
+			- [ ] check that it starts with a '{'.
+			- [ ] check that it ends with a '}'.
+			- [ ] try to generate any subtrees of the directives that are inside the server.
 			- [ ] consume all the server directives with the "{...}".
-			- [ ] error on servers without context.
-			- [ ] error on servers with contexts not closed.
 	- [ ] make the semantic analysis.
 		- [ ] go botom up checking that all the information is correct (analyze each node).
 
