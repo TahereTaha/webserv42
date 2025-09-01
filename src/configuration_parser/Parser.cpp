@@ -80,7 +80,7 @@ void	Parser::scanning(void)
 		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
 		throw (multy_e);
 	}
-	this->printTerminalList();
+//	this->printTerminalList();
 }
 
 void	Parser::parsing(void)
