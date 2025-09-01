@@ -15,5 +15,5 @@ ATerminal*	KeyRightCurlyBracket::clone(void) const
 
 const char	*KeyRightCurlyBracket::what(void) const 
 {
-	return ("curly_bracket");
+	return ("right_curly_bracket");
 }

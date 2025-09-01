@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Tree.hpp"
 #include <cassert>
 
@@ -12,6 +14,15 @@ Tree<T>::Tree(const T& content)
 {
 	this->_parent = NULL;
 	this->_content = content;
+}
+
+template <typename T>
+Tree<T>		*Tree<T>::makeTreeNode(const T& content)
+{
+	Tree<T>	*node;
+
+	node = new Tree<T>(content);
+	return (node);
 }
 
 template <typename T>
@@ -219,7 +230,7 @@ typename Tree<T>::iterator	Tree<T>::iterator::operator ++ (int)
 		nextNode = NULL;
 
 	this->_node = nextNode;
-	
+
 	return (tmp);
 }
 
@@ -240,6 +251,6 @@ typename Tree<T>::iterator	Tree<T>::begin(void) const
 template <typename T>
 typename Tree<T>::iterator	Tree<T>::end() const 
 {
-	return (Tree<T>::iterator(this->getRootNode()));
+	return (Tree<T>::iterator(NULL));
 }
 

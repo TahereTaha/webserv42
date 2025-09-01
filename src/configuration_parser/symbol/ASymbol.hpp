@@ -21,5 +21,4 @@ class ASymbol
 		size_t	getSize(void) const;
 		size_t	getLine(void) const;
 		size_t	getColumn(void) const;
-		
 };

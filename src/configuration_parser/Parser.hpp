@@ -5,6 +5,7 @@
 
 #include <ASymbol.hpp>
 #include <ATerminal.hpp>
+#include <ANonTerminal.hpp>
 #include <Args.hpp>
 #include <Tree.hpp>
 
@@ -12,10 +13,10 @@
 class Parser
 {
 	private:
-		std::string					_configFileName;
-		std::vector<std::string>	_configFileContent;
-		std::vector<ATerminal*>		_terminalList;
-		Tree<ASymbol*>				*_AST;
+		std::string							_configFileName;
+		std::vector<std::string>			_configFileContent;
+		std::vector<ATerminal*>				_terminalList;
+		std::vector<Tree<ANonTerminal*>*>	_ASTList;
 
 
 		void	addTerminalsToList(std::vector<ATerminal*> line);

@@ -18,11 +18,12 @@ class Tree
 		std::vector<Tree<T>*>	_children;
 		Tree<T>*				_parent;
 
+		Tree(void);
+		Tree(const T& content);
 	protected:
 	public:
 
-		Tree(void);
-		Tree(const T& content);
+		static Tree<T>	*makeTreeNode(const T& content);
 		~Tree();
 
 		void			addTreeAsChild(Tree<T>* newChildTree);

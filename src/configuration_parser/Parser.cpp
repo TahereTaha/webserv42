@@ -6,13 +6,13 @@
 #include <ConfigFileLexer.hpp>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
+#include <ServerSymbol.hpp>
 
 #include <stddef.h>
 
 Parser::Parser(const Args & args)
 {
 	this->_configFileName = args.getConfigFileName();
-	this->_AST = new Tree<ASymbol *>();
 	std::cout << "parsing:" << std::endl;
 }
 
@@ -23,7 +23,7 @@ Parser::~Parser(void)
 
 void	Parser::readFile(void)
 {
-	std::cout << "->reading the config file." << std::endl;
+	std::cout << "\t->reading the config file." << std::endl;
 
 	std::ifstream	file(this->_configFileName.c_str());
 	if (!file.is_open())
@@ -40,7 +40,7 @@ void	Parser::readFile(void)
 void	Parser::addTerminalsToList(std::vector<ATerminal*> line)
 {
 	std::vector<ATerminal*>::iterator	lineIt = line.begin();
-	
+
 	while (lineIt != line.end())
 	{
 		if (!dynamic_cast<WhiteSpace*>(*lineIt))
@@ -57,7 +57,7 @@ void	Parser::addTerminalsToList(std::vector<ATerminal*> line)
 
 void	Parser::scanning(void)
 {
-	std::cout << "->scanning" << std::endl;
+	std::cout << "\t->scanning" << std::endl;
 
 	ConfigFileLexer	lexer;
 
@@ -85,7 +85,25 @@ void	Parser::scanning(void)
 
 void	Parser::parsing(void)
 {
-	std::cout << "\t-> parsing" << std::endl;
+	std::cout << "\t-> parsing " << std::endl;
+	
+	std::vector<ATerminal *>::iterator	iter = this->_terminalList.begin();
+	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
+
+	while (iter != end)	//	heach time a new server is created the iter is moved forward.
+	{
+		try
+		{
+			this->_ASTList.push_back(ServerSymbol::generateSubTree(iter, end));
+		}
+		catch (parse_exception & e)
+		{
+			multy_parse_exception	multy_e(e);
+
+			multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
+			throw (multy_e);
+		}
+	}
 }
 
 void	Parser::analysis(void)
@@ -105,10 +123,10 @@ void	Parser::printTerminalList(void) const
 	size_t	i = 0;
 	while (i < this->_terminalList.size())
 	{
-		std::cout << "  " << this->_terminalList[i]->what() << "  ";
+		std::cout << "  " << this->_terminalList[i]->what() << "\n";
 		i++;
-		if (i < this->_terminalList.size())
-			std::cout << "|";
+//		if (i < this->_terminalList.size())
+//			std::cout << "|";
 	}
 	std::cout << std::endl;
 }

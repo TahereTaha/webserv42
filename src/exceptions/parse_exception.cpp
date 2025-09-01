@@ -24,12 +24,13 @@ const char		*parse_exception::strerror(void) const
 
 void	parse_exception::tryPromote(std::string line)
 {
-	assert((this->_errorType == UNRECOGNIZE_CHARACTER) \
-			&& "this promoter can't promote anything that is not unrecognize_character." );
-	if (line[this->getColumn()] != '"')
-		return ;
-	this->_errorType = UNCLOSED_QUOTE;
-	this->setSize(line.size() - this->getColumn());
+	if (this->_errorType == UNRECOGNIZE_CHARACTER)
+	{
+		if (line[this->getColumn()] != '"')
+			return ;
+		this->_errorType = UNCLOSED_QUOTE;
+		this->setSize(line.size() - this->getColumn());
+	}
 }
 
 static std::string	getHighlight(std::string line, size_t column, size_t size)
@@ -111,7 +112,7 @@ void	parse_exception::makeErrorMsg(	const std::string & fileName, \
 	std::ostringstream	errorMsg;
 
 	//	adding the error type.
-	errorMsg << "\n" << CYAN << this->strerror() << RESET << "\n";
+	errorMsg << "\n" << CYAN << this->strerror() << RESET << std::endl;
 	//	adding the positon
 	errorMsg << fileName << ":" << this->getLine() + 1 <<  ":" << this->getColumn() + 1 << "\n";
 	//	some visual aid to the position.
