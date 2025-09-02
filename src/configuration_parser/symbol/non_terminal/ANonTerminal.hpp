@@ -18,3 +18,4 @@ class ANonTerminal : public ASymbol
 		virtual	~ANonTerminal(void) = 0;
 		//		virtual void	analyse(void) = 0;
 };
+

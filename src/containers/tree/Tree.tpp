@@ -39,7 +39,7 @@ template <typename T>
 void	Tree<T>::addTreeAsChild(Tree<T>* newChildTree)
 {
 	this->_children.push_back(newChildTree);
-	newChildTree->parent = this;
+	newChildTree->_parent = this;
 }
 
 template <typename T>
