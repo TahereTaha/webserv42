@@ -5,13 +5,13 @@
 #include <ATerminal.hpp>
 #include <ANonTerminal.hpp>
 
-class ServerSymbol : public ANonTerminal
+class SymbolServer : public ANonTerminal
 {
 	private:
 	protected:
 	public:
-		ServerSymbol(void);
-		~ServerSymbol(void);
+		SymbolServer(void);
+		~SymbolServer(void);
 
 		const char	*what(void) const;
 		static Tree<ANonTerminal *>	*generateSubTree(terminal_iterator &iter, \

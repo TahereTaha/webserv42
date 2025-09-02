@@ -6,7 +6,7 @@
 #include <ConfigFileLexer.hpp>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
-#include <ServerSymbol.hpp>
+#include <SymbolServer.hpp>
 
 #include <stddef.h>
 
@@ -80,7 +80,7 @@ void	Parser::scanning(void)
 		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
 		throw (multy_e);
 	}
-//	this->printTerminalList();
+	this->printTerminalList();
 }
 
 void	Parser::parsing(void)
@@ -94,7 +94,7 @@ void	Parser::parsing(void)
 	{
 		try
 		{
-			this->_ASTList.push_back(ServerSymbol::generateSubTree(iter, end));
+			this->_ASTList.push_back(SymbolServer::generateSubTree(iter, end));
 		}
 		catch (parse_exception & e)
 		{

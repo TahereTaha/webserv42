@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/09/01 19:41:48 by tatahere         ###   ########.fr        #
+#    Updated: 2025/09/02 20:58:39 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ VPATH	+= $(SRC_DIR)configuration_parser:
 VPATH	+= $(SRC_DIR)configuration_parser/lexer:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/non_terminal:
+VPATH	+= $(SRC_DIR)configuration_parser/symbol/non_terminal/server_body_subtrees:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/character_lexeme:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/keywords:
@@ -75,8 +76,10 @@ OBJ		:=	main.o						\
 			KeyWordAutoIndex.o			\
 			KeyWordIndex.o				\
 										\
+			subTreeGenerationUtils.o	\
 			ANonTerminal.o				\
-			ServerSymbol.o				\
+			SymbolServer.o				\
+			SymbolServerName.o			\
 										\
 			parse_exception.o			\
 			multy_parse_exception.o		\
