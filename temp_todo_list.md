@@ -17,7 +17,9 @@
 	- text
 	- number
 
-- [ ] add a getText method to the text symbol.
+- [ ] print trees.
+	- [ ] 
+
 - [ ] make the usfull functions.
 	- [x] is in server body.
 	- [/] generate server body subtree.

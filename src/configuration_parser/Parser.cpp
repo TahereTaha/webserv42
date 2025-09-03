@@ -104,6 +104,7 @@ void	Parser::parsing(void)
 			throw (multy_e);
 		}
 	}
+	this->printASTList();
 }
 
 void	Parser::analysis(void)
@@ -130,3 +131,33 @@ void	Parser::printTerminalList(void) const
 	}
 	std::cout << std::endl;
 }
+
+void	Parser::printASTList(void) const 
+{
+	size_t	i = 0;
+	while (i < this->_ASTList.size())
+	{
+		std::cout << "server n" << i << ":" << std::endl;
+		this->printAST(this->_ASTList[i]);
+		std::cout << std::endl;
+		i++;
+	}
+}
+
+void	Parser::printAST(Tree<ANonTerminal*> *ast) const
+{
+	if (ast->getNodeType() == LEAF)
+	{
+		std::cout << ast->getContent()->what() << "; ";
+		return ;
+	}
+	std::cout << ast->getContent()->what() << " { ";
+	Tree<ANonTerminal*>	*node = (*ast)[0];
+	while (node)
+	{
+		this->printAST(node);
+		node = node->getRightBranchNode();
+	}
+	std::cout << " } ";
+}
+

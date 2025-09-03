@@ -21,6 +21,8 @@ class Parser
 
 		void	addTerminalsToList(std::vector<ATerminal*> line);
 		void	printTerminalList(void) const ;
+		void	printASTList(void) const ;
+		void	printAST(Tree<ANonTerminal*>*ast) const ;
 
 	protected:
 	public:
