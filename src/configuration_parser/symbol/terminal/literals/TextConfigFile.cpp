@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <sstream>
 
 #include <string>
 #include <cctype>
@@ -69,7 +70,15 @@ size_t	TextConfigFile::getTerminalSizeOnStr(const std::string & str) const
 
 std::string		TextConfigFile::getValue(void) const
 {
-	return (this->_text);
+	std::string	value = "";
+	size_t	i = 0;
+	while (i < this->_text.size())
+	{
+		if (this->_text[i] != '"' && this->_text[i] != '\'')
+			value += this->_text[i];
+		i++;
+	}
+	return (value);
 }
 
 const char	*TextConfigFile::what(void) const 
