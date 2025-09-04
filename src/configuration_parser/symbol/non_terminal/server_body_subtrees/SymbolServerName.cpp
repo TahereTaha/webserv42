@@ -39,6 +39,7 @@ Tree<ANonTerminal*>		*SymbolServerName::generateSubTree(terminal_iterator &iter,
 		e.setSize((*iter)->getSize());
 
 		iter = start;
+		delete (tree);
 		throw (e);
 	}
 	symbol->setName((*iter)->getText());
@@ -51,6 +52,7 @@ Tree<ANonTerminal*>		*SymbolServerName::generateSubTree(terminal_iterator &iter,
 		e.setColumn((*iter)->getColumn());
 		e.setSize((*iter)->getSize());
 
+		delete (tree);
 		throw (e);
 	}
 	iter++;

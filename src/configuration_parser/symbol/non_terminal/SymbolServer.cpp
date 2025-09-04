@@ -41,6 +41,7 @@ Tree<ANonTerminal*>		*SymbolServer::generateSubTree(terminal_iterator &iter, \
 		e.setSize((*iter)->getSize());
 
 		iter = start;
+		delete (tree);
 		throw (e);
 	}
 	iter++;
@@ -53,6 +54,7 @@ Tree<ANonTerminal*>		*SymbolServer::generateSubTree(terminal_iterator &iter, \
 		e.setSize((*iter)->getSize());
 
 		iter = start;
+		delete (tree);
 		throw (e);
 	}
 	iter++;
@@ -64,6 +66,7 @@ Tree<ANonTerminal*>		*SymbolServer::generateSubTree(terminal_iterator &iter, \
 	catch (parse_exception & e)
 	{
 		iter = start;
+		delete (tree);
 		throw(e);
 	}
 	while (subTree)
@@ -76,6 +79,7 @@ Tree<ANonTerminal*>		*SymbolServer::generateSubTree(terminal_iterator &iter, \
 		catch (parse_exception & e)
 		{
 			iter = start;
+			delete (tree);
 			throw(e);
 		}
 	}
@@ -89,6 +93,7 @@ Tree<ANonTerminal*>		*SymbolServer::generateSubTree(terminal_iterator &iter, \
 		e.setSize((*iter)->getSize());
 
 		iter = start;
+		delete (tree);
 		throw (e);
 	}
 	iter++;

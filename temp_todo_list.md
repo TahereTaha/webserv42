@@ -17,9 +17,6 @@
 	- text
 	- number
 
-- [ ] print trees.
-	- [ ] 
-
 - [ ] make the usfull functions.
 	- [x] is in server body.
 	- [/] generate server body subtree.
@@ -28,12 +25,10 @@
 
 - [ ] generate the subtres on the server body.
 	- [ ] build the diferent symbols of this.
-		- [x] server_name.(easy)
-		- [ ] listen.(medium)
+		- [x] server_name.(easy).
+		- [ ] listen.(medium).
 			- [ ] socket.
-				- [ ] ipv4
-				- [ ] port
-		- [ ] client_max_body_size.(easy)
+		- [ ] client_max_body_size.(easy).
 
 - [ ] parse.
 	- [x] make the tree compile with the tree container.

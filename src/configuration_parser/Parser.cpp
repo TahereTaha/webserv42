@@ -18,6 +18,18 @@ Parser::Parser(const Args & args)
 
 Parser::~Parser(void)
 {
+	size_t	i = 0;
+	while (i < this->_terminalList.size())
+	{
+		delete (this->_terminalList[i]);
+		i++;
+	}
+	i = 0;
+	while (i < this->_ASTList.size())
+	{
+		delete (this->_ASTList[i]);
+		i++;
+	}
 	//	the destruction of the diferent elements.
 }
 
