@@ -32,6 +32,7 @@ Tree<T>::~Tree(void)
     {
         delete this->_children[i];
     }
+	delete this->_content;
     this->_children.clear();
 }
 
