@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/09/24 13:35:10 by tatahere         ###   ########.fr        #
+#    Updated: 2025/09/25 12:58:02 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,18 +50,26 @@ NAME	=	webserv
 
 OBJ		:=	main.o						\
 										\
+			Args.o						\
+			ConfigurationParser.o		\
+										\
+			parse_exception.o			\
+			multy_parse_exception.o		\
+										\
 			ASymbol.o					\
 			ATerminal.o					\
+			ANonTerminal.o				\
+			AEvaluable.o				\
+										\
+			ALexer.o					\
+			ConfigFileLexer.o			\
+										\
 			ATerminalFactory.o			\
 			ConfigFileTerminalFactory.o	\
 										\
 			Number.o					\
 			TextConfigFile.o			\
 			WhiteSpace.o				\
-										\
-			KeySemicolon.o				\
-			KeyLeftCurlyBracket.o		\
-			KeyRightCurlyBracket.o		\
 										\
 			AKeyWord.o					\
 			KeyWordServer.o				\
@@ -75,17 +83,12 @@ OBJ		:=	main.o						\
 			KeyWordRoot.o				\
 			KeyWordAutoIndex.o			\
 			KeyWordIndex.o				\
+			KeySemicolon.o				\
+			KeyLeftCurlyBracket.o		\
+			KeyRightCurlyBracket.o		\
 										\
-			parse_exception.o			\
-			multy_parse_exception.o		\
-										\
-			Args.o						\
-			ConfigurationParser.o		\
-			ALexer.o					\
-			ConfigFileLexer.o			\
 
 #			subTreeGenerationUtils.o	\
-			ANonTerminal.o				\
 			SymbolServer.o				\
 			SymbolServerName.o			\
 										\

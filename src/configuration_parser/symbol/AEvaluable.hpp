@@ -8,8 +8,8 @@ class AEvaluable : public ASymbol
 	private:
 	protected:
 	public:
-		Aevaluable(void);
-		virtual	~Aevaluable(void) = 0;
+		AEvaluable(void);
+		virtual	~AEvaluable(void) = 0;
 
 		virtual void	evaluate(Tree<AEvaluable*> *self) = 0;
 };

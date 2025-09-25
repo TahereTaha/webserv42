@@ -12,6 +12,7 @@
 
 ConfigurationParser::ConfigurationParser(const Args & args)
 {
+	this->_AST = NULL;
 	this->_configFileName = args.getConfigFileName();
 	std::cout << "parsing:" << std::endl;
 }
@@ -24,12 +25,7 @@ ConfigurationParser::~ConfigurationParser(void)
 		delete (this->_terminalList[i]);
 		i++;
 	}
-	i = 0;
-	while (i < this->_ASTList.size())
-	{
-		delete (this->_ASTList[i]);
-		i++;
-	}
+	delete (this->_AST);
 	//	the destruction of the diferent elements.
 }
 
@@ -144,19 +140,7 @@ void	ConfigurationParser::printTerminalList(void) const
 	std::cout << std::endl;
 }
 
-void	ConfigurationParser::printASTList(void) const 
-{
-	size_t	i = 0;
-	while (i < this->_ASTList.size())
-	{
-		std::cout << "server n" << i << ":" << std::endl;
-		this->printAST(this->_ASTList[i]);
-		std::cout << std::endl;
-		i++;
-	}
-}
-
-void	ConfigurationParser::printAST(Tree<ANonTerminal*> *ast) const
+static void	print_ast(Tree<AEvaluable*> *ast)
 {
 	if (ast->getNodeType() == LEAF)
 	{
@@ -164,12 +148,17 @@ void	ConfigurationParser::printAST(Tree<ANonTerminal*> *ast) const
 		return ;
 	}
 	std::cout << ast->getContent()->what() << " { ";
-	Tree<ANonTerminal*>	*node = (*ast)[0];
+	Tree<AEvaluable*>	*node = (*ast)[0];
 	while (node)
 	{
-		this->printAST(node);
+		print_ast(node);
 		node = node->getRightBranchNode();
 	}
 	std::cout << " } ";
+}
+
+void	ConfigurationParser::printAST(void) const
+{
+	print_ast(this->_AST);
 }
 

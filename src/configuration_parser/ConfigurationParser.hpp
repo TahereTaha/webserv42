@@ -6,6 +6,7 @@
 #include <ASymbol.hpp>
 #include <ATerminal.hpp>
 #include <ANonTerminal.hpp>
+#include <AEvaluable.hpp>
 #include <Args.hpp>
 #include <Tree.hpp>
 
@@ -16,13 +17,11 @@ class ConfigurationParser
 		std::string							_configFileName;
 		std::vector<std::string>			_configFileContent;
 		std::vector<ATerminal*>				_terminalList;
-		std::vector<Tree<ANonTerminal*>*>	_ASTList;
-
+		Tree<AEvaluable*>					*_AST;
 
 		void	addTerminalsToList(std::vector<ATerminal*> line);
 		void	printTerminalList(void) const ;
-		void	printASTList(void) const ;
-		void	printAST(Tree<ANonTerminal*>*ast) const ;
+		void	printAST(void) const ;
 
 	protected:
 	public:
