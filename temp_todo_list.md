@@ -17,6 +17,25 @@
 	- text
 	- number
 
+
+
+- [ ] test if the thing that I want to do is posible.
+- [ ] symbol.
+	- [ ] evaluable symbol.
+	- [ ] terminal.
+		- [ ] keywords.
+			- [ ] server.
+			- [ ] server name.
+			- [ ] listen
+			- [ ] location.
+		- [ ] literals. (it inherits from evaluable too).
+	- [ ] nonterminal.
+		- [ ] 
+- [ ] make the parser.
+	- [ ] 
+
+- [ ] make a big refactor.
+
 - [ ] make the usfull functions.
 	- [x] is in server body.
 	- [/] generate server body subtree.

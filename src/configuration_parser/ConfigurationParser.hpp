@@ -10,7 +10,7 @@
 #include <Tree.hpp>
 
 //	this class in responsible for transforming the file in the IR for the web server to execute.
-class Parser
+class ConfigurationParser
 {
 	private:
 		std::string							_configFileName;
@@ -26,8 +26,8 @@ class Parser
 
 	protected:
 	public:
-		Parser(const Args & args);
-		~Parser(void);
+		ConfigurationParser(const Args & args);
+		~ConfigurationParser(void);
 		void	readFile(void);
 		void	scanning(void);
 		void	parsing(void);

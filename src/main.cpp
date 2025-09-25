@@ -6,14 +6,14 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/07/27 19:56:44 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/09/25 12:44:12 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <exception>
 
-#include <Parser.hpp>
+#include <ConfigurationParser.hpp>
 #include <Args.hpp>
 #include <textColors.h>
 #include <multy_parse_exception.hpp>
@@ -22,8 +22,9 @@ int	main(int argc, char **argv)
 {
 	try
 	{
-		Args	args(argc, argv);
-		Parser	parser(args);
+		Args				args(argc, argv);
+		ConfigurationParser	parser(args);
+
 		parser.readFile();
 		parser.scanning();
 		parser.parsing();

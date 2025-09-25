@@ -1,4 +1,4 @@
-#include <Parser.hpp>
+#include <ConfigurationParser.hpp>
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
@@ -6,17 +6,17 @@
 #include <ConfigFileLexer.hpp>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
-#include <SymbolServer.hpp>
+//#include <SymbolServer.hpp>
 
 #include <stddef.h>
 
-Parser::Parser(const Args & args)
+ConfigurationParser::ConfigurationParser(const Args & args)
 {
 	this->_configFileName = args.getConfigFileName();
 	std::cout << "parsing:" << std::endl;
 }
 
-Parser::~Parser(void)
+ConfigurationParser::~ConfigurationParser(void)
 {
 	size_t	i = 0;
 	while (i < this->_terminalList.size())
@@ -33,7 +33,7 @@ Parser::~Parser(void)
 	//	the destruction of the diferent elements.
 }
 
-void	Parser::readFile(void)
+void	ConfigurationParser::readFile(void)
 {
 	std::cout << "\t->reading the config file." << std::endl;
 
@@ -49,7 +49,7 @@ void	Parser::readFile(void)
 	}
 }
 
-void	Parser::addTerminalsToList(std::vector<ATerminal*> line)
+void	ConfigurationParser::addTerminalsToList(std::vector<ATerminal*> line)
 {
 	std::vector<ATerminal*>::iterator	lineIt = line.begin();
 
@@ -67,7 +67,7 @@ void	Parser::addTerminalsToList(std::vector<ATerminal*> line)
 	}
 }
 
-void	Parser::scanning(void)
+void	ConfigurationParser::scanning(void)
 {
 	std::cout << "\t->scanning" << std::endl;
 
@@ -95,41 +95,41 @@ void	Parser::scanning(void)
 	this->printTerminalList();
 }
 
-void	Parser::parsing(void)
+void	ConfigurationParser::parsing(void)
 {
 	std::cout << "\t-> parsing " << std::endl;
 	
-	std::vector<ATerminal *>::iterator	iter = this->_terminalList.begin();
-	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
-
-	while (iter != end)	//	heach time a new server is created the iter is moved forward.
-	{
-		try
-		{
-			this->_ASTList.push_back(SymbolServer::generateSubTree(iter, end));
-		}
-		catch (parse_exception & e)
-		{
-			multy_parse_exception	multy_e(e);
-
-			multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
-			throw (multy_e);
-		}
-	}
-	this->printASTList();
+//	std::vector<ATerminal *>::iterator	iter = this->_terminalList.begin();
+//	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
+//
+//	while (iter != end)	//	heach time a new server is created the iter is moved forward.
+//	{
+//		try
+//		{
+//			this->_ASTList.push_back(SymbolServer::generateSubTree(iter, end));
+//		}
+//		catch (parse_exception & e)
+//		{
+//			multy_parse_exception	multy_e(e);
+//
+//			multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
+//			throw (multy_e);
+//		}
+//	}
+//	this->printASTList();
 }
 
-void	Parser::analysis(void)
+void	ConfigurationParser::analysis(void)
 {
 	std::cout << "\t-> analysis" << std::endl;
 }
 
-void	Parser::transpiling(void)
+void	ConfigurationParser::transpiling(void)
 {
 	std::cout << "\t-> transpiling" << std::endl;
 }
 
-void	Parser::printTerminalList(void) const 
+void	ConfigurationParser::printTerminalList(void) const 
 {
 	std::cout << "this is the termital list:" << std::endl;
 
@@ -144,7 +144,7 @@ void	Parser::printTerminalList(void) const
 	std::cout << std::endl;
 }
 
-void	Parser::printASTList(void) const 
+void	ConfigurationParser::printASTList(void) const 
 {
 	size_t	i = 0;
 	while (i < this->_ASTList.size())
@@ -156,7 +156,7 @@ void	Parser::printASTList(void) const
 	}
 }
 
-void	Parser::printAST(Tree<ANonTerminal*> *ast) const
+void	ConfigurationParser::printAST(Tree<ANonTerminal*> *ast) const
 {
 	if (ast->getNodeType() == LEAF)
 	{
