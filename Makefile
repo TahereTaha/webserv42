@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/09/02 20:58:39 by tatahere         ###   ########.fr        #
+#    Updated: 2025/09/24 13:35:10 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,18 +76,19 @@ OBJ		:=	main.o						\
 			KeyWordAutoIndex.o			\
 			KeyWordIndex.o				\
 										\
-			subTreeGenerationUtils.o	\
-			ANonTerminal.o				\
-			SymbolServer.o				\
-			SymbolServerName.o			\
-										\
 			parse_exception.o			\
 			multy_parse_exception.o		\
 										\
 			Args.o						\
-			Parser.o					\
+			ConfigurationParser.o		\
 			ALexer.o					\
 			ConfigFileLexer.o			\
+
+#			subTreeGenerationUtils.o	\
+			ANonTerminal.o				\
+			SymbolServer.o				\
+			SymbolServerName.o			\
+										\
 
 
 OBJ		:=	$(addprefix $(BIN_DIR), $(OBJ))
