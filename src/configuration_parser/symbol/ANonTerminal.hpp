@@ -7,7 +7,6 @@
 
 //	be able to create them with a iterator of the terminalList.
 
-typedef std::vector<ATerminal*>::iterator terminal_iterator;
 
 class ANonTerminal : public ASymbol
 {
