@@ -18,6 +18,20 @@
 	- number
 
 
+- [ ] make a parser class that has the method to make subtrees.
+	- [ ] make it work with only terminals and store in the subtree the evaluables.
+
+- [ ] make this work.
+	server 
+	{
+		server_name taha.com;
+		location :80 :90;
+	}
+	server 
+	{
+		server_name taha.com;
+		location :80 :100;
+	}
 
 - [ ] test if the thing that I want to do is posible.
 - [ ] symbol.
@@ -31,8 +45,9 @@
 		- [ ] literals. (it inherits from evaluable too).
 	- [ ] nonterminal.
 		- [ ] 
+
 - [ ] make the parser.
-	- [ ] 
+	- [ ]
 
 - [ ] make a big refactor.
 
@@ -95,10 +110,6 @@ docs/configfile2.conf:16:10
 	server_name "server_name ;
 				^~~~~~~~~~~~~~~
 tip: multy line quoted strings are not suported try to close it before the end of the line.
-
-
-
-
 
 
 

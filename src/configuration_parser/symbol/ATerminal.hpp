@@ -27,5 +27,4 @@ class ATerminal : public ASymbol
 		std::string	getText(void) const;
 		size_t		getTextLength(void) const;
 		
-		virtual ATerminal*	clone(void) const = 0;
 };
