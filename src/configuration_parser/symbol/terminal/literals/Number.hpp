@@ -14,7 +14,7 @@ class Number : public ATerminal
 		
 		const char	*what(void) const ;
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ATerminal*	clone(void) const;
+		ASymbol*	clone(void) const;
 
 		int			getValue(void) const;
 };

@@ -14,6 +14,6 @@ class SymbolServer : public ANonTerminal
 		~SymbolServer(void);
 
 		const char	*what(void) const;
-		static Tree<ANonTerminal *>	*generateSubTree(terminal_iterator &iter, \
-				const terminal_iterator &end);
+		SymbolServer	*clone(void) const;
+		AParser	*getParser(void) const;
 };

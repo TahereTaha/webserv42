@@ -8,7 +8,6 @@
 
 //	be able to create them with a iterator of the terminalList.
 
-class AParser;
 
 class ANonTerminal : public AEvaluable
 {
@@ -17,8 +16,6 @@ class ANonTerminal : public AEvaluable
 	public:
 		ANonTerminal(void);
 		virtual	~ANonTerminal(void) = 0;
-		
-		virtual ANonTerminal*	clone(void) const = 0;
 
 		virtual	AParser	*getParser(void) const = 0;
 };

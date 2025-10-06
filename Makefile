@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/09/25 12:58:02 by tatahere         ###   ########.fr        #
+#    Updated: 2025/10/06 16:02:22 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC_DIR		=	src/
 INC_DIR		=	inc/
 
 RM		=	rm -rf
-CXX		=	c++
+CXX		=	g++
 
 VPATH	= $(ROOT_DIR):
 VPATH	+= $(SRC_DIR):
@@ -25,6 +25,8 @@ VPATH	+= $(SRC_DIR)containers:
 VPATH	+= $(SRC_DIR)containers/tree:
 VPATH	+= $(SRC_DIR)configuration_parser:
 VPATH	+= $(SRC_DIR)configuration_parser/lexer:
+VPATH	+= $(SRC_DIR)configuration_parser/parser:
+VPATH	+= $(SRC_DIR)configuration_parser/parser/rules:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/non_terminal:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/non_terminal/server_body_subtrees:
@@ -87,6 +89,11 @@ OBJ		:=	main.o						\
 			KeyLeftCurlyBracket.o		\
 			KeyRightCurlyBracket.o		\
 										\
+			AParser.o					\
+			AParsingRule.o				\
+			ParsingRuleSymbol.o			\
+										\
+			SymbolServer.o				\
 
 #			subTreeGenerationUtils.o	\
 			SymbolServer.o				\

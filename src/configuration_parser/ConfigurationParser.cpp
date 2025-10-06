@@ -6,7 +6,8 @@
 #include <ConfigFileLexer.hpp>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
-//#include <SymbolServer.hpp>
+#include <SymbolServer.hpp>
+#include <AParser.hpp>
 
 #include <stddef.h>
 
@@ -52,7 +53,7 @@ void	ConfigurationParser::addTerminalsToList(std::vector<ATerminal*> line)
 	while (lineIt != line.end())
 	{
 		if (!dynamic_cast<WhiteSpace*>(*lineIt))
-			this->_terminalList.push_back((*lineIt)->clone());
+			this->_terminalList.push_back(dynamic_cast<ATerminal*>((*lineIt)->clone()));
 		lineIt++;
 	}
 	lineIt = line.begin();
@@ -95,24 +96,37 @@ void	ConfigurationParser::parsing(void)
 {
 	std::cout << "\t-> parsing " << std::endl;
 	
-//	std::vector<ATerminal *>::iterator	iter = this->_terminalList.begin();
-//	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
-//
-//	while (iter != end)	//	heach time a new server is created the iter is moved forward.
-//	{
-//		try
-//		{
-//			this->_ASTList.push_back(SymbolServer::generateSubTree(iter, end));
-//		}
-//		catch (parse_exception & e)
-//		{
-//			multy_parse_exception	multy_e(e);
-//
-//			multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
-//			throw (multy_e);
-//		}
-//	}
-//	this->printASTList();
+	std::vector<ATerminal *>::iterator	iter = this->_terminalList.begin();
+	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
+
+	AParser	*parser = SymbolServer().getParser();
+
+	try 
+	{
+		this->_AST = parser->generateSubTree(iter, end);
+	}
+	// wrap correctly any parsing errors.
+	catch (parse_exception & e)
+	{
+		multy_parse_exception	multy_e(e);
+
+		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
+		throw (multy_e);
+	}
+	// checking if there are still tokens left to consume.
+	if (iter != end)
+	{
+		parse_exception	e(UNRECOGNIZED_SYMBOL);
+		e.setLine((*iter)->getLine());
+		e.setColumn((*iter)->getColumn());
+		e.setSize((*iter)->getSize());
+
+		multy_parse_exception	multy_e(e);
+
+		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
+		throw (multy_e);
+	}
+	this->printAST();
 }
 
 void	ConfigurationParser::analysis(void)
