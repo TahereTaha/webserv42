@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/12 14:59:46 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/06 19:43:13 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 struct Connection {
     int          fd;
     std::string  readBuffer;
-    Request      request;
+    // Request      request;
     std::string  writeBuffer;
     bool         keepAlive;
     double       lastActive;

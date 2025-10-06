@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:17:47 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/07 13:44:27 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/06 19:41:04 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <sstream>
 
+pthread_mutex_t logMutex = PTHREAD_MUTEX_INITIALIZER;
 static std::ofstream logFile;
 
 // Utility function to get the current time as a string
@@ -28,23 +29,28 @@ std::string getCurrentTimestamp() {
 }
 
 
-Event::Event(EventType t, const std::string& msg)
-    : type(t), message(msg), timestamp(getCurrentTimestamp()) {}
+Event::Event(EventType t, int code)
+    : type(t), code(code), timestamp(getCurrentTimestamp()) {}
 
 std::string Event::toString() const {
     std::string typeStr;
 
     switch (type) {
-        case SERVER_START:    typeStr = "\n\n\n[SERVER]"; break;
-        case SOCKET_BIND:     typeStr = "[SOCKET]"; break;
-        case EPOLL_ADD:       typeStr = "[EPOLL]"; break;
-        case EPOLL_EVENT:     typeStr = "[EVENT]"; break;
-        case NEW_CONNECTION:  typeStr = "[CONNECTION]"; break;
-        case INFO:            typeStr = "[INFO]"; break;
-        case ERROR:           typeStr = "[ERROR]"; break;
+        case SERVER_START:              typeStr = "\n\n\n[SERVER] Server started"; break;
+        case SOCKET_BIND:               typeStr = "[SOCKET] Socket created on port:"; break;
+        case EPOLL_ADD_CONNECTION:      typeStr = "[EPOLL] Added connection to epoll: "; break;
+        case EPOLL_ADD_SOCKET:          typeStr = "[EPOLL] Added socket to epoll: "; break;
+        case EPOLL_EVENT_CLOSE:         typeStr = "[EVENT] Closing idle connection: "; break;
+        case EPOLL_EVENT_READING:       typeStr = "[EVENT] Handling read event for client: "; break;
+        case EPOLL_EVENT_WRITING:       typeStr = "[EVENT]"; break;
+        case EPOLL_EVENT_ERROR:         typeStr = "[EVENT] Request error for client: "; break;
+        case NEW_CONNECTION:            typeStr = "[CONNECTION] New connection from: "; break;
+        case INFO:                      typeStr = "[INFO]"; break;
+        case ERROR:                     typeStr = "[ERROR]"; break;
     }
-
-    return "[" + timestamp + "] " + typeStr + " " + message;
+    std::ostringstream oss;
+    oss << code;
+    return "[" + timestamp + "] " + typeStr + oss.str();
 }
 
 void EventLog::init(const std::string& filename) {
@@ -52,11 +58,10 @@ void EventLog::init(const std::string& filename) {
     logFile.open(filename.c_str(), std::ios::app);
     if (!logFile.is_open())
 	{
-		
         std::cerr << "Failed to open event log file.\n";
 	};
 	pthread_mutex_unlock(&logMutex);
-	EventLog::log(SERVER_START, "Server started");
+	EventLog::log(SERVER_START, 0);
 }
 
 void EventLog::log(const Event& event) {
@@ -67,9 +72,9 @@ void EventLog::log(const Event& event) {
 	pthread_mutex_unlock(&logMutex);
 }
 
-void EventLog::log(EventType type, const std::string& message)
+void EventLog::log(EventType type, int code)
 {
-	Event event(type, message);
+	Event event(type, code);
 	EventLog::log(event);
 }
 
@@ -78,7 +83,6 @@ void EventLog::shutdown() {
     if (logFile.is_open())
 	{
         logFile.close();
-		
 	};
 	pthread_mutex_unlock(&logMutex);
 }

@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/12 15:00:34 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/06 19:43:51 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@
 #include "Event.hpp"
 #include "../http_request_parser/Schemas.hpp"
 
-
-
 // =====================================================================
 // 	UTILITIES
 // =====================================================================
-
 double getCurrentTimeMs() {
     struct timeval tv;
     
@@ -61,11 +58,8 @@ EpollConnectionManager::EpollConnectionManager(std::map<int, Socket*> socks) : e
     listeningSockets = socks;
     for (std::map<int, Socket*>::iterator it = listeningSockets.begin(); it != listeningSockets.end(); ++it)
     {
-        std::cout << "Adding socket " << it->first << " to epoll\n";
         setInstance(it->first, EPOLLIN, EPOLL_CTL_ADD);
-        std::ostringstream oss;
-        oss << it->first;
-        EventLog::log(EPOLL_ADD, "Added socket to epoll: " + oss.str());
+        EventLog::log(EPOLL_ADD_SOCKET, it->first);
     }
 
     run();
@@ -101,31 +95,28 @@ void EpollConnectionManager::handleEvent(epoll_event &ev) {
 void EpollConnectionManager::handleNewConnection(Socket *sock) {
     int         connfd;
     
-    std::ostringstream oss;
-    oss << sock->getFd();
-    EventLog::log(NEW_CONNECTION, "Handling new connection on socket: " + oss.str());
+
+    EventLog::log(NEW_CONNECTION, sock->getFd());
     while ((connfd = sock->acceptConnection()) > 0) {
         makeNonBlocking(connfd);
         setInstance(connfd, EPOLLIN , EPOLL_CTL_ADD);
         connections[connfd].fd = connfd;
         connections[connfd].keepAlive = true;
         connections[connfd].lastActive = getCurrentTimeMs();
-        std::ostringstream oss;
-        oss << connfd;
-        EventLog::log(EPOLL_ADD, "Added new connection to epoll: " + oss.str());
-   }
+        EventLog::log(EPOLL_ADD_CONNECTION, connfd);
+    }
     if (errno != EAGAIN && errno != EWOULDBLOCK)
         perror("accept");
 }
 
 void EpollConnectionManager::badRequest(int fd) {
-    std::ostringstream oss;
-    oss << fd;
-    std::ostringstream oss2;
-    oss2 << connections[fd].request.getErrorCode();
-    EventLog::log(EPOLL_EVENT, "Request error for client " + oss.str() + ": " + oss2.str());
+
+    EventLog::log(EPOLL_EVENT_ERROR, fd);
     connections[fd].readBuffer.clear();
-    connections[fd].writeBuffer = "HTTP/1.1 " + std::to_string(connections[fd].request.getErrorCode()) + " Error\r\n\r\n";
+    std::ostringstream oss;
+    // oss << connections[fd].request.getErrorCode();
+    oss << 400;
+    connections[fd].writeBuffer = "HTTP/1.1 " + oss.str() + " Error\r\n\r\n";
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
 
@@ -133,9 +124,8 @@ void EpollConnectionManager::handleRead(int clientfd) {
     char buf[4096];
     int bytesRead;
 
-    std::ostringstream oss;
-    oss << clientfd;
-    EventLog::log(EPOLL_EVENT, "Handling read event for client: " + oss.str());
+
+    EventLog::log(EPOLL_EVENT_READING, clientfd);
     while ((bytesRead = read(clientfd, buf, sizeof(buf))) > 0)
     {
         connections[clientfd].readBuffer.append(buf, bytesRead);
@@ -143,9 +133,9 @@ void EpollConnectionManager::handleRead(int clientfd) {
     }
     if (bytesRead == 0)
         closeConnection(clientfd);
-    connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
-    if (connections[clientfd].request.getErrorCode() != 0) 
-        badRequest(clientfd);
+    // connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
+    // if (connections[clientfd].request.getErrorCode() != 0) 
+    //     badRequest(clientfd);
 }
 
 void EpollConnectionManager::handleWrite(int clientfd) {
@@ -173,16 +163,12 @@ void EpollConnectionManager::cleanupIdleConnections(const double &now) {
         ConnectionIterator toDelete = it;
         ++it;
         if (now - toDelete->second.lastActive > TIMEOUT_MS)
-        {
-            std::ostringstream oss;
-            oss << toDelete->first;
-            EventLog::log(EPOLL_EVENT, "Closing idle connection: " + oss.str());
             closeConnection(toDelete->first);
-        }
     }
 }
 
 void EpollConnectionManager::closeConnection(int fd) {
+    EventLog::log(EPOLL_EVENT_CLOSE, fd);
     epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
     close(fd);
     connections.erase(fd);
