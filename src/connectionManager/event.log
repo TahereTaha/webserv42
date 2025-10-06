@@ -33,3 +33,13 @@
 [2025-08-07 13:45:39] [EVENT] Handling read event for client: 9
 [2025-08-07 13:46:19] [EVENT] Closing idle connection: 8
 [2025-08-07 13:46:29] [EVENT] Closing idle connection: 9
+[2025-10-06 19:44:01] 
+
+
+[SERVER] Server started0
+[2025-10-06 19:44:01] [SOCKET] Socket created on port:8080
+[2025-10-06 19:44:01] [SOCKET] Socket created on port:8081
+[2025-10-06 19:44:01] [SOCKET] Socket created on port:8082
+[2025-10-06 19:44:01] [EPOLL] Added socket to epoll: 4
+[2025-10-06 19:44:01] [EPOLL] Added socket to epoll: 5
+[2025-10-06 19:44:01] [EPOLL] Added socket to epoll: 6

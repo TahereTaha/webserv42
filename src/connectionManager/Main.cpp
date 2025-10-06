@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:30:40 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/07 13:44:14 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/06 17:05:33 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,11 @@ int main() {
         // to not allocate memory
         Socket sock(ports[0]);
         listeningSockets[sock.getFd()] = &sock;
-   
         Socket sock1(ports[1]);
         listeningSockets[sock1.getFd()] = &sock1;
         Socket sock2(ports[2]);
         listeningSockets[sock2.getFd()] = &sock2;
         
-        
-
-     
         EpollConnectionManager manager(listeningSockets);
         EventLog::shutdown();
 

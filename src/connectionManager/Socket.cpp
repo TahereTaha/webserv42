@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:53 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/07 13:27:35 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/06 19:03:35 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,7 @@ Socket::Socket(int port) {
     }
 
     makeNonBlocking(fd);
-    std::cout << "Socket listening on port " << port << "\n";
-    std::ostringstream oss;
-    oss << port;
-    EventLog::log(SOCKET_BIND, "Socket created on port " + oss.str());
+    EventLog::log(SOCKET_BIND, port);
 }
 
 Socket::~Socket() {
