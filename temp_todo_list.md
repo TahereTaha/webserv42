@@ -17,64 +17,20 @@
 	- text
 	- number
 
+- making the parser.
+- [ ] make the parse rules.
+	- [ ] make the simbol rule.
+	- [ ] make the add rule.
+	- [ ] make the or rule.
+	- [ ] make the repetition rule.
+- [ ] refactor the code so that is has beter names and make it is more modular.
+	- [ ] change the error handeling to be able to hadle just simple parse_exceptions.
+	- [ ] change the name of confirurationParser to file parser. and make it more modular.
+	- [ ] change the name of the parsing rules.
+	- [ ] change how the lexer is organized in classes.
+- [ ] write each simbol of the tree with the rules.
 
-- [ ] make a parser class that has the method to make subtrees.
-	- [ ] make it work with only terminals and store in the subtree the evaluables.
-
-- [ ] make this work.
-	server 
-	{
-		server_name taha.com;
-		location :80 :90;
-	}
-	server 
-	{
-		server_name taha.com;
-		location :80 :100;
-	}
-
-- [ ] test if the thing that I want to do is posible.
-- [ ] symbol.
-	- [ ] evaluable symbol.
-	- [ ] terminal.
-		- [ ] keywords.
-			- [ ] server.
-			- [ ] server name.
-			- [ ] listen
-			- [ ] location.
-		- [ ] literals. (it inherits from evaluable too).
-	- [ ] nonterminal.
-		- [ ] 
-
-- [ ] make the parser.
-	- [ ]
-
-- [ ] make a big refactor.
-
-- [ ] make the usfull functions.
-	- [x] is in server body.
-	- [/] generate server body subtree.
-	- [x] is in location body.
-	- [ ] generate location body subtree.
-
-- [ ] generate the subtres on the server body.
-	- [ ] build the diferent symbols of this.
-		- [x] server_name.(easy).
-		- [ ] listen.(medium).
-			- [ ] socket.
-		- [ ] client_max_body_size.(easy).
-
-- [ ] parse.
-	- [x] make the tree compile with the tree container.
-	- [ ] parse each token.
-		- [	] manage the server directive.
-			- [x] read that it starts with a server keyword.
-			- [x] check that it starts with a '{'.
-			- [x] check that it ends with a '}'.
-			- [ ] try to generate any subtrees of the directives that are inside the server body.
-	- [ ] make the semantic analysis.
-		- [ ] go botom up checking that all the information is correct (analyze each node).
-
+- making the checker.
 
 - [ ] web server
 	- [x] read the arguments.
@@ -86,8 +42,6 @@
 		- [ ] init.
 	- [ ] set up the server.
 	- [ ] run the server.
-
-
 
 error msg 1:
 - error kind

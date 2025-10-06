@@ -1,9 +1,8 @@
 #pragma once
 
-
 #include <string>
 #include <iostream>
-
+#include <vector>
 #include <ASymbol.hpp>
 
 
@@ -28,3 +27,5 @@ class ATerminal : public ASymbol
 		size_t		getTextLength(void) const;
 		
 };
+
+typedef std::vector<ATerminal*>::iterator terminal_iter;

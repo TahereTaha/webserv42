@@ -5,7 +5,6 @@
 
 #include <ASymbol.hpp>
 #include <ATerminal.hpp>
-#include <ANonTerminal.hpp>
 #include <AEvaluable.hpp>
 #include <Args.hpp>
 #include <Tree.hpp>

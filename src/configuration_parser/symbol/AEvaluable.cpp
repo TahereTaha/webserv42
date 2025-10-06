@@ -4,4 +4,6 @@ AEvaluable::AEvaluable(void)
 {
 }
 
-
+AEvaluable::~AEvaluable(void)
+{
+}

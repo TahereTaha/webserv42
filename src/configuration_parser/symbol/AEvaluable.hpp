@@ -9,7 +9,9 @@ class AEvaluable : public ASymbol
 	protected:
 	public:
 		AEvaluable(void);
-		virtual	~AEvaluable(void) = 0;
+		virtual	~AEvaluable(void);
+		
+		virtual AEvaluable*	clone(void) const = 0;
 
-		virtual void	evaluate(Tree<AEvaluable*> *self) = 0;
+//		virtual void	evaluate(Tree<AEvaluable*> *self) = 0;
 };
