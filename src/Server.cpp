@@ -18,22 +18,22 @@ ServerResponse Server::handleRequest(const Request& request) {
     const std::string& uri = request.getControlData().uri.getPathString();
     const std::string& method = request.getControlData().method;
     
-    // Validate request body size
+    
     if (!isRequestBodySizeValid(request)) {
-        return getErrorPage(413); // Payload Too Large
+        return getErrorPage(413); 
     }
     
-    // Find matching route
+    
     for (size_t i = 0; i < config.route.size(); ++i) {
         const t_route& route = config.route[i];
-        if (uri.find(route.uri) == 0) {  // Simple prefix matching
+        if (uri.find(route.uri) == 0) {  /
             
-            // Check if method is allowed for this route
+            
             if (!isMethodAllowed(method, route)) {
-                return getErrorPage(405); // Method Not Allowed
+                return getErrorPage(405); 
             }
             
-            // Handle different response types
+           
             if (route.response_type == STATIC) {
                 return ServerResponse(route.static_response.status_code, 
                                     "text/html", 
@@ -45,12 +45,12 @@ ServerResponse Server::handleRequest(const Request& request) {
             else if (route.response_type == DEFAULT) {
                 std::string file_path = joinPath(route.default_response.root, uri.substr(route.uri.length()));
                 
-                // Handle POST requests (file uploads)
+                
                 if (method == "POST" && route.default_response.upload_enabled) {
                     return handleFileUpload(request, route);
                 }
                 
-                // Handle DELETE requests
+               
                 if (method == "DELETE") {
                     if (fileExists(file_path)) {
                         if (unlink(file_path.c_str()) == 0) {
@@ -63,12 +63,12 @@ ServerResponse Server::handleRequest(const Request& request) {
                     }
                 }
                 
-                // Default file for directory requests
+                
                 if (uri == route.uri && !route.default_response.index_file.empty()) {
                     file_path = joinPath(route.default_response.root, route.default_response.index_file);
                 }
                 
-                // Check if it's a directory
+                
                 if (isDirectory(file_path)) {
                     if (route.default_response.directory_listing_enabled) {
                         return generateDirectoryListing(file_path);
@@ -77,13 +77,13 @@ ServerResponse Server::handleRequest(const Request& request) {
                     }
                 }
                 
-                // Serve regular file
+                /
                 return serveFile(file_path);
             }
         }
     }
     
-    // No route found
+    
     return getErrorPage(404);
 }
 
@@ -137,7 +137,7 @@ bool Server::fileExists(const std::string& path) {
     return (stat(path.c_str(), &buffer) == 0);
 }
 
-// New functions to support webserver requirements
+
 bool Server::isRequestBodySizeValid(const Request& request) {
     const std::string& body = request.getBody();
     return body.length() <= config.client_max_body_size;
@@ -154,7 +154,7 @@ bool Server::isMethodAllowed(const std::string& method, const t_route& route) {
     if (method == "GET") request_method = GET;
     else if (method == "POST") request_method = POST;
     else if (method == "DELETE") request_method = DELETE;
-    else return false; // Unknown method
+    else return false; 
     
     return std::find(allowed.begin(), allowed.end(), request_method) != allowed.end();
 }
@@ -164,7 +164,7 @@ ServerResponse Server::handleRedirection(const t_route& route) {
     std::string body = "<html><body><h1>Redirecting to " + location + "</h1></body></html>";
     
     ServerResponse response(route.redirect_response.status_code, "text/html", body);
-    // Note: In a full implementation, you'd add Location header here
+    // 
     return response;
 }
 
@@ -173,12 +173,11 @@ ServerResponse Server::handleFileUpload(const Request& request, const t_route& r
     const std::string& upload_dir = route.default_response.upload_dir;
     
     if (upload_dir.empty()) {
-        return getErrorPage(403); // Uploads not configured
+        return getErrorPage(403); 
     }
     
-    // Simple file upload implementation
-    // In a real implementation, you'd parse multipart/form-data
-    std::string filename = "uploaded_file.txt"; // This should be extracted from the request
+    
+    std::string filename = "uploaded_file.txt"; 
     std::string full_path = joinPath(upload_dir, filename);
     
     if (saveUploadedFile(body, full_path, upload_dir)) {
@@ -189,10 +188,10 @@ ServerResponse Server::handleFileUpload(const Request& request, const t_route& r
 }
 
 bool Server::saveUploadedFile(const std::string& content, const std::string& filename, const std::string& upload_dir) {
-    // Create upload directory if it doesn't exist
+   
     struct stat st;
     if (stat(upload_dir.c_str(), &st) != 0) {
-        // Directory doesn't exist, try to create it
+        
         if (mkdir(upload_dir.c_str(), 0755) != 0) {
             return false;
         }
@@ -223,7 +222,7 @@ ServerResponse Server::generateDirectoryListing(const std::string& path) {
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
         std::string name = entry->d_name;
-        if (name == ".") continue; // Skip current directory
+        if (name == ".") continue; 
         
         html << "<li><a href=\"" << name;
         if (entry->d_type == DT_DIR) {
@@ -256,7 +255,7 @@ std::string Server::joinPath(const std::string& base, const std::string& path) {
         result += "/";
     }
     
-    // Remove leading slash from path if present
+    
     std::string clean_path = path;
     if (!clean_path.empty() && clean_path[0] == '/') {
         clean_path = clean_path.substr(1);
@@ -281,7 +280,7 @@ ServerResponse Server::getErrorPage(int status_code) {
         }
     }
     
-    // Return default error page
+    
     return getDefaultErrorPage(status_code);
 }
 
