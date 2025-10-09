@@ -3,7 +3,7 @@
 #include <ASymbol.hpp>
 #include <Tree.hpp>
 
-class AEvaluable : public ASymbol
+class AEvaluable : virtual public ASymbol
 {
 	private:
 	protected:
@@ -13,5 +13,5 @@ class AEvaluable : public ASymbol
 		
 		virtual AEvaluable*	clone(void) const = 0;
 
-//		virtual void	evaluate(Tree<AEvaluable*> *self) = 0;
+		virtual void	evaluate(Tree<AEvaluable*> *self) = 0;
 };

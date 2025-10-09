@@ -2,6 +2,8 @@
 
 #include <stddef.h>
 
+
+
 class ASymbol
 {
 	private:
@@ -23,3 +25,8 @@ class ASymbol
 		size_t	getLine(void) const;
 		size_t	getColumn(void) const;
 };
+
+
+
+
+
