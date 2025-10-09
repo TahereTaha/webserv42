@@ -26,7 +26,8 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleSymbol::consumeTerminals(terminal_ite
 		return (return_val);
 	}
 	//	check if this simbol is in the current iterator of the terminal list.
-	if (((void **)this->_symbol)[0] != ((void **)(*iter))[0])
+	ASymbol	*symbol = dynamic_cast<ASymbol*>(*iter);
+	if (((void **)this->_symbol)[0] != ((void **)symbol)[0])
 	{
 		parse_exception e(UNRECOGNIZED_SYMBOL);
 		e.setLine((*iter)->getLine());
@@ -39,7 +40,7 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleSymbol::consumeTerminals(terminal_ite
 	AEvaluable	*evaluable = dynamic_cast<AEvaluable*>(this->_symbol);
 	if (evaluable)
 	{
-		return_val.push_back(Tree<AEvaluable*>::makeTreeNode(((AEvaluable*)*iter)->clone()));
+		return_val.push_back(Tree<AEvaluable*>::makeTreeNode((dynamic_cast<AEvaluable*>(*iter))->clone()));
 	}
 	iter++;
 	return (return_val);

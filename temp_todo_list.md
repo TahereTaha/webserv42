@@ -19,8 +19,14 @@
 
 - making the parser.
 - [ ] make the parse rules.
-	- [ ] make the simbol rule.
-	- [ ] make the add rule.
+	- [x] make the simbol rule.
+		- [x] make it.
+		- [x] test for terminals.
+		- [x] test for evaluables.
+		- [x] test for non terminal.
+	- [x] make the add rule.
+		- [ ] test it with no rules.
+		- [ ] test it with multiple rules.
 	- [ ] make the or rule.
 	- [ ] make the repetition rule.
 - [ ] refactor the code so that is has beter names and make it is more modular.
@@ -28,7 +34,10 @@
 	- [ ] change the name of confirurationParser to file parser. and make it more modular.
 	- [ ] change the name of the parsing rules.
 	- [ ] change how the lexer is organized in classes.
+	- [ ] change the print ast to a beter formated one.
 - [ ] write each simbol of the tree with the rules.
+- [ ] make a check for each ast node.
+- [ ] write the translator to the structure.
 
 - making the checker.
 

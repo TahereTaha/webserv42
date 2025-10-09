@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/10/06 16:02:22 by tatahere         ###   ########.fr        #
+#    Updated: 2025/10/09 15:59:31 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,6 +92,7 @@ OBJ		:=	main.o						\
 			AParser.o					\
 			AParsingRule.o				\
 			ParsingRuleSymbol.o			\
+			ParsingRuleAnd.o			\
 										\
 			SymbolServer.o				\
 

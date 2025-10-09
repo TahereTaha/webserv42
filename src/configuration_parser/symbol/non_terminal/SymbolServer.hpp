@@ -13,7 +13,9 @@ class SymbolServer : public ANonTerminal
 		SymbolServer(void);
 		~SymbolServer(void);
 
-		const char	*what(void) const;
+		const char		*what(void) const;
 		SymbolServer	*clone(void) const;
+		void			evaluate(Tree<AEvaluable*> *self);
+
 		AParser	*getParser(void) const;
 };

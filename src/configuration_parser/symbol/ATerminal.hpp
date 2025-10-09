@@ -6,7 +6,7 @@
 #include <ASymbol.hpp>
 
 
-class ATerminal : public ASymbol
+class ATerminal : virtual public ASymbol
 {
 	private:
 	protected:
