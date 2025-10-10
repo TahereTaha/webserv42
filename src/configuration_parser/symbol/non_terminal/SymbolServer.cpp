@@ -14,6 +14,7 @@
 #include <ParsingRuleSymbol.hpp>
 #include <ParsingRuleAnd.hpp>
 #include <ParsingRuleOr.hpp>
+#include <ParsingRuleRepetition.hpp>
 
 SymbolServer::SymbolServer(void)
 {
@@ -67,7 +68,7 @@ AParser	*SymbolServer::getParser(void) const
 				new ParsingRuleSymbol(KeyWordServerName().clone()),\
 				new ParsingRuleSymbol(KeyWordListen().clone()),\
 				NULL),\
-			new ParsingRuleSymbol(Number().clone()),\
+			new ParsingRuleRepetition(2, 7,new ParsingRuleSymbol(Number().clone())),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\
 			NULL);
 	

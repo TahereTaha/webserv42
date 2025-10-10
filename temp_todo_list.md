@@ -27,13 +27,14 @@
 	- [x] make the add rule.
 		- [x] test it with no rules.
 		- [x] test it with multiple rules.
-	- [ ] make the or rule.
+	- [x] make the or rule.
 	- [ ] make the repetition rule.
+		- [ ] make the token untill there are max tokens.
 - [ ] refactor the code so that is has beter names and make it is more modular.
 	- [ ] change the error handeling to be able to hadle just simple parse_exceptions.
+	- [ ] change how the lexer is organized in classes.
 	- [ ] change the name of confirurationParser to file parser. and make it more modular.
 	- [ ] change the name of the parsing rules.
-	- [ ] change how the lexer is organized in classes.
 	- [ ] change the print ast to a beter formated one.
 - [ ] write each simbol of the tree with the rules.
 - [ ] make a check for each ast node.
