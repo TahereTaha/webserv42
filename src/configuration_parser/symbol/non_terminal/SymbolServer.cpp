@@ -6,11 +6,14 @@
 #include <KeyLeftCurlyBracket.hpp>
 #include <KeyRightCurlyBracket.hpp>
 #include <Number.hpp>
+#include <KeyWordServerName.hpp>
+#include <KeyWordListen.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
 #include <ParsingRuleSymbol.hpp>
 #include <ParsingRuleAnd.hpp>
+#include <ParsingRuleOr.hpp>
 
 SymbolServer::SymbolServer(void)
 {
@@ -60,7 +63,10 @@ AParser	*SymbolServer::getParser(void) const
 	AParsingRule	*rule =	new ParsingRuleAnd(\
 			new ParsingRuleSymbol(KeyWordServer().clone()),\
 			new ParsingRuleSymbol(KeyLeftCurlyBracket().clone()),\
-			new ParsingRuleSymbol(Number().clone()),\
+			new ParsingRuleOr(\
+				new ParsingRuleSymbol(KeyWordServerName().clone()),\
+				new ParsingRuleSymbol(KeyWordListen().clone()),\
+				NULL),\
 			new ParsingRuleSymbol(Number().clone()),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\
 			NULL);

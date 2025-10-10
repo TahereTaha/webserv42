@@ -25,8 +25,8 @@
 		- [x] test for evaluables.
 		- [x] test for non terminal.
 	- [x] make the add rule.
-		- [ ] test it with no rules.
-		- [ ] test it with multiple rules.
+		- [x] test it with no rules.
+		- [x] test it with multiple rules.
 	- [ ] make the or rule.
 	- [ ] make the repetition rule.
 - [ ] refactor the code so that is has beter names and make it is more modular.
