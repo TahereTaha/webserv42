@@ -28,10 +28,12 @@
 		- [x] test it with no rules.
 		- [x] test it with multiple rules.
 	- [x] make the or rule.
-	- [ ] make the repetition rule.
-		- [ ] make the token untill there are max tokens.
+	- [x] make the repetition rule.
+- [ ] fix bugs.
+	- [ ] the parser gives segfault at the end of the terminal token.
 - [ ] refactor the code so that is has beter names and make it is more modular.
 	- [ ] change the error handeling to be able to hadle just simple parse_exceptions.
+		- [ ] remove the multy parse error.
 	- [ ] change how the lexer is organized in classes.
 	- [ ] change the name of confirurationParser to file parser. and make it more modular.
 	- [ ] change the name of the parsing rules.
