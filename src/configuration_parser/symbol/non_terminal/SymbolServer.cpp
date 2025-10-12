@@ -9,6 +9,7 @@
 
 #include <SymbolServerName.hpp>
 #include <SymbolListen.hpp>
+#include <SymbolClientMaxBodySize.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
@@ -48,6 +49,7 @@ AParser	*SymbolServer::getParser(void) const
 			new ParsingRuleRepetition(0, -1, new ParsingRuleOr(\
 				new ParsingRuleSymbol(SymbolServerName().clone()),\
 				new ParsingRuleSymbol(SymbolListen().clone()),\
+				new ParsingRuleSymbol(SymbolClientMaxBodySize().clone()),\
 				NULL)),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\
 			NULL);
