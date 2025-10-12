@@ -26,8 +26,8 @@
 	- [ ] make all the server symbol directives.
 		- [x] make server name.
 		- [x] make listen.
-		- [ ] make client_max_body_size.
-		- [ ] make error_page
+		- [x] make client_max_body_size.
+		- [x] make error_page
 	- [ ] make the location symbol.
 	- [ ] make all the location symbol directives.
 		- [ ] limit_exept.
