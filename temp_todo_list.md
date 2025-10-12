@@ -18,22 +18,23 @@
 	- number
 
 - making the parser.
-- [ ] make the parse rules.
-	- [x] make the simbol rule.
-		- [x] make it.
-		- [x] test for terminals.
-		- [x] test for evaluables.
-		- [x] test for non terminal.
-	- [x] make the add rule.
-		- [x] test it with no rules.
-		- [x] test it with multiple rules.
-	- [x] make the or rule.
-	- [x] make the repetition rule.
+- [x] make the parse rules.
 - [x] fix bugs.
-	- [x] the parser gives segfault at the end of the terminal token.
 - [x] refactor the code so that is has beter names and make it is more modular.
-	- [x] change the print ast to a beter formated one.
 - [ ] write each simbol of the tree with the rules.
+	- [x] make the server symbol.
+	- [ ] make all the server symbol directives.
+		- [x] make server name.
+		- [x] make listen.
+		- [ ] make client_max_body_size.
+		- [ ] make error_page
+	- [ ] make the location symbol.
+	- [ ] make all the location symbol directives.
+		- [ ] limit_exept.
+		- [ ] make return.
+		- [ ] make root.
+		- [ ] autoindex.
+		- [ ] inedex.
 - [ ] make a check for each ast node.
 - [ ] write the translator to the structure.
 
