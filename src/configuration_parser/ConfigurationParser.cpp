@@ -148,27 +148,44 @@ void	ConfigurationParser::printTerminalList(void) const
 	{
 		std::cout << "  " << this->_terminalList[i]->what() << "\n";
 		i++;
-//		if (i < this->_terminalList.size())
-//			std::cout << "|";
 	}
 	std::cout << std::endl;
 }
 
-static void	print_ast(Tree<AEvaluable*> *ast)
+static void align_tabulation(size_t	depth)
+{
+	size_t	i = 0;
+	while (i < depth)
+	{
+		std::cout << "    ";
+		i++;
+	}
+}
+
+static void	print_ast(Tree<AEvaluable*> *ast, size_t depth = 0)
 {
 	if (ast->getNodeType() == LEAF)
 	{
-		std::cout << ast->getContent()->what() << "; ";
+		align_tabulation(depth);
+		std::cout << ast->getContent()->what() << ";\n";
 		return ;
 	}
-	std::cout << ast->getContent()->what() << " { ";
+
+	align_tabulation(depth);
+	std::cout << ast->getContent()->what() << "\n";
+	
+	align_tabulation(depth);
+	std::cout << "{\n";
+	
 	Tree<AEvaluable*>	*node = (*ast)[0];
 	while (node)
 	{
-		print_ast(node);
+		print_ast(node, depth + 1);
 		node = node->getRightBranchNode();
 	}
-	std::cout << " } ";
+	
+	align_tabulation(depth);
+	std::cout << "}\n";
 }
 
 void	ConfigurationParser::printAST(void) const

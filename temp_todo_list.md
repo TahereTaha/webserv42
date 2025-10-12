@@ -29,15 +29,10 @@
 		- [x] test it with multiple rules.
 	- [x] make the or rule.
 	- [x] make the repetition rule.
-- [ ] fix bugs.
-	- [ ] the parser gives segfault at the end of the terminal token.
-- [ ] refactor the code so that is has beter names and make it is more modular.
-	- [ ] change the error handeling to be able to hadle just simple parse_exceptions.
-		- [ ] remove the multy parse error.
-	- [ ] change how the lexer is organized in classes.
-	- [ ] change the name of confirurationParser to file parser. and make it more modular.
-	- [ ] change the name of the parsing rules.
-	- [ ] change the print ast to a beter formated one.
+- [x] fix bugs.
+	- [x] the parser gives segfault at the end of the terminal token.
+- [x] refactor the code so that is has beter names and make it is more modular.
+	- [x] change the print ast to a beter formated one.
 - [ ] write each simbol of the tree with the rules.
 - [ ] make a check for each ast node.
 - [ ] write the translator to the structure.
