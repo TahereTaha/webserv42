@@ -40,7 +40,7 @@ AParser	*SymbolServerName::getParser(void) const
 {
 	AParsingRule	*rule =	new ParsingRuleAnd(\
 			new ParsingRuleSymbol(KeyWordServerName().clone()),\
-			new ParsingRuleRepetition(0, -1, new ParsingRuleSymbol(TextConfigFile().clone())),\
+			new ParsingRuleRepetition(1, -1, new ParsingRuleSymbol(TextConfigFile().clone())),\
 			new ParsingRuleSymbol(KeySemicolon().clone()),\
 			NULL);
 	return (new AParser(this->clone(), rule));
