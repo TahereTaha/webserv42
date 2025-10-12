@@ -11,6 +11,7 @@
 #include <SymbolListen.hpp>
 #include <SymbolClientMaxBodySize.hpp>
 #include <SymbolErrorPage.hpp>
+#include <SymbolLocation.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
@@ -52,6 +53,7 @@ AParser	*SymbolServer::getParser(void) const
 				new ParsingRuleSymbol(SymbolListen().clone()),\
 				new ParsingRuleSymbol(SymbolClientMaxBodySize().clone()),\
 				new ParsingRuleSymbol(SymbolErrorPage().clone()),\
+				new ParsingRuleSymbol(SymbolLocation().clone()),\
 				NULL)),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\
 			NULL);
