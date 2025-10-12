@@ -6,8 +6,9 @@
 #include <KeyLeftCurlyBracket.hpp>
 #include <KeyRightCurlyBracket.hpp>
 #include <Number.hpp>
-#include <KeyWordServerName.hpp>
-#include <KeyWordListen.hpp>
+
+#include <SymbolServerName.hpp>
+#include <SymbolListen.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
@@ -39,39 +40,17 @@ void		SymbolServer::evaluate(Tree<AEvaluable*> *self)
 	(void) self;
 }
 
-//	little test class
-class test_class : public ANonTerminal
-{
-	public:
-		test_class(void) {}
-		~test_class(void) {}
-
-		const char	*what(void) const {return ("test_class");}
-		test_class	*clone(void) const {return (new test_class(*this));}
-		void		evaluate(Tree<AEvaluable*> *self) {(void)self;}
-
-		AParser	*getParser(void) const {
-			AParsingRule	*rule =	new ParsingRuleSymbol(KeyWordServer().clone());
-			return (new AParser(this->clone(), rule));
-		}
-};
-
 AParser	*SymbolServer::getParser(void) const
 {
-//	AParsingRule	*rule =	new ParsingRuleSymbol(KeyWordServer().clone());
-//	AParsingRule	*rule =	new ParsingRuleSymbol(Number().clone());
-//	AParsingRule	*rule =	new ParsingRuleSymbol(test_class().clone());
 	AParsingRule	*rule =	new ParsingRuleAnd(\
 			new ParsingRuleSymbol(KeyWordServer().clone()),\
 			new ParsingRuleSymbol(KeyLeftCurlyBracket().clone()),\
-			new ParsingRuleOr(\
-				new ParsingRuleSymbol(KeyWordServerName().clone()),\
-				new ParsingRuleSymbol(KeyWordListen().clone()),\
-				NULL),\
-			new ParsingRuleRepetition(2, 7,new ParsingRuleSymbol(Number().clone())),\
+			new ParsingRuleRepetition(0, -1, new ParsingRuleOr(\
+				new ParsingRuleSymbol(SymbolServerName().clone()),\
+				new ParsingRuleSymbol(SymbolListen().clone()),\
+				NULL)),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\
 			NULL);
-	
 	return (new AParser(this->clone(), rule));
 }
 

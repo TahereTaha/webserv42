@@ -15,7 +15,7 @@ TextConfigFile::~TextConfigFile(void)
 {
 }
 
-ATerminal* TextConfigFile::clone() const
+TextConfigFile* TextConfigFile::clone() const
 {
 	return new TextConfigFile(*this);
 }
@@ -68,18 +68,22 @@ size_t	TextConfigFile::getTerminalSizeOnStr(const std::string & str) const
 	return (i);
 }
 
-std::string		TextConfigFile::getValue(void) const
+void	TextConfigFile::evaluate(Tree<AEvaluable*> *self)
 {
-	std::string	value = "";
-	size_t	i = 0;
-	while (i < this->_text.size())
-	{
-		if (this->_text[i] != '"' && this->_text[i] != '\'')
-			value += this->_text[i];
-		i++;
-	}
-	return (value);
+	(void) self;
 }
+//std::string		TextConfigFile::getValue(void) const
+//{
+//	std::string	value = "";
+//	size_t	i = 0;
+//	while (i < this->_text.size())
+//	{
+//		if (this->_text[i] != '"' && this->_text[i] != '\'')
+//			value += this->_text[i];
+//		i++;
+//	}
+//	return (value);
+//}
 
 const char	*TextConfigFile::what(void) const 
 {

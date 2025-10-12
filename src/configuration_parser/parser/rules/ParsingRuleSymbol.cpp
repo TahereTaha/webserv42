@@ -52,7 +52,6 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleSymbol::consumeTerminals(terminal_ite
 	{
 		return_val.push_back(Tree<AEvaluable*>::makeTreeNode((dynamic_cast<AEvaluable*>(*iter))->clone()));
 	}
-	std::cout << "there has ben an iteration." << std::endl;
 	iter++;
 	return (return_val);
 }

@@ -47,6 +47,15 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleOr::consumeTerminals(terminal_iter &i
 			i++;
 		}
 	}
+	if (return_val.size() == 0)
+	{
+		parse_exception e(UNRECOGNIZED_SYMBOL);
+		e.setLine((*iter)->getLine());
+		e.setColumn((*iter)->getColumn());
+		e.setSize((*iter)->getSize());
+
+		throw (e);
+	}
 	return (return_val);
 }
 
