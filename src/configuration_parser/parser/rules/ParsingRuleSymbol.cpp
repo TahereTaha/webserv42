@@ -4,6 +4,8 @@
 #include <ANonTerminal.hpp>
 #include <AParser.hpp>
 
+#include <SymbolReturn.hpp>
+
 ParsingRuleSymbol::ParsingRuleSymbol(const ASymbol *symbol)
 {
 	this->_symbol = symbol->clone();
