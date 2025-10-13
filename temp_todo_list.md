@@ -30,7 +30,7 @@
 		- [x] make error_page
 	- [x] make the location symbol.
 	- [ ] make all the location symbol directives.
-		- [ ] limit_exept.
+		- [x] limit_exept.
 		- [ ] make return.
 		- [ ] make root.
 		- [ ] autoindex.

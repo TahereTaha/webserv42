@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/10/11 15:39:34 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/10/13 17:17:01 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 #include <textColors.h>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
+
+#include <AParser.hpp>
+
 
 int	main(int argc, char **argv)
 {
