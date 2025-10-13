@@ -23,12 +23,12 @@
 - [x] refactor the code so that is has beter names and make it is more modular.
 - [ ] write each simbol of the tree with the rules.
 	- [x] make the server symbol.
-	- [ ] make all the server symbol directives.
+	- [x] make all the server symbol directives.
 		- [x] make server name.
 		- [x] make listen.
 		- [x] make client_max_body_size.
 		- [x] make error_page
-	- [ ] make the location symbol.
+	- [x] make the location symbol.
 	- [ ] make all the location symbol directives.
 		- [ ] limit_exept.
 		- [ ] make return.
