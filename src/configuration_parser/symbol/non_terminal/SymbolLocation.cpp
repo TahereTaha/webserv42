@@ -9,6 +9,7 @@
 #include <TextConfigFile.hpp>
 
 #include <SymbolLocation.hpp>
+#include <SymbolLimitExcept.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
@@ -47,6 +48,7 @@ AParser	*SymbolLocation::getParser(void) const
 			new ParsingRuleSymbol(TextConfigFile().clone()),\
 			new ParsingRuleSymbol(KeyLeftCurlyBracket().clone()),\
 			new ParsingRuleRepetition(0, -1, new ParsingRuleOr(\
+				new ParsingRuleSymbol(SymbolLimitExcept().clone()),\
 				new ParsingRuleSymbol(SymbolLocation().clone()),\
 				NULL)),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\
