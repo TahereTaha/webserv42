@@ -48,7 +48,7 @@ AParser	*SymbolServer::getParser(void) const
 	AParsingRule	*rule =	new ParsingRuleAnd(\
 			new ParsingRuleSymbol(KeyWordServer().clone()),\
 			new ParsingRuleSymbol(KeyLeftCurlyBracket().clone()),\
-			new ParsingRuleRepetition(0, -1, new ParsingRuleOr(\
+			new ParsingRuleRepetition(1, -1, new ParsingRuleOr(\
 				new ParsingRuleSymbol(SymbolServerName().clone()),\
 				new ParsingRuleSymbol(SymbolListen().clone()),\
 				new ParsingRuleSymbol(SymbolClientMaxBodySize().clone()),\
