@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/10/14 12:22:59 by tatahere         ###   ########.fr        #
+#    Updated: 2025/10/14 14:03:43 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,8 @@ OBJ		:=	main.o						\
 			SymbolLimitExcept.o			\
 			SymbolReturn.o				\
 			SymbolRoot.o				\
-			SymbolAutoIndex.o				\
+			SymbolAutoIndex.o			\
+			SymbolIndex.o				\
 
 #			subTreeGenerationUtils.o	\
 			SymbolServer.o				\
