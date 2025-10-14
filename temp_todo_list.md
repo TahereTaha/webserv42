@@ -33,7 +33,7 @@
 		- [x] limit_exept.
 		- [x] make return.
 		- [x] make root.
-		- [ ] autoindex.
+		- [x] autoindex.
 		- [ ] inedex.
 - [ ] make a check for each ast node.
 - [ ] write the translator to the structure.
