@@ -48,7 +48,7 @@ AParser	*SymbolLocation::getParser(void) const
 			new ParsingRuleSymbol(KeyWordLocation().clone()),\
 			new ParsingRuleSymbol(TextConfigFile().clone()),\
 			new ParsingRuleSymbol(KeyLeftCurlyBracket().clone()),\
-			new ParsingRuleRepetition(0, -1, new ParsingRuleOr(\
+			new ParsingRuleRepetition(1, -1, new ParsingRuleOr(\
 				new ParsingRuleSymbol(SymbolReturn().clone()),\
 				new ParsingRuleSymbol(SymbolLimitExcept().clone()),\
 				new ParsingRuleSymbol(SymbolLocation().clone()),\

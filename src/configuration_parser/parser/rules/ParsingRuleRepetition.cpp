@@ -20,16 +20,19 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleRepetition::consumeTerminals(terminal
 {
 	std::vector<Tree<AEvaluable*>*>	return_val;
 	std::vector<Tree<AEvaluable*>*>	tmp_vector;
+	terminal_iter	check_point;
 	size_t	i = 0;
 	while (i < this->_max)
 	{
 		try
 		{
+			check_point = iter;
 			tmp_vector = this->_rule->consumeTerminals(iter, end);
 			i++;
 		}
 		catch (parse_exception & e)
 		{
+			iter = check_point;
 			if (i < this->_min || i > this->_max)
 				throw (e);
 			break ;

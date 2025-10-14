@@ -4,6 +4,8 @@
 #include <ANonTerminal.hpp>
 #include <AParser.hpp>
 
+void	print_ast(Tree<AEvaluable*> *ast, size_t depth = 0);
+
 ParsingRuleAnd::ParsingRuleAnd(AParsingRule *first_rule, ...)
 {
 	va_list args;
