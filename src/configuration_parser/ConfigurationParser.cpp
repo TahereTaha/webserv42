@@ -157,7 +157,7 @@ static void align_tabulation(size_t	depth)
 	size_t	i = 0;
 	while (i < depth)
 	{
-		std::cout << "    ";
+		std::cout << "   >";
 		i++;
 	}
 }

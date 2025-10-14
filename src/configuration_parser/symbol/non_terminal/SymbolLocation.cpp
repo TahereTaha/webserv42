@@ -13,6 +13,7 @@
 #include <SymbolReturn.hpp>
 #include <SymbolRoot.hpp>
 #include <SymbolAutoIndex.hpp>
+#include <SymbolIndex.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
@@ -55,6 +56,7 @@ AParser	*SymbolLocation::getParser(void) const
 				new ParsingRuleSymbol(SymbolReturn().clone()),\
 				new ParsingRuleSymbol(SymbolRoot().clone()),\
 				new ParsingRuleSymbol(SymbolAutoIndex().clone()),\
+				new ParsingRuleSymbol(SymbolIndex().clone()),\
 				new ParsingRuleSymbol(SymbolLocation().clone()),\
 				NULL)),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\

@@ -34,7 +34,7 @@
 		- [x] make return.
 		- [x] make root.
 		- [x] autoindex.
-		- [ ] inedex.
+		- [x] inedex.
 - [ ] make a check for each ast node.
 - [ ] write the translator to the structure.
 
