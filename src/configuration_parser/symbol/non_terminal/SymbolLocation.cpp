@@ -11,6 +11,7 @@
 #include <SymbolLocation.hpp>
 #include <SymbolLimitExcept.hpp>
 #include <SymbolReturn.hpp>
+#include <SymbolRoot.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
@@ -49,8 +50,9 @@ AParser	*SymbolLocation::getParser(void) const
 			new ParsingRuleSymbol(TextConfigFile().clone()),\
 			new ParsingRuleSymbol(KeyLeftCurlyBracket().clone()),\
 			new ParsingRuleRepetition(1, -1, new ParsingRuleOr(\
-				new ParsingRuleSymbol(SymbolReturn().clone()),\
 				new ParsingRuleSymbol(SymbolLimitExcept().clone()),\
+				new ParsingRuleSymbol(SymbolReturn().clone()),\
+				new ParsingRuleSymbol(SymbolRoot().clone()),\
 				new ParsingRuleSymbol(SymbolLocation().clone()),\
 				NULL)),\
 			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\

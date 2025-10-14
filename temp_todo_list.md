@@ -27,12 +27,12 @@
 		- [x] make server name.
 		- [x] make listen.
 		- [x] make client_max_body_size.
-		- [x] make error_page
+		- [x] make error_page.
 	- [x] make the location symbol.
 	- [ ] make all the location symbol directives.
 		- [x] limit_exept.
-		- [ ] make return.
-		- [ ] make root.
+		- [x] make return.
+		- [x] make root.
 		- [ ] autoindex.
 		- [ ] inedex.
 - [ ] make a check for each ast node.
