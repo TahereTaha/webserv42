@@ -17,25 +17,46 @@
 	- text
 	- number
 
-- making the parser.
-- [x] make the parse rules.
-- [x] fix bugs.
-- [x] refactor the code so that is has beter names and make it is more modular.
-- [ ] write each simbol of the tree with the rules.
-	- [x] make the server symbol.
-	- [x] make all the server symbol directives.
-		- [x] make server name.
-		- [x] make listen.
-		- [x] make client_max_body_size.
-		- [x] make error_page.
-	- [x] make the location symbol.
-	- [ ] make all the location symbol directives.
-		- [x] limit_exept.
-		- [x] make return.
-		- [x] make root.
-		- [x] autoindex.
-		- [x] inedex.
+- [x] build a percent encoder and decoder.
+	- [x] decode.
+	- [x] encode.
+
+- [ ] prase the scheme
+	- [x] make the text constructor.
+	- [x] make the token constructor.
+	- [ ] make a scheme normalizer.
+	- [ ] check the scheme complies with the characters that it can have.
+	- [ ] make the scheme recognizer.
+	- [ ] make the overloading of ==.
+
+- [ ] make percent encoder and decoder.
+- [x] make a simple tokenization for the uri.
+- [ ] parse the scheme.
+- [ ] parse the authority.
+	- [ ] parse the user info.
+	- [ ] parse the host.
+		- [ ] parse the ip.
+		- [ ] parse the host name.
+	- [ ] parse the port.
+- [ ] parse the path.
+- [ ] parse the query.
+- [ ] parse the fragment.
+
 - [ ] make a check for each ast node.
+	- [ ] make server name.
+	- [ ] make listen.
+	- [ ] 	first milestone.
+	- [ ] make client max body size.
+	- [ ] make error page.
+	- [ ] 	second milestone.
+	- [ ] make limit exept.
+	- [ ] make make the return.
+	- [ ] make root.
+	- [ ] make autoindex.
+	- [ ] make index.
+	- [ ] 	third milestone.
+	- [ ] make location.
+	- [ ] make server.
 - [ ] write the translator to the structure.
 
 - making the checker.
@@ -45,7 +66,7 @@
 	- [ ] parse the file.
 		- [x] read the file.
 		- [x] tokenize.
-		- [ ] parse.
+		- [x] parse.
 		- [ ] check.
 		- [ ] init.
 	- [ ] set up the server.
@@ -59,19 +80,10 @@ error msg 1:
 
 
 
-
-
-
-
-
-
-
 errors: 3
 unclosed quote.
 docs/configfile2.conf:16:10
 	server_name "server_name ;
 				^~~~~~~~~~~~~~~
 tip: multy line quoted strings are not suported try to close it before the end of the line.
-
-
 

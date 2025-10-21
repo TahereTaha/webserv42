@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/10/14 14:03:43 by tatahere         ###   ########.fr        #
+#    Updated: 2025/10/20 12:42:07 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/character_lexeme:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/keywords:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/literals:
-VPATH	+= $(SRC_DIR)exceptions
+VPATH	+= $(SRC_DIR)exceptions:
+VPATH	+= $(SRC_DIR)URIParsing
 
 CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD -g
 
@@ -107,6 +108,11 @@ OBJ		:=	main.o						\
 			SymbolRoot.o				\
 			SymbolAutoIndex.o			\
 			SymbolIndex.o				\
+										\
+			Scheme.o					\
+			URI.o						\
+
+
 
 #			subTreeGenerationUtils.o	\
 			SymbolServer.o				\
