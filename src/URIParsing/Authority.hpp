@@ -9,6 +9,7 @@ class Authority
 {
 	private:
 		std::string	_text;
+		std::vector<std::string>	_tokens;
 
 //		UserInfo	_userInfo;
 //		Host		_host;
