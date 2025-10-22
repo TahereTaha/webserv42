@@ -1,15 +1,16 @@
 #include <URI.hpp>
+
 #include <string>
 #include <stdexcept>
 #include <iostream>
 
-static void	print_tokens(std::vector<std::string> tokens);
+#include <tokenize.hpp>
 
 URI::URI(std::string uri)
 {
 	this->_text = uri;
 
-	this->tokenize();
+	this->_tokens = tokenize(this->_text, gen_delims);
 	if (this->_tokens.size() == 0)
 		throw (std::invalid_argument("invalid uri"));
 	print_tokens(this->_tokens);
@@ -40,37 +41,6 @@ URI::URI(std::string uri)
 
 URI::~URI()
 {
-}
-
-void	URI::tokenize(void)
-{
-	size_t	start = 0;
-	size_t	end = this->_text.find_first_of(gen_delims, start);
-	if (end == start)
-		end++;
-
-	while (end < this->_text.size())
-	{
-		this->_tokens.push_back(this->_text.substr(start, end - start));
-
-		start = end;
-		end = this->_text.find_first_of(gen_delims, start);
-		if (end == start)
-			end++;
-	}
-	this->_tokens.push_back(this->_text.substr(start, end - start));
-}
-
-//	auxiliar function for debuging purposes.
-static void	print_tokens(std::vector<std::string> tokens)
-{
-	size_t	i= 0;
-	while (i < tokens.size())
-	{
-		std::cout << tokens[i] << "\n";
-		i++;
-	}
-	std::cout << std::flush;
 }
 
 void	URI::identifyURIType(void)

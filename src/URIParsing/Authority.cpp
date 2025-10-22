@@ -4,6 +4,7 @@
 #include <string>
 #include <stdexcept>
 
+#include <tokenize.hpp>
 
 Authority::Authority(void)
 {
@@ -37,6 +38,7 @@ Authority::Authority(	std::vector<std::string>::iterator &iter, \
 		this->_text += *iter;
 		iter++;
 	}
+	this->_tokens = tokenize(this->_text, AUTHORITY_DELIMITERS);
 
 //	this->_userInfo = UserInfo();
 //	this->_host = Host();

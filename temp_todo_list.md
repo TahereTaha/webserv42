@@ -20,7 +20,8 @@
 - [ ] parse the authority.
 	- [x] make a class that will hold all the parts.
 	- [x] get all the needed info from the from the input.
-	- [ ] separete out the tokenizer logic from the URI class.
+	- [x]  separete out the tokenizer logic from the URI class.
+	- [ ] tokenise the authority text.
 
 - [ ] parse the user info.
 	- [ ] 

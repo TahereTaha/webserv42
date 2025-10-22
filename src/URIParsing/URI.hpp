@@ -35,7 +35,8 @@ class URI
 //		Query		_query;
 //		Fragment	_fragment;
 
-		void	tokenize(void);
+		//	this will be out.
+//		void	tokenize(void);
 
 	public:
 		//	this is guaranteed to throw if the text falls outside of the scope of uri.
