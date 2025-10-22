@@ -17,21 +17,16 @@
 	- text
 	- number
 
-- [x] build a percent encoder and decoder.
-	- [x] decode.
-	- [x] encode.
+- [ ] make the uri parser handle relative uris.
+	- [ ] identify the type of relative uri.
+	- [ ] 
 
-- [ ] prase the scheme
-	- [x] make the text constructor.
-	- [x] make the token constructor.
-	- [ ] make a scheme normalizer.
-	- [ ] check the scheme complies with the characters that it can have.
-	- [ ] make the scheme recognizer.
-	- [ ] make the overloading of ==.
+- [ ] parse the user info.
+	- [ ] 
 
-- [ ] make percent encoder and decoder.
+- [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.
-- [ ] parse the scheme.
+- [x] parse the scheme.
 - [ ] parse the authority.
 	- [ ] parse the user info.
 	- [ ] parse the host.

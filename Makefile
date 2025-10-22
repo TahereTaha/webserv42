@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/10/20 12:42:07 by tatahere         ###   ########.fr        #
+#    Updated: 2025/10/22 10:37:48 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,6 +109,7 @@ OBJ		:=	main.o						\
 			SymbolAutoIndex.o			\
 			SymbolIndex.o				\
 										\
+			percent_encoding_utils.o	\
 			Scheme.o					\
 			URI.o						\
 
