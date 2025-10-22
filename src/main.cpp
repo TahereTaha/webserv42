@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/10/20 12:37:02 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:53:36 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@
 int main(void)
 {
 	std::string	url = "https://datatracker.ietf.org/doc/html/rfc3986#section-3";
+//	std::string	url = "//datatracker.ietf.org/doc/html/rfc3986#section-3";
+//	std::string	url = "/doc/html/rfc3986#section-3";
+//	std::string	url = "doc/html/rfc3986#section-3";
 
 	URI	uri(url);
 }

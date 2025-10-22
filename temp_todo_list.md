@@ -17,9 +17,8 @@
 	- text
 	- number
 
-- [ ] make the uri parser handle relative uris.
-	- [ ] identify the type of relative uri.
-	- [ ] 
+- [x] make the uri parser handle relative uris.
+	- [x] identify the type of relative uri.
 
 - [ ] parse the user info.
 	- [ ] 
@@ -36,6 +35,7 @@
 - [ ] parse the path.
 - [ ] parse the query.
 - [ ] parse the fragment.
+- [ ] check scheme specific syntax.
 
 - [ ] make a check for each ast node.
 	- [ ] make server name.
