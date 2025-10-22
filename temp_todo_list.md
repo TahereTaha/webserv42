@@ -17,8 +17,10 @@
 	- text
 	- number
 
-- [x] make the uri parser handle relative uris.
-	- [x] identify the type of relative uri.
+- [ ] parse the authority.
+	- [x] make a class that will hold all the parts.
+	- [x] get all the needed info from the from the input.
+	- [ ] separete out the tokenizer logic from the URI class.
 
 - [ ] parse the user info.
 	- [ ] 

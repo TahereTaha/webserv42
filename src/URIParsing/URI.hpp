@@ -30,7 +30,7 @@ class URI
 		void	identifyURIType(void);
 
 		Scheme		_scheme;
-//		Auchority	_authority;
+//		Authority	_authority;
 //		Path		_path;
 //		Query		_query;
 //		Fragment	_fragment;
@@ -42,5 +42,11 @@ class URI
 		//	and it will throw if 
 		URI(std::string uri);
 		~URI();
+
+//		Scheme		&getScheme(void);
+//		Authority	&getAuthority(void);
+//		Path		&getPath(void);
+//		Query		&getQuery(void);
+//		Fragment	&getFragment(void);
 };
 

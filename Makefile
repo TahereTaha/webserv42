@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/10/22 10:37:48 by tatahere         ###   ########.fr        #
+#    Updated: 2025/10/22 12:18:57 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,6 +111,7 @@ OBJ		:=	main.o						\
 										\
 			percent_encoding_utils.o	\
 			Scheme.o					\
+			Authority.o					\
 			URI.o						\
 
 
