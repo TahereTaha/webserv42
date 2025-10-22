@@ -82,7 +82,6 @@ std::string	decode_pct_encoded_string(std::string text)
 static std::string	hex_to_str(unsigned int hex)
 {
 	std::string	hex_str = "";
-	size_t	i = 0;
 	char	c;
 	while (hex)
 	{
@@ -105,7 +104,7 @@ std::string	encode_to_pct_encoding(std::string text, std::string reserved_chars)
 	size_t	i = 0;
 	while (i < text.size())
 	{
-		if (isgraph(text[i]) && reserved_chars.find(text[i]) == std::string::npos && text[i] != %)
+		if (isgraph(text[i]) && reserved_chars.find(text[i]) == std::string::npos && text[i] != '%')
 			return_val += text[i];
 		else
 			return_val += encode_pct(text[i]);

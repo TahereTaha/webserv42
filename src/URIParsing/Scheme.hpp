@@ -27,7 +27,11 @@ class Scheme
 		std::string		_text;
 		t_uri_scheme	_scheme;
 
-//		int		isSchemeTextValid(void) const ;
+		void	normalizeText(void);
+
+		// in case of not being correct it will throw.
+		void	checkSchemeTextValid(void) const ;
+
 		void	setScheme(void);
 	protected:
 	public:
@@ -37,7 +41,15 @@ class Scheme
 		//	and that the tokens are separated by the gen_delims.
 		Scheme(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end);
 		~Scheme(void);
+
+		t_uri_scheme	getSchemeType(void) const ;
 };
+
+int		operator == (const t_uri_scheme &scheme_1, const Scheme &scheme_2);
+int		operator == (const Scheme &scheme_1, const t_uri_scheme &scheme_2);
+
+int		operator != (const t_uri_scheme &scheme_1, const Scheme &scheme_2);
+int		operator != (const Scheme &scheme_1, const t_uri_scheme &scheme_2);
 
 //int	operator == 
 
