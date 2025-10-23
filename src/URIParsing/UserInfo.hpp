@@ -10,7 +10,9 @@ class UserInfo
 		std::string	_text;
 		std::string	_user;
 		std::string	_password;
+		int			_isPasswordSet;
 
+		void	fillUserAndPassword(void);
 	protected:
 	public:
 		UserInfo(void);

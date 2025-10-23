@@ -20,7 +20,7 @@
 - [ ] parse the user info.
 	- [x] make the class.
 	- [x] make the constructors.
-	- [ ] extract the user and the password.
+	- [x] extract the user and the password.
 	- [ ] normalize the content.
 	- [ ] set up some geters.
 
