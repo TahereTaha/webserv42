@@ -31,7 +31,7 @@ URI::URI(std::string uri)
 
 	if (this->_type <= NETWORK_PATH)
 	{
-//		this->_authority = Authority(iter, end);
+		this->_authority = Authority(iter, end);
 	}
 //	this->_path = Path(iter, end);
 //	this->_query = Query(iter, end);

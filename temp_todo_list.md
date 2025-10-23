@@ -17,14 +17,20 @@
 	- text
 	- number
 
+- [ ] parse the user info.
+	- [x] make the class.
+	- [x] make the constructors.
+	- [ ] extract the user and the password.
+	- [ ] normalize the content.
+	- [ ] set up some geters.
+
 - [ ] parse the authority.
 	- [x] make a class that will hold all the parts.
 	- [x] get all the needed info from the from the input.
 	- [x]  separete out the tokenizer logic from the URI class.
-	- [ ] tokenise the authority text.
-
-- [ ] parse the user info.
-	- [ ] 
+	- [ ] make the user info.
+	- [ ] make the host.
+	- [ ] make the port.
 
 - [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.
