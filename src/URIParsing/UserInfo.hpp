@@ -21,7 +21,7 @@ class UserInfo
 		UserInfo(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end);
 		~UserInfo(void);
 
-		std::string	getUse(void) const ;
+		std::string	getUser(void) const ;
 		std::string	getPassword(void) const ;
 };
 
