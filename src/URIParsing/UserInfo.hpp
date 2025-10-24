@@ -13,6 +13,7 @@ class UserInfo
 		int			_isPasswordSet;
 
 		void	fillUserAndPassword(void);
+		void	normalize(void);
 	protected:
 	public:
 		UserInfo(void);

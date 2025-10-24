@@ -21,7 +21,7 @@
 	- [x] make the class.
 	- [x] make the constructors.
 	- [x] extract the user and the password.
-	- [ ] normalize the content.
+	- [x] normalize the content.
 	- [ ] set up some geters.
 
 - [ ] parse the authority.

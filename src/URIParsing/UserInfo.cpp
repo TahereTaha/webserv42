@@ -4,11 +4,10 @@
 #include <string>
 
 #include <URI.hpp>
+#include <percent_encoding_utils.hpp>
 
 //	helper functions.
 
-//	it will return a iterator to the position of the @ if it finds one delimiting the user info.
-//	else it will return end.
 static std::vector<std::string>::iterator	get_at_sign_delimiter(	\
 											std::vector<std::string>::iterator &iter, \
 											std::vector<std::string>::iterator end)
@@ -40,6 +39,7 @@ UserInfo::UserInfo(std::string text)
 {
 	this->_text = text;
 	this->fillUserAndPassword();
+	this->normalize();
 }
 
 UserInfo::UserInfo(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end)
@@ -54,6 +54,7 @@ UserInfo::UserInfo(std::vector<std::string>::iterator &iter, std::vector<std::st
 		iter++;
 	}
 	this->fillUserAndPassword();
+	this->normalize();
 }
 
 UserInfo::~UserInfo(void)
@@ -75,5 +76,11 @@ void	UserInfo::fillUserAndPassword(void)
 		this->_password = "";
 		this->_isPasswordSet = 0;
 	}
+}
+
+void	UserInfo::normalize(void)
+{
+	this->_user = decode_pct_encoded_string(this->_user);
+	this->_password = decode_pct_encoded_string(this->_password);
 }
 
