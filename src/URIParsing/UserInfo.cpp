@@ -84,3 +84,13 @@ void	UserInfo::normalize(void)
 	this->_password = decode_pct_encoded_string(this->_password);
 }
 
+std::string	UserInfo::getUse(void) const
+{
+	return (this->_user);
+}
+
+std::string	UserInfo::getPassword(void) const
+{
+	return (this->_password);
+}
+
