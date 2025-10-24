@@ -32,10 +32,15 @@ class URI
 
 		void	identifyURIType(void);
 
+		int			_isSchemeSet;
 		Scheme		_scheme;
+		int			_isAuthoritySet;
 		Authority	_authority;
+		//	the path will allways be set even if it is empty.
 //		Path		_path;
+//		int			_isQuerySet;
 //		Query		_query;
+//		int			_isFargmentSet;
 //		Fragment	_fragment;
 
 		//	this will be out.
@@ -47,8 +52,8 @@ class URI
 		URI(std::string uri);
 		~URI();
 
-//		Scheme		&getScheme(void);
-//		Authority	&getAuthority(void);
+		Scheme		&getScheme(void);
+		Authority	&getAuthority(void);
 //		Path		&getPath(void);
 //		Query		&getQuery(void);
 //		Fragment	&getFragment(void);

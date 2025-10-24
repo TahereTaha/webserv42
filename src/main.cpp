@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/10/22 11:53:36 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:34:37 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <multy_parse_exception.hpp>
 
 #include <AParser.hpp>
+
 
 //
 //int	main(int argc, char **argv)
@@ -54,14 +55,39 @@
 
 
 #include <URI.hpp>
+#include <UserInfo.hpp>
+#include <stdexcept>
 
 int main(void)
 {
-	std::string	url = "https://datatracker.ietf.org/doc/html/rfc3986#section-3";
+	std::string	url = "http://taha:123@datatracker.ietf.org/doc/html/rfc3986#section-3";
+//	std::string	url = "http://datatracker.ietf.org/doc/html/rfc3986#section-3";
 //	std::string	url = "//datatracker.ietf.org/doc/html/rfc3986#section-3";
 //	std::string	url = "/doc/html/rfc3986#section-3";
 //	std::string	url = "doc/html/rfc3986#section-3";
 
 	URI	uri(url);
+	if(uri.getScheme() == scheme_HTTP)
+		std::cout << "it is http" << std::endl;
+	if(uri.getScheme() == scheme_HTTPS)
+		std::cout << "it is https" << std::endl;
+	try
+	{
+		std::cout << "the user is:" << uri.getAuthority().getUserInfo().getUser() << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "there is no user set." << std::endl;
+		std::cout << e.what() << std::endl;
+	}
+	try
+	{
+		std::cout << "the password is:" << uri.getAuthority().getUserInfo().getPassword() << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "there is no password set." << std::endl;
+		std::cout << e.what() << std::endl;
+	}
 }
 

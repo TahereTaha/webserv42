@@ -23,7 +23,7 @@
 	- [x] extract the user and the password.
 	- [x] normalize the content.
 	- [x] set up some geters.
-	- [ ] set up some geters.
+	- [ ] test it.
 
 - [ ] parse the authority.
 	- [x] make a class that will hold all the parts.
