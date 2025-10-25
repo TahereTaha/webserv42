@@ -17,19 +17,26 @@
 	- text
 	- number
 
-- [ ] parse the user info.
+- [x] parse the user info.
 	- [x] make the class.
 	- [x] make the constructors.
 	- [x] extract the user and the password.
 	- [x] normalize the content.
 	- [x] set up some geters.
-	- [ ] test it.
+	- [x] test it.
+
+- [ ] parse the host.
+	- [x] make the class.
+	- [x] make the constructors.
+	- [ ] identify the host type.
+	- [ ] make host spesific checks.
+	- [ ] add methods to return the ip in a standar format.
 
 - [ ] parse the authority.
 	- [x] make a class that will hold all the parts.
 	- [x] get all the needed info from the from the input.
 	- [x]  separete out the tokenizer logic from the URI class.
-	- [ ] make the user info.
+	- [x] make the user info.
 	- [ ] make the host.
 	- [ ] make the port.
 
