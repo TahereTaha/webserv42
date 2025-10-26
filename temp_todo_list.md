@@ -17,7 +17,6 @@
 	- text
 	- number
 
-- [ ] make a reg name object.
 - [ ] make a ip literal.
 - [ ] make a ipv4 object.
 - [ ] make a ipv6 object.

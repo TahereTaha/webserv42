@@ -7,9 +7,6 @@ typedef enum
 {
 	REG_NAME = 0 ,					//	REG_NAME is registered name.
 	IP_LITERAL,
-	IP_LITERAL_V4_ADDRESS,
-	IP_LITERAL_V6_ADDRESS,
-	IP_LITERAL_V_FUTURE,
 }	t_host_type;
 
 class Host
@@ -19,7 +16,7 @@ class Host
 
 		t_host_type	_type;
 
-//		IP_LITERAL	ip;
+//		IP_LITERAL	_ip;
 
 	protected:
 	public:
