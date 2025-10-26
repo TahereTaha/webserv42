@@ -18,13 +18,13 @@
 	- number
 
 - [ ] make a reg name object.
+- [ ] make a ip literal.
 - [ ] make a ipv4 object.
 - [ ] make a ipv6 object.
 
 - [ ] parse the host.
 	- [x] make the class.
 	- [x] make the constructors.
-	- [x] identify the host type.
 	- [ ] make a geter for the type.
 
 - [ ] parse the authority.
