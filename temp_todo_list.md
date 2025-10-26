@@ -17,8 +17,9 @@
 	- text
 	- number
 
+- [ ] make a reg name object.
 - [ ] make a ipv4 object.
-
+- [ ] make a ipv6 object.
 
 - [ ] parse the host.
 	- [x] make the class.
