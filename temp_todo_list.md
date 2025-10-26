@@ -28,7 +28,7 @@
 - [ ] parse the host.
 	- [x] make the class.
 	- [x] make the constructors.
-	- [ ] identify the host type.
+	- [x] identify the host type.
 	- [ ] make host spesific checks.
 	- [ ] add methods to return the ip in a standar format.
 
