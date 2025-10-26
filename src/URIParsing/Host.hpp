@@ -6,11 +6,10 @@
 typedef enum
 {
 	REG_NAME = 0 ,					//	REG_NAME is registered name.
-	IP_V4_ADDRESS,
-	IP_LITERAL,
+	IP_V4_ADDRESS,					//	a ipv4 in decimal doted notation.
+	IP_LITERAL,						//	a ip encapsulated in [].
 	IP_LITERAL_V6_ADDRESS,
 	IP_LITERAL_V_FUTURE,
-	IP_LITERAL_UNSUPORTED,
 }	t_host_type;
 
 class Host

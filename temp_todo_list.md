@@ -17,20 +17,14 @@
 	- text
 	- number
 
-- [x] parse the user info.
-	- [x] make the class.
-	- [x] make the constructors.
-	- [x] extract the user and the password.
-	- [x] normalize the content.
-	- [x] set up some geters.
-	- [x] test it.
+- [ ] make a ipv4 object.
+
 
 - [ ] parse the host.
 	- [x] make the class.
 	- [x] make the constructors.
 	- [x] identify the host type.
-	- [ ] make host spesific checks.
-	- [ ] add methods to return the ip in a standar format.
+	- [ ] make a geter for the type.
 
 - [ ] parse the authority.
 	- [x] make a class that will hold all the parts.
@@ -71,7 +65,11 @@
 	- [ ] make server.
 - [ ] write the translator to the structure.
 
+
+
 - making the checker.
+
+
 
 - [ ] web server
 	- [x] read the arguments.
@@ -83,6 +81,8 @@
 		- [ ] init.
 	- [ ] set up the server.
 	- [ ] run the server.
+
+
 
 error msg 1:
 - error kind
