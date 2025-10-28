@@ -28,12 +28,16 @@ Authority::Authority(	std::vector<std::string>::iterator &iter, \
 		iter = start;
 		throw (std::invalid_argument("incorrect authority"));
 	}
+	if (iter == end)
+		throw (std::invalid_argument("incorrect authority"));
 	iter++;
 	if (iter != end && *iter != "/")
 	{
 		iter = start;
 		throw (std::invalid_argument("incorrect authority"));
 	}
+	if (iter == end)
+		throw (std::invalid_argument("incorrect authority"));
 	iter++;
 	this->_text = "";
 	while (iter != end && *iter != "/" && *iter != "?" && *iter != "#")
@@ -50,7 +54,7 @@ Authority::Authority(	std::vector<std::string>::iterator &iter, \
 	this->_userInfo = UserInfo(this_iter, this_end);
 	if (this_iter != this_start)
 		this->_isUserInfoSet = 1;
-//	this->_host = Host();
+	this->_host = Host();
 //	this->_port = Port();
 }
 
@@ -61,5 +65,10 @@ Authority::~Authority(void)
 UserInfo	&Authority::getUserInfo(void)
 {
 	return (this->_userInfo);
+}
+
+Host		&Authority::getHost(void)
+{
+	return (this->_host);
 }
 
