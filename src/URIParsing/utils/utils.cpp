@@ -1,7 +1,9 @@
 #include "utils.hpp"
 
+#include <limits>
+#include <stdexcept>
 
-int	stoi(std::string num_str, size_t *pos = 0, int base = 10)
+int	stoi(std::string num_str, size_t *pos, int base)
 {
 	size_t	i = 0;
 	long	num = 0;
@@ -22,6 +24,7 @@ int	stoi(std::string num_str, size_t *pos = 0, int base = 10)
 		throw (std::invalid_argument("not a int"));
 	while (i < num_str.size() && isalnum(num_str[i]))
 	{
+		num_str[i] = std::tolower(num_str[i]);
 		digit = std::string(digit_char).find(num_str[i]);
 		digit *= sign;
 		num *= base;
@@ -37,12 +40,20 @@ int	stoi(std::string num_str, size_t *pos = 0, int base = 10)
 	return (num);
 }
 
-int	stricter_unsigned_stoi(std::string num_str, size_t *pos = 0, int base = 10)
+int	stricter_unsigned_stoi(std::string num_str, size_t *pos, int base)
 {
+	int		num;
+	size_t	local_pos;
+
 	if (isspace(num_str[0]))
 		throw (std::invalid_argument("can't be preceded by space."));
 	if (num_str[0] == '-' || num_str[0] == '+')
 		throw (std::invalid_argument("can't contain sign"));
-	return (stoi(num_str, pos, base));
+	num = stoi(num_str, &local_pos, base);
+	if ((size_t)pos == std::string::npos && local_pos != num_str.size())
+		throw (std::invalid_argument("not a int"));
+	if (pos != NULL)
+		*pos = local_pos;
+	return (num);
 }
 

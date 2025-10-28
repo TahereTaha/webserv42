@@ -18,8 +18,13 @@
 	- number
 
 - [ ] make a ip literal.
-- [ ] make a ipv4 object.
-- [ ] make a ipv6 object.
+	- [x] make the constructor.
+	- [x] make the make a identify.
+	- [x] parse all the octets to the data section.
+		- [x] ipv4
+		- [x] ipv6
+	- [ ] make some geters.
+	- [ ] test it.
 
 - [ ] parse the host.
 	- [x] make the class.

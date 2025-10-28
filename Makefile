@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/10/24 12:59:57 by tatahere         ###   ########.fr        #
+#    Updated: 2025/10/27 11:03:11 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/character_lexeme:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/keywords:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/literals:
 VPATH	+= $(SRC_DIR)exceptions:
-VPATH	+= $(SRC_DIR)URIParsing
+VPATH	+= $(SRC_DIR)URIParsing:
+VPATH	+= $(SRC_DIR)URIParsing/utils
 
 CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD -g
 
@@ -111,9 +112,11 @@ OBJ		:=	main.o						\
 										\
 			tokenize.o					\
 			percent_encoding_utils.o	\
+			utils.o						\
 										\
 			Scheme.o					\
 			UserInfo.o					\
+			IpLiteral.o					\
 			Host.o						\
 			Authority.o					\
 			URI.o						\

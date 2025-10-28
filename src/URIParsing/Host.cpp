@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+#include <IpLiteral.hpp>
 
 //	class methods.
 
@@ -40,20 +41,22 @@ Host::Host(std::vector<std::string>::iterator &iter, std::vector<std::string>::i
 	}
 	if (this->_text == "")
 		throw (std::invalid_argument("no host"));
-//	try
-//	{
-//		this->_ip IpLiteral(this->_text);
-//		this->_type = IP_LITERAL;
-//	}
-//	catch (std::except &e)
-//	{
-//		if (e.what() == "ip literal unsuported");
-//			throw (e);
-//		this->_type = REG_NAME;
-//	}
-	
+	try
+	{
+		this->_ip = IpLiteral(this->_text);
+		this->_type = IP_LITERAL;
+	}
+	catch (std::exception &e)
+	{
+		if (std::string(e.what()) == std::string("ip literal unsuported"))
+			throw (e);
+		if (this->_text[0] == '[')
+			throw (e);
+		this->_type = REG_NAME;
+	}
 }
 
 Host::~Host(void)
 {
 }
+
