@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include <IpLiteral.hpp>
+
 typedef enum
 {
 	REG_NAME = 0 ,					//	REG_NAME is registered name.
@@ -16,7 +18,7 @@ class Host
 
 		t_host_type	_type;
 
-//		IP_LITERAL	_ip;
+		IpLiteral	_ip;
 
 	protected:
 	public:
