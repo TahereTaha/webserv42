@@ -15,7 +15,7 @@ class Authority
 
 		int			_isUserInfoSet;
 		UserInfo	_userInfo;
-//		Host		_host;
+		Host		_host;
 //		Port		_port;
 
 	protected:

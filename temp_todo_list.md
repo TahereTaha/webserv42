@@ -17,6 +17,9 @@
 	- text
 	- number
 
+- [ ] check the logic on the authority constructor.
+- [ ] add all the geter to the the ipliterals.
+
 - [ ] make a ip literal.
 	- [x] make the constructor.
 	- [x] make the make a identify.

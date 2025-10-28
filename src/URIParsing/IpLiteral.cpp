@@ -185,3 +185,51 @@ void	IpLiteral::identifyType(void)
 		this->_type = IP_V_4;
 }
 
+t_IpLiteral_type	IpLiteral::getType(void) const
+{
+	return (this->_type);
+}
+
+uint8_t				*IpLiteral::getData(void)
+{
+	return (this->_data);
+}
+
+#include <iostream>
+#include <ios>
+
+static void	print_ipv4(uint8_t *data)
+{
+	size_t	i = 0;
+	while (i < IP_V4_DATA_SIZE)
+	{
+		std::cout << (int)data[i];
+		if (i + 1 != IP_V4_DATA_SIZE)
+			std::cout << ".";
+		i++;
+	}
+	std::cout << std::endl;
+}
+
+static void	print_ipv6(uint8_t *_data)
+{
+	size_t	i = 0;
+	uint16_t	*data = _data;
+	while (i < IP_V6_DATA_SIZE / 2)
+	{
+		std::cout << std::hex << (int) data[i];
+		if (i + 1 != IP_V6_DATA_SIZE / 2)
+			std::cout << ":";
+		i++;
+	}
+	std::cout << std::dec << std::endl;
+}
+
+void	IpLiteral::print(void) const
+{
+	if (this->_type == IP_V_4)
+		print_ipv4(this->_data);
+	else
+		print_ipv6(this->_data);
+}
+

@@ -30,6 +30,10 @@ class IpLiteral
 		IpLiteral(std::string text);
 		~IpLiteral(void);
 
-		t_IpLiteral_type	*getType(void) const;
+		t_IpLiteral_type	getType(void) const;
+		uint8_t				*getData(void);
+
+		//	this is for debug purposes only.
+		void	print(void) const;
 };
 
