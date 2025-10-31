@@ -52,7 +52,7 @@ int	stricter_unsigned_stoi(std::string num_str, size_t *pos, int base)
 	num = stoi(num_str, &local_pos, base);
 	if ((size_t)pos == std::string::npos && local_pos != num_str.size())
 		throw (std::invalid_argument("not a int"));
-	if (pos != NULL)
+	if (pos != NULL && (size_t)pos != std::string::npos)
 		*pos = local_pos;
 	return (num);
 }
