@@ -35,8 +35,6 @@ UserInfo::UserInfo(void)
 UserInfo::UserInfo(std::string text)
 {
 	this->_text = text;
-	std::cout << "this is the user info constructor." << std::endl;
-	std::cout << this->_text << std::endl;
 	this->fillUserAndPassword();
 	this->normalize();
 }
@@ -44,16 +42,14 @@ UserInfo::UserInfo(std::string text)
 UserInfo::UserInfo(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end)
 {
 	this->_text = "";
-	std::cout << "this is the user info constructor." << std::endl;
 	std::vector<std::string>::iterator	at_sign = get_at_sign_delimiter(iter, end);
 	if (at_sign == end)
-		return ;
+		throw (std::invalid_argument("no userinfo"));
 	while (iter <= at_sign)
 	{
 		this->_text += *iter;
 		iter++;
 	}
-	std::cout << this->_text << std::endl;
 	this->fillUserAndPassword();
 	this->normalize();
 }

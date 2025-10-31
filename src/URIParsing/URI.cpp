@@ -17,7 +17,7 @@ URI::URI(std::string uri)
 	this->_tokens = tokenize(this->_text, gen_delims);
 	if (this->_tokens.size() == 0)
 		throw (std::invalid_argument("invalid uri"));
-	print_tokens(this->_tokens);
+//	print_tokens(this->_tokens);
 
 	this->identifyURIType();
 
@@ -37,8 +37,18 @@ URI::URI(std::string uri)
 
 	if (this->_type <= NETWORK_PATH)
 	{
-		this->_isAuthoritySet = 1;
-		this->_authority = Authority(iter, end);
+		std::vector<std::string>::iterator	check_point = iter;
+		try
+		{
+			this->_authority = Authority(iter, end);
+			this->_isAuthoritySet = 1;
+		}
+		catch (std::exception &e)
+		{
+			if (std::string("no authority") != std::string(e.what()))
+				throw ;
+			iter = check_point;
+		}
 	}
 
 //	this->_path = Path(iter, end);

@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/10/24 12:34:37 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/10/31 11:34:15 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,36 +58,66 @@
 #include <UserInfo.hpp>
 #include <stdexcept>
 
+//int main(void)
+//{
+//	std::string	url = "http://taha:123@datatracker.ietf.org/doc/html/rfc3986#section-3";
+////	std::string	url = "http://datatracker.ietf.org/doc/html/rfc3986#section-3";
+////	std::string	url = "//datatracker.ietf.org/doc/html/rfc3986#section-3";
+////	std::string	url = "/doc/html/rfc3986#section-3";
+////	std::string	url = "doc/html/rfc3986#section-3";
+//
+//	URI	uri(url);
+//	if(uri.getScheme() == scheme_HTTP)
+//		std::cout << "it is http" << std::endl;
+//	if(uri.getScheme() == scheme_HTTPS)
+//		std::cout << "it is https" << std::endl;
+//	try
+//	{
+//		std::cout << "the user is:" << uri.getAuthority().getUserInfo().getUser() << std::endl;
+//	}
+//	catch (std::exception &e)
+//	{
+//		std::cout << "there is no user set." << std::endl;
+//		std::cout << e.what() << std::endl;
+//	}
+//	try
+//	{
+//		std::cout << "the password is:" << uri.getAuthority().getUserInfo().getPassword() << std::endl;
+//	}
+//	catch (std::exception &e)
+//	{
+//		std::cout << "there is no password set." << std::endl;
+//		std::cout << e.what() << std::endl;
+//	}
+//}
+
 int main(void)
 {
-	std::string	url = "http://taha:123@datatracker.ietf.org/doc/html/rfc3986#section-3";
-//	std::string	url = "http://datatracker.ietf.org/doc/html/rfc3986#section-3";
-//	std::string	url = "//datatracker.ietf.org/doc/html/rfc3986#section-3";
-//	std::string	url = "/doc/html/rfc3986#section-3";
-//	std::string	url = "doc/html/rfc3986#section-3";
-
-	URI	uri(url);
-	if(uri.getScheme() == scheme_HTTP)
-		std::cout << "it is http" << std::endl;
-	if(uri.getScheme() == scheme_HTTPS)
-		std::cout << "it is https" << std::endl;
 	try
 	{
-		std::cout << "the user is:" << uri.getAuthority().getUserInfo().getUser() << std::endl;
+//		URI	url1("http://126.1.0.42");
+//		url1.getAuthority().getHost().getIp().print();
+//		
+//		URI	url2("http://126.1.77.42");
+//		url2.getAuthority().getHost().getIp().print();
+		
+		URI	url3("http://[::]");
+		url3.getAuthority().getHost().getIp().print();
+		
+		URI	url4("http://[23a::aab]");
+		url4.getAuthority().getHost().getIp().print();
+		
+		URI	url5("http://[23a:3:ff:1234::]");
+		url5.getAuthority().getHost().getIp().print();
+		
+		URI	url6("http://[23a:3:ff:1234::ca1]");
+		url6.getAuthority().getHost().getIp().print();
+		
 	}
 	catch (std::exception &e)
 	{
-		std::cout << "there is no user set." << std::endl;
-		std::cout << e.what() << std::endl;
-	}
-	try
-	{
-		std::cout << "the password is:" << uri.getAuthority().getUserInfo().getPassword() << std::endl;
-	}
-	catch (std::exception &e)
-	{
-		std::cout << "there is no password set." << std::endl;
-		std::cout << e.what() << std::endl;
+		std::cout << "this exception is: " << e.what() << std::endl;
+		return (1);
 	}
 }
 

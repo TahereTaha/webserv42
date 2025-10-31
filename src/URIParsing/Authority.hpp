@@ -4,6 +4,7 @@
 #include <string>
 
 #include <UserInfo.hpp>
+#include <Host.hpp>
 
 #define AUTHORITY_DELIMITERS "@:"
 
@@ -26,7 +27,7 @@ class Authority
 		~Authority(void);
 
 		UserInfo	&getUserInfo(void);
-//		Host		&getHost(void);
+		Host		&getHost(void);
 //		Port		&getPort(void);
 };
 

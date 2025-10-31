@@ -17,8 +17,11 @@
 	- text
 	- number
 
-- [ ] check the logic on the authority constructor.
-- [ ] add all the geter to the the ipliterals.
+- [x] change the constructor to retun expection if the component doesn't belong there.
+- [x]  add all the geter to the the ipliterals.
+- [x] fix all the incorrect exception handeling.
+- [ ] 
+- [ ] check why it is not making the ip literal.
 
 - [ ] make a ip literal.
 	- [x] make the constructor.
