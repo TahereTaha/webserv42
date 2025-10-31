@@ -49,4 +49,3 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleAnd::consumeTerminals(terminal_iter &
 //		e.setColumn((*iter)->getColumn());
 //		e.setSize((*iter)->getSize());
 //
-//		throw (e);

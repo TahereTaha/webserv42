@@ -14,12 +14,13 @@ static void	read_ipv4_octets(std::string text, uint8_t *data_buff)
 {
 	size_t	octet_count = 0;
 	size_t	i = 0;
-
 	unsigned int	num = 0;
 
 	while (i < text.size() && octet_count < IP_V4_DATA_SIZE)
 	{
-		num = stricter_unsigned_stoi(text, &i);
+		size_t	consumed_characters = 0;
+		num = stricter_unsigned_stoi(text.substr(i), &consumed_characters);
+		i += consumed_characters;
 		if (std::numeric_limits<unsigned char>::max() < num)
 			throw (std::invalid_argument("incorrect octet"));
 		data_buff[octet_count] = num;
@@ -28,7 +29,7 @@ static void	read_ipv4_octets(std::string text, uint8_t *data_buff)
 		octet_count++;
 		i++;
 	}
-	if (i < text.size() || octet_count < IP_V4_DATA_SIZE)
+	if (i == text.size() || octet_count < IP_V4_DATA_SIZE)
 		throw (std::invalid_argument("incorrect ipv4"));
 }
 
@@ -39,7 +40,7 @@ static size_t	read_ipv6_first_octets(std::vector<std::string> tokens, uint8_t *d
 	uint16_t	piece_num = 0;
 
 	if (tokens[0] == ":")
-		throw (std::invalid_argument("incorrect ipv6"));
+		return (octet_count);
 	while (i < tokens.size() && octet_count < IP_V6_DATA_SIZE)
 	{
 		if (tokens[i] == ":" && tokens[i + 1] == ":")
@@ -158,6 +159,7 @@ IpLiteral::IpLiteral(void)
 
 IpLiteral::IpLiteral(std::string text)
 {
+	std::memset(this->_data, 0, IP_MAX_DATA_SIZE);
 	this->_text = text;
 	this->identifyType();
 	if (this->_type == IP_V_FUTURE)
@@ -198,7 +200,7 @@ uint8_t				*IpLiteral::getData(void)
 #include <iostream>
 #include <ios>
 
-static void	print_ipv4(uint8_t *data)
+static void	print_ipv4(const uint8_t *data)
 {
 	size_t	i = 0;
 	while (i < IP_V4_DATA_SIZE)
@@ -211,10 +213,10 @@ static void	print_ipv4(uint8_t *data)
 	std::cout << std::endl;
 }
 
-static void	print_ipv6(uint8_t *_data)
+static void	print_ipv6(const uint8_t *_data)
 {
 	size_t	i = 0;
-	uint16_t	*data = _data;
+	const uint16_t	*data = (const uint16_t *)_data;
 	while (i < IP_V6_DATA_SIZE / 2)
 	{
 		std::cout << std::hex << (int) data[i];

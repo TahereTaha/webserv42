@@ -34,7 +34,7 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleRepetition::consumeTerminals(terminal
 		{
 			iter = check_point;
 			if (i < this->_min || i > this->_max)
-				throw (e);
+				throw ;
 			break ;
 		}
 		return_val.insert(return_val.end(), tmp_vector.begin(), tmp_vector.end());

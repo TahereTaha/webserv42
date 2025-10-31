@@ -26,5 +26,9 @@ class Host
 		Host(std::string text);
 		Host(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end);
 		~Host(void);
+
+		t_host_type	getType(void) const ;
+		std::string	getRegName(void) const ;
+		IpLiteral	&getIp(void);
 };
 
