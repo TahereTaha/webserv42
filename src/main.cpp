@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/10/31 11:34:15 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/10/31 19:29:55 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,19 +100,19 @@ int main(void)
 //		
 //		URI	url2("http://126.1.77.42");
 //		url2.getAuthority().getHost().getIp().print();
-		
-		URI	url3("http://[::]");
-		url3.getAuthority().getHost().getIp().print();
-		
+//		
+//		URI	url3("http://[::]");
+//		url3.getAuthority().getHost().getIp().print();
+
 		URI	url4("http://[23a::aab]");
 		url4.getAuthority().getHost().getIp().print();
-		
+
 		URI	url5("http://[23a:3:ff:1234::]");
 		url5.getAuthority().getHost().getIp().print();
-		
+
 		URI	url6("http://[23a:3:ff:1234::ca1]");
 		url6.getAuthority().getHost().getIp().print();
-		
+
 	}
 	catch (std::exception &e)
 	{

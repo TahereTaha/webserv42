@@ -62,8 +62,9 @@ static size_t	read_ipv6_first_octets(std::vector<std::string> tokens, uint8_t *d
 				break ;
 			}
 			piece_num = stricter_unsigned_stoi(tokens[i], (size_t *)std::string::npos, 16);
-			data_buff[octet_count] = piece_num >> 8;
-			data_buff[octet_count] = piece_num;
+			data_buff[octet_count + 1] = (uint8_t)(piece_num >> 8);
+			data_buff[octet_count] = (uint8_t)(piece_num);
+			octet_count += 2;
 		}
 		i++;
 	}
@@ -90,6 +91,7 @@ static size_t	read_ipv6_last_octets(std::vector<std::string> tokens, uint8_t *da
 		if (tokens[i] != ":")
 		{
 			// check if the last two pieces are replaced by a ipv4.
+		octet_count += 1;
 			if (tokens.size() == i + 1 && tokens[i].find('.') != std::string::npos)
 			{
 				try
@@ -100,11 +102,13 @@ static size_t	read_ipv6_last_octets(std::vector<std::string> tokens, uint8_t *da
 				{
 					throw (std::invalid_argument("incorrect ipv6"));
 				}
-				return (IP_MAX_DATA_SIZE);
+				octet_count += 4;
+				return (octet_count);
 			}
 			piece_num = stricter_unsigned_stoi(tokens[i], (size_t *)std::string::npos, 16);
-			data_buff[octet_count] = piece_num >> 8;
+			data_buff[octet_count + 1] = piece_num >> 8;
 			data_buff[octet_count] = piece_num;
+			octet_count += 2;
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 #include <UserInfo.hpp>
 #include <Host.hpp>
 
-#define AUTHORITY_DELIMITERS "@:"
+#define AUTHORITY_DELIMITERS "@:[]"
 
 class Authority
 {
