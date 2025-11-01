@@ -6,6 +6,7 @@
 
 #include <tokenize.hpp>
 #include <UserInfo.hpp>
+#include <utils.hpp>
 
 Authority::Authority(void)
 {
@@ -62,8 +63,17 @@ Authority::Authority(	std::vector<std::string>::iterator &iter, \
 	}
 	//	set the host.
 	this->_host = Host(this_iter, this_end);
+
 	//	set the port.
-//	this->_port = Port();
+	this->_port = 0;
+	if (this_iter == this_end)
+		return ;
+	if (*this_iter != "")
+		throw (std::invalid_argument("incorrect port"));
+	this_iter++;
+	this->_port = stricter_unsigned_stoi(*this_iter, (size_t *)std::string::npos);
+	if (this_iter != this_end)
+		throw (std::invalid_argument("incorrect authority"));
 }
 
 Authority::~Authority(void)

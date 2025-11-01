@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include <percent_encoding_utils.hpp>
+
 #include <IpLiteral.hpp>
 
 //	class methods.
@@ -48,6 +50,7 @@ Host::Host(std::vector<std::string>::iterator &iter, std::vector<std::string>::i
 		if (this->_text[0] == '[')
 			throw ;
 		this->_type = REG_NAME;
+		this->_text = decode_pct_encoded_string(this->_text);
 	}
 }
 
@@ -73,5 +76,4 @@ IpLiteral	&Host::getIp()
 		throw (std::out_of_range("not a ip literal"));
 	return (this->_ip);
 }
-
 

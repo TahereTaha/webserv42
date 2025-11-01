@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <stdint.h>
 
 #include <UserInfo.hpp>
 #include <Host.hpp>
@@ -17,7 +18,7 @@ class Authority
 		int			_isUserInfoSet;
 		UserInfo	_userInfo;
 		Host		_host;
-//		Port		_port;
+		uint16_t	_port;
 
 	protected:
 	public:
@@ -28,6 +29,6 @@ class Authority
 
 		UserInfo	&getUserInfo(void);
 		Host		&getHost(void);
-//		Port		&getPort(void);
+		uint16_t	&getPort(void);
 };
 

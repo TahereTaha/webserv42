@@ -21,39 +21,36 @@
 - [x]  add all the geter to the the ipliterals.
 - [x] fix all the incorrect exception handeling.
 - [x] rewrite the host constructor. (it is incorrect).
-- [ ] check why it is not making the ip literal.
+- [x] check why it is not making the ip literal.
 
-- [ ] make a ip literal.
+- [x] make a ip literal.
 	- [x] make the constructor.
 	- [x] make the make a identify.
 	- [x] parse all the octets to the data section.
 		- [x] ipv4
 		- [x] ipv6
-	- [ ] make some geters.
-	- [ ] test it.
+	- [x] make some geters.
+	- [x] test it.
 
-- [ ] parse the host.
+- [x] parse the host.
 	- [x] make the class.
 	- [x] make the constructors.
-	- [ ] make a geter for the type.
+	- [x] make a geter for the type.
 
-- [ ] parse the authority.
+- [x] parse the authority.
 	- [x] make a class that will hold all the parts.
 	- [x] get all the needed info from the from the input.
 	- [x]  separete out the tokenizer logic from the URI class.
 	- [x] make the user info.
-	- [ ] make the host.
-	- [ ] make the port.
+	- [x] make the host.
+	- [x] make the port.
+	- [ ] add methods to get the address. 
 
 - [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.
 - [x] parse the scheme.
-- [ ] parse the authority.
-	- [ ] parse the user info.
-	- [ ] parse the host.
-		- [ ] parse the ip.
-		- [ ] parse the host name.
-	- [ ] parse the port.
+- [x] parse the authority.
+	- [ ] make a method to get the sockaddr structure.
 - [ ] parse the path.
 - [ ] parse the query.
 - [ ] parse the fragment.
