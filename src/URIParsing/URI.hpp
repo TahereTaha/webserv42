@@ -6,10 +6,14 @@
 
 #include <Scheme.hpp>
 #include <Authority.hpp>
+#include <Path.hpp>
 
 #define gen_delims	":/?#[]@"
 #define sub_delims	"!$&'()*+,;="
 #define reserved	gen_delims sub_delims
+
+//	this contains to all the alnum characters.
+#define UNRESERVED "-._~"
 
 //	this uri is made with the sole purpose of handeling http uris.
 //	using this class with other kinds of uri will result in undefined behevor.
@@ -37,7 +41,7 @@ class URI
 		int			_isAuthoritySet;
 		Authority	_authority;
 		//	the path will allways be set even if it is empty.
-//		Path		_path;
+		Path		_path;
 //		int			_isQuerySet;
 //		Query		_query;
 //		int			_isFargmentSet;

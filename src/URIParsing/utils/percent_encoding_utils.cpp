@@ -24,7 +24,7 @@ static unsigned int	hex_to_int(std::string text)
 	return (value);
 }
 
-static int	is_pct_encoded(std::string text)
+int	is_pct_encoded(std::string text)
 {
 	if (text.size() < 3)
 		return (0);

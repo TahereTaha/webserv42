@@ -17,34 +17,11 @@
 	- text
 	- number
 
-- [x] change the constructor to retun expection if the component doesn't belong there.
-- [x]  add all the geter to the the ipliterals.
-- [x] fix all the incorrect exception handeling.
-- [x] rewrite the host constructor. (it is incorrect).
-- [x] check why it is not making the ip literal.
 
-- [x] make a ip literal.
+- [ ] parse the path.
 	- [x] make the constructor.
-	- [x] make the make a identify.
-	- [x] parse all the octets to the data section.
-		- [x] ipv4
-		- [x] ipv6
-	- [x] make some geters.
-	- [x] test it.
-
-- [x] parse the host.
-	- [x] make the class.
-	- [x] make the constructors.
-	- [x] make a geter for the type.
-
-- [x] parse the authority.
-	- [x] make a class that will hold all the parts.
-	- [x] get all the needed info from the from the input.
-	- [x]  separete out the tokenizer logic from the URI class.
-	- [x] make the user info.
-	- [x] make the host.
-	- [x] make the port.
-	- [ ] add methods to get the address. 
+	- [x]  check that it is a valid path.
+	- [ ] normalize the path.
 
 - [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.

@@ -12,6 +12,8 @@ URI::URI(std::string uri)
 {
 	this->_isSchemeSet = 0;
 	this->_isAuthoritySet = 0;
+//	this->_isQuerySet = 0;
+//	this->_isFragmentSet = 0;
 	this->_text = uri;
 
 	this->_tokens = tokenize(this->_text, gen_delims);
@@ -26,6 +28,7 @@ URI::URI(std::string uri)
 //	std::vector<std::string>::iterator	check_point = iter;
 	std::vector<std::string>::iterator	end = this->_tokens.end();
 
+	//	parse the scheme
 	if (this->_type == FULL_FORM)
 	{
 		this->_isSchemeSet = 1;
@@ -35,6 +38,7 @@ URI::URI(std::string uri)
 		iter++;
 	}
 
+	//	parse the autthority
 	if (this->_type <= NETWORK_PATH)
 	{
 		std::vector<std::string>::iterator	check_point = iter;
@@ -51,18 +55,41 @@ URI::URI(std::string uri)
 		}
 	}
 
-//	this->_path = Path(iter, end);
+	//	parse the path
+	this->_path = Path(iter, end);
+
+//	//	parse the query
+//	{
+//		std::vector<std::string>::iterator	check_point = iter;
+//		try
+//		{
+//			this->_query = Query(iter, end);
+//			this->_isQuerySet = 1;
+//		}
+//		catch
+//		{
+//			if (std::string("no query"))
+//				throw ;
+//			iter = check_point;
+//		}
+//	}
 //
-//	check_point = iter;
-//	this->_query = Query(iter, end);
-//	if (check_point != iter)
-//		this->_isQuerySet = 1;
-//
-//	check_point = iter;
-//	this->_fragment = Fragment(iter, end);
-//	if (check_point != iter)
-//		this->_isFargmentSet = 1;
-//
+//	//	parse the fragment
+//	{
+//		std::vector<std::string>::iterator	check_point = iter;
+//		try
+//		{
+//			this->_fragment = Fragment(iter, end);
+//			this->_isFragmentSet = 1;
+//		}
+//		catch
+//		{
+//			if (std::string("no fragment"))
+//				throw ;
+//			iter = check_point;
+//		}
+//	}
+//	
 //	if (iter != end)
 //		throw (std::invalid_argument("invalid uri"));
 //
