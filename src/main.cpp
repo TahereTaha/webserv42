@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/10/31 19:29:55 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:36:53 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@
 #include <UserInfo.hpp>
 #include <stdexcept>
 
+//	full form and relative uris tests.
+
 //int main(void)
 //{
 //	std::string	url = "http://taha:123@datatracker.ietf.org/doc/html/rfc3986#section-3";
@@ -91,10 +93,12 @@
 //	}
 //}
 
-int main(void)
-{
-	try
-	{
+//	ip literals uri tests.
+
+//int main(void)
+//{
+//	try
+//	{
 //		URI	url1("http://126.1.0.42");
 //		url1.getAuthority().getHost().getIp().print();
 //		
@@ -103,21 +107,47 @@ int main(void)
 //		
 //		URI	url3("http://[::]");
 //		url3.getAuthority().getHost().getIp().print();
+//
+//		URI	url4("http://[23a::aab]");
+//		url4.getAuthority().getHost().getIp().print();
+//
+//		URI	url5("http://[23a:3:ff:1234::]");
+//		url5.getAuthority().getHost().getIp().print();
+//
+//		URI	url6("http://[23a:3:ff:1234::ca1]");
+//		url6.getAuthority().getHost().getIp().print();
+//	}
+//	catch (std::exception &e)
+//	{
+//		std::cout << "this exception is: " << e.what() << std::endl;
+//		return (1);
+//	}
+//}
 
-		URI	url4("http://[23a::aab]");
-		url4.getAuthority().getHost().getIp().print();
+#include <Path.hpp>
 
-		URI	url5("http://[23a:3:ff:1234::]");
-		url5.getAuthority().getHost().getIp().print();
-
-		URI	url6("http://[23a:3:ff:1234::ca1]");
-		url6.getAuthority().getHost().getIp().print();
-
-	}
-	catch (std::exception &e)
+int	main(void)
+{
+	//	testing the normalization without the pct encoding.
 	{
-		std::cout << "this exception is: " << e.what() << std::endl;
-		return (1);
+		Path	path1("/taha/tahere");
+		Path	path2("/taha/tahere/");
+		Path	path3("taha/tahere");
+		Path	path4("../taha//tahere");
+		Path	path5("pedro/../taha/./tahere");
+	
+		path1.print();
+		path2.print();
+		path3.print();
+		path4.print();
+		path5.print();
 	}
+	//	testing the normalization with the pct encoding.
+	{
+		Path	path1("/taha%2f/tahere");
+
+		path1.print();
+	}
+	return (0);
 }
 

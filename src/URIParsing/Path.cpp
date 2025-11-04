@@ -34,6 +34,7 @@ Path::Path(std::string text)
 {
 	this->_text = text;
 	this->check_correct_path();
+	this->fill_sections();
 	this->normalize_path();
 }
 
@@ -46,11 +47,17 @@ Path::Path(std::vector<std::string>::iterator &iter, std::vector<std::string>::i
 		iter++;
 	}
 	this->check_correct_path();
+	this->fill_sections();
 	this->normalize_path();
 }
 
 Path::~Path(void)
 {
+}
+
+std::vector<std::string>	Path::getSections(void) const
+{
+	return (this->_sections);
 }
 
 void	Path::check_correct_path(void)
@@ -95,7 +102,7 @@ void	Path::normalize_path(void)
 		{
 			if (new_sections.size() > 0 && this->_sections[i] == "..")
 				new_sections.pop_back();
-			else if (this->_sections[i] != ".")
+			else if (this->_sections[i] != "." && this->_sections[i] != "..")
 				new_sections.push_back(this->_sections[i]);
 			i++;
 		}
@@ -111,5 +118,21 @@ void	Path::normalize_path(void)
 			i++;
 		}
 	}
+}
+
+#include <iostream>
+
+void	Path::print(void) const 
+{
+	size_t	i = 0;
+
+	while (i < this->_sections.size())
+	{
+		std::cout << this->_sections[i];
+		if (i + 1 != this->_sections.size())
+			std::cout << ", ";
+		i++;
+	}
+	std::cout << std::endl;
 }
 
