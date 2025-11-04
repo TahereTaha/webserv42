@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/11/04 17:36:53 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:47:50 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,19 +129,19 @@
 int	main(void)
 {
 	//	testing the normalization without the pct encoding.
-	{
-		Path	path1("/taha/tahere");
-		Path	path2("/taha/tahere/");
-		Path	path3("taha/tahere");
-		Path	path4("../taha//tahere");
-		Path	path5("pedro/../taha/./tahere");
-	
-		path1.print();
-		path2.print();
-		path3.print();
-		path4.print();
-		path5.print();
-	}
+//	{
+//		Path	path1("/taha/tahere");
+//		Path	path2("/taha/tahere/");
+//		Path	path3("taha/tahere");
+//		Path	path4("../taha//tahere");
+//		Path	path5("pedro/../taha/./tahere");
+//	
+//		path1.print();
+//		path2.print();
+//		path3.print();
+//		path4.print();
+//		path5.print();
+//	}
 	//	testing the normalization with the pct encoding.
 	{
 		Path	path1("/taha%2f/tahere");
