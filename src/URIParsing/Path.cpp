@@ -4,6 +4,8 @@
 
 #include <URI.hpp>
 #include <percent_encoding_utils.hpp>
+#include <tokenize.hpp>
+
 //	helper functions.
 
 static int	is_pchar(int c)
@@ -32,6 +34,7 @@ Path::Path(std::string text)
 {
 	this->_text = text;
 	this->check_correct_path();
+//	this->normalize_path();
 }
 
 Path::Path(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end)
@@ -43,6 +46,7 @@ Path::Path(std::vector<std::string>::iterator &iter, std::vector<std::string>::i
 		iter++;
 	}
 	this->check_correct_path();
+//	this->normalize_path();
 }
 
 Path::~Path(void)
@@ -66,3 +70,22 @@ void	Path::check_correct_path(void)
 	}
 }
 
+void	Path::fill_sections(void)
+{
+	size_t	i = 0;
+	std::vector<std::string>	dirty_sections = tokenize(this->_text, "/");
+
+	while (i < dirty_sections.size())
+	{
+		if (dirty_sections[i] != "/")
+			this->_sections.push_back(dirty_sections[i]);
+		i++;
+	}
+}
+
+//
+//void	Path::normalize_path(void)
+//{
+//	
+//}
+//
