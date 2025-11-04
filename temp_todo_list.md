@@ -20,8 +20,11 @@
 
 - [ ] parse the path.
 	- [x] make the constructor.
-	- [x]  check that it is a valid path.
+	- [x] check that it is a valid path.
+	- [x] fill all the sections.
 	- [ ] normalize the path.
+	- [ ] add a oberloading for the ==.
+	- [ ] add a oberloading for the >.
 
 - [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.

@@ -16,9 +16,12 @@
 class Path
 {
 	private:
-		std::string	_text;
+		std::string					_text;
+		std::vector<std::string>	_sections;
 
 		void	check_correct_path(void);
+		void	fill_sections(void);
+//		void	normalize_path(void);
 	protected:
 	public:
 		Path(void);
