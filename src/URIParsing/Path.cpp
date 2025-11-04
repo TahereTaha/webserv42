@@ -66,7 +66,9 @@ void	Path::check_correct_path(void)
 
 	while (i < this->_text.size())
 	{
-		if (is_pct_encoded(this->_text.substr(i)))
+		if (this->_text[i] == '%' && !is_pct_encoded(this->_text.substr(i)))
+			throw (std::invalid_argument("incorrect path"));
+		else if (is_pct_encoded(this->_text.substr(i)))
 			i += 3;
 		else if (is_pchar(this->_text[i]))
 			i++;
