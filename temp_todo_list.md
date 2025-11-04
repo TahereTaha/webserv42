@@ -22,7 +22,8 @@
 	- [x] make the constructor.
 	- [x] check that it is a valid path.
 	- [x] fill all the sections.
-	- [ ] normalize the path.
+	- [x] normalize the path.
+	- [ ] test if everithing is working as espected.
 	- [ ] add a oberloading for the ==.
 	- [ ] add a oberloading for the >.
 
