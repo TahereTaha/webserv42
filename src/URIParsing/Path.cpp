@@ -34,7 +34,7 @@ Path::Path(std::string text)
 {
 	this->_text = text;
 	this->check_correct_path();
-//	this->normalize_path();
+	this->normalize_path();
 }
 
 Path::Path(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end)
@@ -46,7 +46,7 @@ Path::Path(std::vector<std::string>::iterator &iter, std::vector<std::string>::i
 		iter++;
 	}
 	this->check_correct_path();
-//	this->normalize_path();
+	this->normalize_path();
 }
 
 Path::~Path(void)
@@ -83,9 +83,33 @@ void	Path::fill_sections(void)
 	}
 }
 
-//
-//void	Path::normalize_path(void)
-//{
-//	
-//}
-//
+
+void	Path::normalize_path(void)
+{
+	//	simplify all the . and ..
+	{
+		size_t	i = 0;
+		std::vector<std::string>	new_sections;
+
+		while (i < this->_sections.size())
+		{
+			if (new_sections.size() > 0 && this->_sections[i] == "..")
+				new_sections.pop_back();
+			else if (this->_sections[i] != ".")
+				new_sections.push_back(this->_sections[i]);
+			i++;
+		}
+		this->_sections = new_sections;
+	}
+	//	pct decoding.
+	{
+		size_t	i = 0;
+
+		while (i < this->_sections.size())
+		{
+			this->_sections[i] = decode_pct_encoded_string(this->_sections[i]);
+			i++;
+		}
+	}
+}
+
