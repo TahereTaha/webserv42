@@ -17,6 +17,7 @@
 	- text
 	- number
 
+- [ ] give incorrect path on % that is not a correct pct encoding.
 
 - [ ] parse the path.
 	- [x] make the constructor.

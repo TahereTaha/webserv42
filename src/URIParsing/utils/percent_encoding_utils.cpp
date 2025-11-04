@@ -64,7 +64,7 @@ std::string	decode_pct_encoded_string(std::string text)
 	while (i < text.size())
 	{
 		//	append one character to the output string.
-		if (is_pct_encoded(text))
+		if (is_pct_encoded(text.substr(i)))
 			return_val += decode_pct_encoded(text.substr(i, std::string::npos));
 		else if (text[i] != '%')
 			return_val += text[i];
