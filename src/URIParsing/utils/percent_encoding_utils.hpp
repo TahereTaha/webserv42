@@ -9,6 +9,7 @@ class malformed_pct_encoding : public std::invalid_argument
 		malformed_pct_encoding(const std::string &msg) : std::invalid_argument(msg) {}
 };
 
+int	is_pct_encoded(std::string text);
 //	any malformed pct_encoding will be throw as exeptions.
 std::string	decode_pct_encoded_string(std::string text);
 
