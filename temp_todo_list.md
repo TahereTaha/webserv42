@@ -17,14 +17,14 @@
 	- text
 	- number
 
-- [ ] give incorrect path on % that is not a correct pct encoding.
+- [x] give incorrect path on % that is not a correct pct encoding.
 
 - [ ] parse the path.
 	- [x] make the constructor.
 	- [x] check that it is a valid path.
 	- [x] fill all the sections.
 	- [x] normalize the path.
-	- [ ] test if everithing is working as espected.
+	- [x] test if everithing is working as espected.
 	- [ ] add a oberloading for the ==.
 	- [ ] add a oberloading for the >.
 
