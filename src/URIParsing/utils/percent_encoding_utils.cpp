@@ -18,7 +18,7 @@ static unsigned int	hex_to_int(std::string text)
 		if (text[i] >= '0' && text[i] <= '9')
 			value += text[i] - '0';
 		else if (text[i] >= 'A' && text[i] <= 'F')
-			value += text[i] - '0';
+			value += text[i] - 'A' + 10;
 		i++;
 	}
 	return (value);
