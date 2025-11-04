@@ -29,5 +29,6 @@ class Path
 		Path(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end);
 		~Path(void);
 
-		std::string	getText(void) const;
+		std::vector<std::string>	getSections(void) const;
+		void	print(void) const;
 };
