@@ -55,11 +55,6 @@ Path::~Path(void)
 {
 }
 
-std::vector<std::string>	Path::getSections(void) const
-{
-	return (this->_sections);
-}
-
 void	Path::check_correct_path(void)
 {
 	size_t	i = 0;
@@ -122,8 +117,28 @@ void	Path::normalize_path(void)
 	}
 }
 
-#include <iostream>
+std::vector<std::string>	Path::getSections(void) const
+{
+	return (this->_sections);
+}
 
+std::string					Path::getPathText(void) const
+{
+	size_t	i = 0;
+	std::string	path = "/";
+
+	while (i < this->_sections.size())
+	{
+		path += encode_to_pct_encoding(this->_sections[i], gen_delims);
+		if (i + 1 != this->_sections.size())
+			path += "/";
+		i++;
+	}
+	return (path);
+}
+
+//	this if for testing purposes.
+#include <iostream>
 void	Path::print(void) const 
 {
 	size_t	i = 0;

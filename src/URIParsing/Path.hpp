@@ -30,5 +30,8 @@ class Path
 		~Path(void);
 
 		std::vector<std::string>	getSections(void) const;
+		std::string					getPathText(void) const;
+
+		//	for debuging purposes.
 		void	print(void) const;
 };
