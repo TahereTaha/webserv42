@@ -142,20 +142,20 @@ bool	Path::operator == (const Path &rhs) const
 	return (this->getPathText() == rhs.getPathText());
 }
 
-int		Path::is_prefix(const Path &prefix_path) const 
+int		Path::is_prefix_of(const Path &path) const 
 {
-	if (prefix_path._sections.size() > this->_sections.size())
+	if (path._sections.size() < this->_sections.size())
 		return (-1);
-	if (*this == prefix_path)
+	if (*this == path)
 		return (0);
 	size_t	i = 0;
-	while (i < prefix_path._sections.size())
+	while (i < this->_sections.size())
 	{
-		if (this->_sections[i] != prefix_path._sections[i])
+		if (this->_sections[i] != path._sections[i])
 			return (-1);
 		i++;
 	}
-	return (this->_sections.size() - i);
+	return (path._sections.size() - i);
 }
 
 //	this if for testing purposes.

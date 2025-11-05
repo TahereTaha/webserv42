@@ -6,7 +6,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/11/04 17:47:50 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/11/05 11:43:48 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,10 @@
 
 #include <Path.hpp>
 
-int	main(void)
-{
-	//	testing the normalization without the pct encoding.
+//
+//int	main(void)
+//{
+//	//	testing the normalization without the pct encoding.
 //	{
 //		Path	path1("/taha/tahere");
 //		Path	path2("/taha/tahere/");
@@ -142,11 +143,35 @@ int	main(void)
 //		path4.print();
 //		path5.print();
 //	}
-	//	testing the normalization with the pct encoding.
-	{
-		Path	path1("/taha%2f/tahere");
+//	//	testing the normalization with the pct encoding.
+//	{
+//		Path	path1("/taha%2f/tahere");
+//
+//		path1.print();
+//	}
+//	return (0);
+//}
 
-		path1.print();
+int main(void)
+{
+	{
+		Path	path1("hola_mundo");
+		Path	path2("hola%5fmundo");
+		Path	path3("hola__mundo");
+
+		std::cout << "comparison with two ecual paths: " << (int)(path1 == path2) << std::endl;
+		std::cout << "comparison with two not ecual paths: " << (int)(path2 == path3) << std::endl;
+	}
+	{
+		Path	path1("/taha/tahere/el%20berkani");
+		Path	path2("/taha/tahere/");
+		Path	path3("/mohamed/tahere/");
+		Path	path4("/taha/tahere/el%20berkani/sthhoeunta/stnaoehusn/tohenut/tuh/ooeu/oeu/oeu");
+
+		std::cout << "is path prefix of: " << path2.is_prefix_of(path1) << std::endl;
+		std::cout << "is path prefix of: " << path2.is_prefix_of(path2) << std::endl;
+		std::cout << "is path prefix of: " << path2.is_prefix_of(path3) << std::endl;
+		std::cout << "is path prefix of: " << path2.is_prefix_of(path4) << std::endl;
 	}
 	return (0);
 }
