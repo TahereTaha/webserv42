@@ -32,6 +32,13 @@ class Path
 		std::vector<std::string>	getSections(void) const;
 		std::string					getPathText(void) const;
 
+		bool	operator == (const Path &rhs) const ;
+	
+		//		in case of the path not being a prefix a negative is returned.
+		//		in case of it being a prefix a number is returned being all the extra segments that
+		//	the path has over the prefix. this number can be zero denoting the same path.
+		int		is_prefix(const Path &prefix_path) const ;
+
 		//	for debuging purposes.
 		void	print(void) const;
 };
