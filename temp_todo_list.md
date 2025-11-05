@@ -25,8 +25,9 @@
 	- [x] fill all the sections.
 	- [x] normalize the path.
 	- [x] test if everithing is working as espected.
-	- [ ] add a oberloading for the ==.
-	- [ ] add a oberloading for the >.
+	- [x] add a oberloading for the ==.
+	- [x] add a method to check for a path being a prefix to another path.
+	- [ ] test it.
 
 - [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.

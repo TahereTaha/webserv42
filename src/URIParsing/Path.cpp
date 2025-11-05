@@ -129,12 +129,33 @@ std::string					Path::getPathText(void) const
 
 	while (i < this->_sections.size())
 	{
-		path += encode_to_pct_encoding(this->_sections[i], gen_delims);
+		path += encode_to_pct_encoding(this->_sections[i], gen_delims " ");
 		if (i + 1 != this->_sections.size())
 			path += "/";
 		i++;
 	}
 	return (path);
+}
+
+bool	Path::operator == (const Path &rhs) const 
+{
+	return (this->getPathText() == rhs.getPathText());
+}
+
+int		Path::is_prefix(const Path &prefix_path) const 
+{
+	if (prefix_path._sections.size() > this->_sections.size())
+		return (-1);
+	if (*this == prefix_path)
+		return (0);
+	size_t	i = 0;
+	while (i < prefix_path._sections.size())
+	{
+		if (this->_sections[i] != prefix_path._sections[i])
+			return (-1);
+		i++;
+	}
+	return (this->_sections.size() - i);
 }
 
 //	this if for testing purposes.
