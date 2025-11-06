@@ -58,22 +58,22 @@ URI::URI(std::string uri)
 	//	parse the path
 	this->_path = Path(iter, end);
 
-//	//	parse the query
-//	{
-//		std::vector<std::string>::iterator	check_point = iter;
-//		try
-//		{
-//			this->_query = Query(iter, end);
-//			this->_isQuerySet = 1;
-//		}
-//		catch
-//		{
-//			if (std::string("no query"))
-//				throw ;
-//			iter = check_point;
-//		}
-//	}
-//
+	//	parse the query
+	{
+		std::vector<std::string>::iterator	check_point = iter;
+		try
+		{
+			this->_query = Query(iter, end);
+			this->_isQuerySet = 1;
+		}
+		catch (std::exception &e)
+		{
+			if (std::string("no query") != std::string(e.what()))
+				throw ;
+			iter = check_point;
+		}
+	}
+
 //	//	parse the fragment
 //	{
 //		std::vector<std::string>::iterator	check_point = iter;
@@ -143,5 +143,15 @@ Authority	&URI::getAuthority(void)
 	if (!this->_isAuthoritySet)
 		throw (std::out_of_range("unset authority"));
 	return (this->_authority);
+}
+
+Path		&URI::getPath(void)
+{
+	return (this->_path);
+}
+
+Query		&URI::getQuery(void)
+{
+	return (this->_query);
 }
 

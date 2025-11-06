@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:35:18 by tatahere          #+#    #+#             */
-/*   Updated: 2025/11/05 11:43:48 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/11/06 14:26:49 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,27 +153,34 @@
 //	return (0);
 //}
 
-int main(void)
+//int main(void)
+//{
+//	{
+//		Path	path1("hola_mundo");
+//		Path	path2("hola%5fmundo");
+//		Path	path3("hola__mundo");
+//
+//		std::cout << "comparison with two ecual paths: " << (int)(path1 == path2) << std::endl;
+//		std::cout << "comparison with two not ecual paths: " << (int)(path2 == path3) << std::endl;
+//	}
+//	{
+//		Path	path1("/taha/tahere/el%20berkani");
+//		Path	path2("/taha/tahere/");
+//		Path	path3("/mohamed/tahere/");
+//		Path	path4("/taha/tahere/el%20berkani/sthhoeunta/stnaoehusn/tohenut/tuh/ooeu/oeu/oeu");
+//
+//		std::cout << "is path prefix of: " << path2.is_prefix_of(path1) << std::endl;
+//		std::cout << "is path prefix of: " << path2.is_prefix_of(path2) << std::endl;
+//		std::cout << "is path prefix of: " << path2.is_prefix_of(path3) << std::endl;
+//		std::cout << "is path prefix of: " << path2.is_prefix_of(path4) << std::endl;
+//	}
+//	return (0);
+//}
+
+int	main(void)
 {
-	{
-		Path	path1("hola_mundo");
-		Path	path2("hola%5fmundo");
-		Path	path3("hola__mundo");
-
-		std::cout << "comparison with two ecual paths: " << (int)(path1 == path2) << std::endl;
-		std::cout << "comparison with two not ecual paths: " << (int)(path2 == path3) << std::endl;
-	}
-	{
-		Path	path1("/taha/tahere/el%20berkani");
-		Path	path2("/taha/tahere/");
-		Path	path3("/mohamed/tahere/");
-		Path	path4("/taha/tahere/el%20berkani/sthhoeunta/stnaoehusn/tohenut/tuh/ooeu/oeu/oeu");
-
-		std::cout << "is path prefix of: " << path2.is_prefix_of(path1) << std::endl;
-		std::cout << "is path prefix of: " << path2.is_prefix_of(path2) << std::endl;
-		std::cout << "is path prefix of: " << path2.is_prefix_of(path3) << std::endl;
-		std::cout << "is path prefix of: " << path2.is_prefix_of(path4) << std::endl;
-	}
+	URI	uri("https://datatracker.ietf.org/doc/html/rfc3986?user=taha#section-3");
+	std::cout << uri.getQuery().getText() << std::endl;
 	return (0);
 }
 
