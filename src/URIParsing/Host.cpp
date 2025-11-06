@@ -35,7 +35,10 @@ Host::Host(std::vector<std::string>::iterator &iter, std::vector<std::string>::i
 		this->_text += *iter;
 	}
 	else
+	{
 		this->_text = *iter;
+		iter++;
+	}
 	if (this->_text == "")
 		throw (std::invalid_argument("no host"));
 	try

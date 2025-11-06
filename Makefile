@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/11/01 17:12:42 by tatahere         ###   ########.fr        #
+#    Updated: 2025/11/05 12:57:02 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,6 +120,7 @@ OBJ		:=	main.o						\
 			Host.o						\
 			Authority.o					\
 			Path.o						\
+			Query.o						\
 			URI.o						\
 
 

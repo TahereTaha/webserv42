@@ -17,16 +17,9 @@
 	- text
 	- number
 
-- [x] give incorrect path on % that is not a correct pct encoding.
-
-- [ ] parse the path.
+- [ ] parse the query.
 	- [x] make the constructor.
-	- [x] check that it is a valid path.
-	- [x] fill all the sections.
-	- [x] normalize the path.
-	- [x] test if everithing is working as espected.
-	- [x] add a oberloading for the ==.
-	- [x] add a method to check for a path being a prefix to another path.
+	- [x] check that it is a valid query.
 	- [ ] test it.
 
 - [x] make percent encoder and decoder.
@@ -34,7 +27,7 @@
 - [x] parse the scheme.
 - [x] parse the authority.
 	- [ ] make a method to get the sockaddr structure.
-- [ ] parse the path.
+- [x] parse the path.
 - [ ] parse the query.
 - [ ] parse the fragment.
 - [ ] check scheme specific syntax.

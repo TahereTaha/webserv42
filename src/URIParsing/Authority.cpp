@@ -13,6 +13,7 @@ Authority::Authority(void)
 	this->_text = "";
 }
 
+//	this constructor is incorrect.
 Authority::Authority(std::string text)
 {
 	this->_isUserInfoSet = 0;
@@ -54,7 +55,7 @@ Authority::Authority(	std::vector<std::string>::iterator &iter, \
 			this->_userInfo = UserInfo(this_iter, this_end);
 			this->_isUserInfoSet = 1;
 		}
-		catch (std::invalid_argument &e)
+		catch (std::exception &e)
 		{
 			if (std::string("no userinfo") != std::string(e.what()))
 				throw ;

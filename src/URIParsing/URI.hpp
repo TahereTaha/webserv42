@@ -7,7 +7,9 @@
 #include <Scheme.hpp>
 #include <Authority.hpp>
 #include <Path.hpp>
+#include <Query.hpp>
 
+//					":/?@"
 #define gen_delims	":/?#[]@"
 #define sub_delims	"!$&'()*+,;="
 #define reserved	gen_delims sub_delims
@@ -42,13 +44,10 @@ class URI
 		Authority	_authority;
 		//	the path will allways be set even if it is empty.
 		Path		_path;
-//		int			_isQuerySet;
-//		Query		_query;
+		int			_isQuerySet;
+		Query		_query;
 //		int			_isFargmentSet;
 //		Fragment	_fragment;
-
-		//	this will be out.
-//		void	tokenize(void);
 
 	public:
 		//	this is guaranteed to throw if the text falls outside of the scope of uri.
@@ -58,8 +57,8 @@ class URI
 
 		Scheme		&getScheme(void);
 		Authority	&getAuthority(void);
-//		Path		&getPath(void);
-//		Query		&getQuery(void);
+		Path		&getPath(void);
+		Query		&getQuery(void);
 //		Fragment	&getFragment(void);
 };
 
