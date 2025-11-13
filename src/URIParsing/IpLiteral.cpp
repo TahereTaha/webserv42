@@ -62,8 +62,8 @@ static size_t	read_ipv6_first_octets(std::vector<std::string> tokens, uint8_t *d
 				break ;
 			}
 			piece_num = stricter_unsigned_stoi(tokens[i], (size_t *)std::string::npos, 16);
-			data_buff[octet_count + 1] = (uint8_t)(piece_num >> 8);
-			data_buff[octet_count] = (uint8_t)(piece_num);
+			data_buff[octet_count] = (uint8_t)(piece_num >> 8);
+			data_buff[octet_count + 1] = (uint8_t)(piece_num);
 			octet_count += 2;
 		}
 		i++;
@@ -72,6 +72,7 @@ static size_t	read_ipv6_first_octets(std::vector<std::string> tokens, uint8_t *d
 		throw (std::invalid_argument("incorrect ipv6"));
 	return (octet_count);
 }
+
 
 static size_t	read_ipv6_last_octets(std::vector<std::string> tokens, uint8_t *data_buff)
 {
@@ -91,7 +92,6 @@ static size_t	read_ipv6_last_octets(std::vector<std::string> tokens, uint8_t *da
 		if (tokens[i] != ":")
 		{
 			// check if the last two pieces are replaced by a ipv4.
-		octet_count += 1;
 			if (tokens.size() == i + 1 && tokens[i].find('.') != std::string::npos)
 			{
 				try
@@ -106,8 +106,8 @@ static size_t	read_ipv6_last_octets(std::vector<std::string> tokens, uint8_t *da
 				return (octet_count);
 			}
 			piece_num = stricter_unsigned_stoi(tokens[i], (size_t *)std::string::npos, 16);
-			data_buff[octet_count + 1] = piece_num >> 8;
-			data_buff[octet_count] = piece_num;
+			data_buff[octet_count] = (uint8_t)(piece_num >> 8);
+			data_buff[octet_count + 1] = (uint8_t)(piece_num);
 			octet_count += 2;
 		}
 		i++;
@@ -117,19 +117,20 @@ static size_t	read_ipv6_last_octets(std::vector<std::string> tokens, uint8_t *da
 	return (octet_count);
 }
 
+
 static void	read_ipv6_octets(std::string text, uint8_t *data_buff)
 {
 	//		make some syntax checks.
 
 	//	check that it is enclosed by [].
 	if (text[0] != '[' || text[text.size() - 1] != ']')
-		throw (std::invalid_argument("incorrect ipv6"));
+		throw (std::invalid_argument("1 incorrect ipv6"));
 	//	check that there are no three : in secuence.
 	if (text.find(":::") != std::string::npos)
-		throw (std::invalid_argument("incorrect ipv6"));
+		throw (std::invalid_argument("2 incorrect ipv6"));
 	//	check that there are no two diferent :: in the ipv6.
 	if (text.find("::") != text.rfind("::"))
-		throw (std::invalid_argument("incorrect ipv6"));
+		throw (std::invalid_argument("3 incorrect ipv6"));
 
 	// preproses the text string.
 
@@ -150,8 +151,8 @@ static void	read_ipv6_octets(std::string text, uint8_t *data_buff)
 	std::memmove(data_buff, first_octets, first_octets_size);
 	if (first_octets_size != IP_MAX_DATA_SIZE)
 		last_octets_size = read_ipv6_last_octets(tokens, last_octets);
-	if (first_octets_size + last_octets_size >= IP_MAX_DATA_SIZE)
-		throw (std::invalid_argument("incorrect ipv6"));
+	if (first_octets_size + last_octets_size > IP_MAX_DATA_SIZE)
+		throw (std::invalid_argument("4 incorrect ipv6"));
 	std::memmove(data_buff + IP_MAX_DATA_SIZE - last_octets_size, last_octets, last_octets_size);
 }
 
@@ -160,6 +161,7 @@ static void	read_ipv6_octets(std::string text, uint8_t *data_buff)
 IpLiteral::IpLiteral(void)
 {
 }
+
 
 IpLiteral::IpLiteral(std::string text)
 {

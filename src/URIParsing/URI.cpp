@@ -3,17 +3,21 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <Path.hpp>
+#include <Query.hpp>
+#include <Fragment.hpp>
 
 #include <tokenize.hpp>
 #include <Scheme.hpp>
 #include <Authority.hpp>
 
+
 URI::URI(std::string uri)
 {
 	this->_isSchemeSet = 0;
 	this->_isAuthoritySet = 0;
-//	this->_isQuerySet = 0;
-//	this->_isFragmentSet = 0;
+	this->_isQuerySet = 0;
+	this->_isFragmentSet = 0;
 	this->_text = uri;
 
 	this->_tokens = tokenize(this->_text, gen_delims);
@@ -74,26 +78,27 @@ URI::URI(std::string uri)
 		}
 	}
 
-//	//	parse the fragment
-//	{
-//		std::vector<std::string>::iterator	check_point = iter;
-//		try
-//		{
-//			this->_fragment = Fragment(iter, end);
-//			this->_isFragmentSet = 1;
-//		}
-//		catch
-//		{
-//			if (std::string("no fragment"))
-//				throw ;
-//			iter = check_point;
-//		}
-//	}
-//	
-//	if (iter != end)
-//		throw (std::invalid_argument("invalid uri"));
-//
-//	this->checkSchemeSpecificSyntax().
+	//	parse the fragment
+	{
+		std::vector<std::string>::iterator	check_point = iter;
+		try
+		{
+			this->_fragment = Fragment(iter, end);
+			this->_isFragmentSet = 1;
+		}
+		catch (std::exception &e)
+		{
+			if (std::string("no fragment") != std::string(e.what()))
+				throw ;
+			iter = check_point;
+		}
+	}
+
+	if (iter != end)
+		throw (std::invalid_argument("invalid uri"));
+
+//	if (this->_isSchemeSet)
+//		this->checkSchemeSpecificSyntax();
 }
 
 URI::~URI()
@@ -131,6 +136,7 @@ void	URI::identifyURIType(void)
 	this->_type = FULL_FORM;
 }
 
+
 Scheme		&URI::getScheme(void)
 {
 	if (!this->_isSchemeSet)
@@ -153,5 +159,10 @@ Path		&URI::getPath(void)
 Query		&URI::getQuery(void)
 {
 	return (this->_query);
+}
+
+Fragment	&URI::getFragment(void)
+{
+	return (this->_fragment);
 }
 

@@ -17,10 +17,10 @@
 	- text
 	- number
 
-- [ ] parse the query.
-	- [x] make the constructor.
-	- [x] check that it is a valid query.
-	- [ ] test it.
+- [ ] make a method to get the sockaddr structure.
+	- [x] make the ip literals parse the correctly.
+	- [ ] make a constructor of sockaddr_in and sockaddr_in6 on the ip literals.
+	- [ ] make this constructor for the reg_names too with the getaddrinfo.
 
 - [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.
@@ -28,9 +28,10 @@
 - [x] parse the authority.
 	- [ ] make a method to get the sockaddr structure.
 - [x] parse the path.
-- [ ] parse the query.
-- [ ] parse the fragment.
-- [ ] check scheme specific syntax.
+- [x] parse the query.
+- [x] parse the fragment.
+
+
 
 - [ ] make a check for each ast node.
 	- [ ] make server name.
@@ -49,11 +50,7 @@
 	- [ ] make server.
 - [ ] write the translator to the structure.
 
-
-
 - making the checker.
-
-
 
 - [ ] web server
 	- [x] read the arguments.
@@ -65,8 +62,6 @@
 		- [ ] init.
 	- [ ] set up the server.
 	- [ ] run the server.
-
-
 
 error msg 1:
 - error kind
