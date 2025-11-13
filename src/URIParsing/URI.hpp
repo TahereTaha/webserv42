@@ -8,6 +8,7 @@
 #include <Authority.hpp>
 #include <Path.hpp>
 #include <Query.hpp>
+#include <Fragment.hpp>
 
 //					":/?@"
 #define gen_delims	":/?#[]@"
@@ -46,9 +47,10 @@ class URI
 		Path		_path;
 		int			_isQuerySet;
 		Query		_query;
-//		int			_isFargmentSet;
-//		Fragment	_fragment;
+		int			_isFragmentSet;
+		Fragment	_fragment;
 
+//		void	checkSchemeSpecificSyntax(void);
 	public:
 		//	this is guaranteed to throw if the text falls outside of the scope of uri.
 		//	and it will throw if 
@@ -59,6 +61,6 @@ class URI
 		Authority	&getAuthority(void);
 		Path		&getPath(void);
 		Query		&getQuery(void);
-//		Fragment	&getFragment(void);
+		Fragment	&getFragment(void);
 };
 
