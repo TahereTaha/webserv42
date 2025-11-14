@@ -24,6 +24,7 @@ class IpLiteral
 		uint8_t	_data[IP_MAX_DATA_SIZE];
 
 		void	identifyType(void);
+
 	protected:
 	public:
 		IpLiteral(void);

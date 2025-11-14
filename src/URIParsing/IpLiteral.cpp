@@ -73,7 +73,6 @@ static size_t	read_ipv6_first_octets(std::vector<std::string> tokens, uint8_t *d
 	return (octet_count);
 }
 
-
 static size_t	read_ipv6_last_octets(std::vector<std::string> tokens, uint8_t *data_buff)
 {
 	size_t	i = 1;
