@@ -17,9 +17,10 @@
 	- text
 	- number
 
+
 - [ ] make a method to get the sockaddr structure.
 	- [x] make the ip literals parse the correctly.
-	- [ ] make a constructor of sockaddr_in and sockaddr_in6 on the ip literals.
+	- [x] make a constructor of sockaddr_in and sockaddr_in6 on the ip literals.
 	- [ ] make this constructor for the reg_names too with the getaddrinfo.
 
 - [x] make percent encoder and decoder.
@@ -30,8 +31,6 @@
 - [x] parse the path.
 - [x] parse the query.
 - [x] parse the fragment.
-
-
 
 - [ ] make a check for each ast node.
 	- [ ] make server name.

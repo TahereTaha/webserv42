@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <cstring>
 
 #include <tokenize.hpp>
 #include <UserInfo.hpp>
@@ -89,5 +90,48 @@ UserInfo	&Authority::getUserInfo(void)
 Host		&Authority::getHost(void)
 {
 	return (this->_host);
+}
+
+struct sockaddr	*Authority::getSockaddrFromIpLiteral(IpLiteral &ip)
+{
+	struct sockaddr	*addr;
+
+	addr = (struct sockaddr *) new char[sizeof(struct sockaddr_storage)];
+	if (!addr)
+		return (NULL);
+	if (ip.getType() == IP_V_4)
+	{
+		struct sockaddr_in *addr_in;
+
+		addr_in = (struct sockaddr_in *) addr;
+		addr_in->sin_family = AF_INET;
+		addr_in->sin_port = htons(this->_port);
+		std::memmove(&(addr_in->sin_addr), ip.getData(), IP_V4_DATA_SIZE);
+	}
+	else if (ip.getType() == IP_V_4)
+	{
+		struct sockaddr_in6 *addr_in6;
+
+		addr_in6 = (struct sockaddr_in6 *) addr;
+		addr_in6->sin6_family = AF_INET6;
+		addr_in6->sin6_port = htons(this->_port);
+		std::memmove(&(addr_in6->sin6_addr), ip.getData(), IP_V6_DATA_SIZE);
+	}
+	return (addr);
+}
+
+struct sockaddr	*Authority::getSockaddrFromRegname(std::string name)
+{
+	(void) name;
+	return (NULL);
+}
+
+struct sockaddr	*Authority::getSockaddr(void)
+{
+	if (this->_host.getType() == IP_LITERAL)
+		return (getSockaddrFromIpLiteral(this->_host.getIp()));
+	else if (this->_host.getType() == REG_NAME)
+		return (getSockaddrFromRegname(this->_host.getRegName()));
+	return (NULL);
 }
 

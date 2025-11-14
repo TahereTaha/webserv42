@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include <stdint.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 #include <UserInfo.hpp>
 #include <Host.hpp>
@@ -20,6 +22,8 @@ class Authority
 		Host		_host;
 		uint16_t	_port;
 
+		struct sockaddr	*getSockaddrFromIpLiteral(IpLiteral &ip);
+		struct sockaddr	*getSockaddrFromRegname(std::string name);
 	protected:
 	public:
 		Authority(void);
@@ -30,5 +34,6 @@ class Authority
 		UserInfo	&getUserInfo(void);
 		Host		&getHost(void);
 		uint16_t	&getPort(void);
+		struct sockaddr	*getSockaddr(void) ;
 };
 
