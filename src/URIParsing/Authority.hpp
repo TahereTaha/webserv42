@@ -20,6 +20,7 @@ class Authority
 		int			_isUserInfoSet;
 		UserInfo	_userInfo;
 		Host		_host;
+		int			_isPortSet;
 		uint16_t	_port;
 
 		struct sockaddr	*getSockaddrFromIpLiteral(IpLiteral &ip);
@@ -33,7 +34,8 @@ class Authority
 
 		UserInfo	&getUserInfo(void);
 		Host		&getHost(void);
-		uint16_t	&getPort(void);
+		uint16_t	getPort(void);
+
 		struct sockaddr	*getSockaddr(void) ;
 };
 
