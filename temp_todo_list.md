@@ -18,16 +18,19 @@
 	- number
 
 
-- [ ] make a method to get the sockaddr structure.
+- [x] make a method to get the sockaddr structure.
 	- [x] make the ip literals parse the correctly.
 	- [x] make a constructor of sockaddr_in and sockaddr_in6 on the ip literals.
 	- [ ] make this constructor for the reg_names too with the getaddrinfo.
+		- [x] get the addr info.
+		- [x] copy all the sockaddr.
+		- [x] free the addr info.
 
 - [x] make percent encoder and decoder.
 - [x] make a simple tokenization for the uri.
 - [x] parse the scheme.
 - [x] parse the authority.
-	- [ ] make a method to get the sockaddr structure.
+	- [x] make a method to get the sockaddr structure.
 - [x] parse the path.
 - [x] parse the query.
 - [x] parse the fragment.

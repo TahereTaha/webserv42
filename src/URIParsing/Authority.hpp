@@ -23,8 +23,8 @@ class Authority
 		int			_isPortSet;
 		uint16_t	_port;
 
-		struct sockaddr	*getSockaddrFromIpLiteral(IpLiteral &ip);
-		struct sockaddr	*getSockaddrFromRegname(std::string name);
+		std::vector<struct sockaddr *>	getSockaddrFromIpLiteral(IpLiteral &ip);
+		std::vector<struct sockaddr *>	getSockaddrFromRegname(std::string name);
 	protected:
 	public:
 		Authority(void);
@@ -36,6 +36,6 @@ class Authority
 		Host		&getHost(void);
 		uint16_t	getPort(void);
 
-		struct sockaddr	*getSockaddr(void) ;
+		std::vector<struct sockaddr *>	getSockaddr(void) ;
 };
 
