@@ -31,13 +31,13 @@ class Tree
 
 		//	tree navigation.
 
-		Tree<T>			*getParentNode(void) const ;
-		Tree<T>			*getChildNode(size_t index) const ;
-		Tree<T>			*operator [] (size_t index) const ;
-		Tree<T>			*getRootNode(void) const ;
-		Tree<T>			*getRightBranchNode(void) const ;
-		Tree<T>			*getLeftLeafNode(void) const ;
-		Tree<T>			*getLeftMostLeafNode(void) const ;
+		Tree<T>			*getParentNode(void) ;
+		Tree<T>			*getChildNode(size_t index) ;
+		Tree<T>			*operator [] (size_t index) ;
+		Tree<T>			*getRootNode(void) ;
+		Tree<T>			*getRightBranchNode(void) ;
+		Tree<T>			*getLeftLeafNode(void) ;
+		Tree<T>			*getLeftMostLeafNode(void) ;
 
 		//	content manipulation.
 
@@ -64,9 +64,10 @@ class Tree
 				iterator	operator ++ (int);
 
 				int			operator == (const Tree<T>::iterator &iter);
+				int			operator != (const Tree<T>::iterator &iter);
 		};
-		Tree<T>::iterator	begin(void) const ;
-		Tree<T>::iterator	end(void) const ;
+		Tree<T>::iterator	begin(void);
+		Tree<T>::iterator	end(void);
 };
 
 #include <Tree.tpp>

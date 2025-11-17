@@ -18,41 +18,22 @@
 	- number
 
 
-- [x] make a method to get the sockaddr structure.
-	- [x] make the ip literals parse the correctly.
-	- [x] make a constructor of sockaddr_in and sockaddr_in6 on the ip literals.
-	- [x] make this constructor for the reg_names too with the getaddrinfo.
-		- [x] get the addr info.
-		- [x] copy all the sockaddr.
-		- [x] free the addr info.
-
-- [x] make percent encoder and decoder.
-- [x] make a simple tokenization for the uri.
-- [x] parse the scheme.
-- [x] parse the authority.
-	- [x] make a method to get the sockaddr structure.
-- [x] parse the path.
-- [x] parse the query.
-- [x] parse the fragment.
 
 - [ ] make a check for each ast node.
-	- [ ] make server name.
-	- [ ] make listen.
-	- [ ] 	first milestone.
-	- [ ] make client max body size.
-	- [ ] make error page.
-	- [ ] 	second milestone.
-	- [ ] make limit exept.
-	- [ ] make make the return.
-	- [ ] make root.
-	- [ ] make autoindex.
-	- [ ] make index.
-	- [ ] 	third milestone.
+	- [ ] make the code on the configuration parser.
+		- [x] fix the errors on the tree container.
 	- [ ] make location.
+		- [ ] make make the return.
+		- [ ] make root.
+		- [ ] make autoindex.
+		- [ ] make index.
 	- [ ] make server.
+		- [ ] make server name.
+		- [ ] make listen.
+		- [ ] make client max body size.
+		- [ ] make error page.
+		- [ ] make limit exept.
 - [ ] write the translator to the structure.
-
-- making the checker.
 
 - [ ] web server
 	- [x] read the arguments.
@@ -60,7 +41,7 @@
 		- [x] read the file.
 		- [x] tokenize.
 		- [x] parse.
-			- [ ] change the target simbol to a server vector.
+			- [x] change the target simbol to a server vector.
 		- [ ] check.
 		- [ ] init.
 	- [ ] set up the server.
