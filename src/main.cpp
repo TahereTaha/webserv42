@@ -23,36 +23,36 @@
 #include <AParser.hpp>
 
 
-//
-//int	main(int argc, char **argv)
-//{
-//	try
-//	{
-//		Args				args(argc, argv);
-//		ConfigurationParser	parser(args);
-//
-//		parser.readFile();
-//		parser.scanning();
-//		parser.parsing();
-//		parser.analysis();
-//		parser.transpiling();
-//		std::cout << "starting web server." << std::endl;
-//	}
-//	catch (multy_parse_exception & e)
-//	{
-//		std::cerr << e.what() << std::flush;
-//		return (1);
-//	}
-//	catch (const std::exception & e)
-//	{
-//		if (argc > 0)
-//			std::cerr << RED << e.what() << RESET << std::endl;
-//		else
-//			std::cerr << e.what() << std::endl;
-//		return (1);
-//	}
-//	return (0);
-//}
+
+int	main(int argc, char **argv)
+{
+	try
+	{
+		Args				args(argc, argv);
+		ConfigurationParser	parser(args);
+
+		parser.readFile();
+		parser.scanning();
+		parser.parsing();
+		parser.analysis();
+		parser.transpiling();
+		std::cout << "starting web server." << std::endl;
+	}
+	catch (multy_parse_exception & e)
+	{
+		std::cerr << e.what() << std::flush;
+		return (1);
+	}
+	catch (const std::exception & e)
+	{
+		if (argc > 0)
+			std::cerr << RED << e.what() << RESET << std::endl;
+		else
+			std::cerr << e.what() << std::endl;
+		return (1);
+	}
+	return (0);
+}
 
 
 #include <URI.hpp>
@@ -187,39 +187,39 @@
 //	return (0);
 //}
 //
-
-#include <sys/socket.h>
-#include <IpLiteral.hpp>
-#include <arpa/inet.h>
-#include <string.h>
-
-#define MY_IP "ff1:2:ad3::cd6:7:aaa8"
-
-int	main(void)
-{
-	try	
-	{
-	uint8_t	my_ipv4[IP_V6_DATA_SIZE];
-	uint8_t	std_ipv4[IP_V6_DATA_SIZE];
-
-	IpLiteral	ip(std::string("[") + MY_IP + "]");
-	uint8_t		*data = ip.getData();
-	memcpy(my_ipv4, data,sizeof(my_ipv4));
-	inet_pton(AF_INET6, MY_IP, std_ipv4);
-
-	size_t	i = 0;
-	while (i < IP_V6_DATA_SIZE)
-	{
-		std::cout << "mine at pos " << i << ": " << (int)my_ipv4[i] << std::endl;
-		std::cout << "std at pos " << i << ": " << (int)std_ipv4[i] << std::endl;
-		i++;
-	}
-	
-	}
-	catch (std::exception & e)
-	{
-		std::cout << e.what()  << std::endl;
-	}
-	return (0);
-}
-
+//
+//#include <sys/socket.h>
+//#include <IpLiteral.hpp>
+//#include <arpa/inet.h>
+//#include <string.h>
+//
+//#define MY_IP "ff1:2:ad3::cd6:7:aaa8"
+//
+//int	main(void)
+//{
+//	try	
+//	{
+//	uint8_t	my_ipv4[IP_V6_DATA_SIZE];
+//	uint8_t	std_ipv4[IP_V6_DATA_SIZE];
+//
+//	IpLiteral	ip(std::string("[") + MY_IP + "]");
+//	uint8_t		*data = ip.getData();
+//	memcpy(my_ipv4, data,sizeof(my_ipv4));
+//	inet_pton(AF_INET6, MY_IP, std_ipv4);
+//
+//	size_t	i = 0;
+//	while (i < IP_V6_DATA_SIZE)
+//	{
+//		std::cout << "mine at pos " << i << ": " << (int)my_ipv4[i] << std::endl;
+//		std::cout << "std at pos " << i << ": " << (int)std_ipv4[i] << std::endl;
+//		i++;
+//	}
+//	
+//	}
+//	catch (std::exception & e)
+//	{
+//		std::cout << e.what()  << std::endl;
+//	}
+//	return (0);
+//}
+//

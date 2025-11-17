@@ -21,7 +21,7 @@
 - [x] make a method to get the sockaddr structure.
 	- [x] make the ip literals parse the correctly.
 	- [x] make a constructor of sockaddr_in and sockaddr_in6 on the ip literals.
-	- [ ] make this constructor for the reg_names too with the getaddrinfo.
+	- [x] make this constructor for the reg_names too with the getaddrinfo.
 		- [x] get the addr info.
 		- [x] copy all the sockaddr.
 		- [x] free the addr info.
@@ -60,6 +60,7 @@
 		- [x] read the file.
 		- [x] tokenize.
 		- [x] parse.
+			- [ ] change the target simbol to a server vector.
 		- [ ] check.
 		- [ ] init.
 	- [ ] set up the server.

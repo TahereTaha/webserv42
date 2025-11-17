@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/11/07 10:57:51 by tatahere         ###   ########.fr        #
+#    Updated: 2025/11/17 13:59:36 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,6 +98,7 @@ OBJ		:=	main.o						\
 			ParsingRuleOr.o				\
 			ParsingRuleRepetition.o		\
 										\
+			SymbolConfigContext.o		\
 			SymbolServer.o				\
 			SymbolServerName.o			\
 			SymbolListen.o				\

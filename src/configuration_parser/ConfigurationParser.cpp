@@ -6,7 +6,7 @@
 #include <ConfigFileLexer.hpp>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
-#include <SymbolServer.hpp>
+#include <SymbolConfigContext.hpp>
 #include <AParser.hpp>
 
 #include <stddef.h>
@@ -95,11 +95,11 @@ void	ConfigurationParser::scanning(void)
 void	ConfigurationParser::parsing(void)
 {
 	std::cout << "\t-> parsing " << std::endl;
-	
+
 	std::vector<ATerminal *>::iterator	iter = this->_terminalList.begin();
 	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
 
-	AParser	*parser = SymbolServer().getParser();
+	AParser	*parser = SymbolConfigContext().getParser();
 
 	try 
 	{
@@ -132,6 +132,7 @@ void	ConfigurationParser::parsing(void)
 void	ConfigurationParser::analysis(void)
 {
 	std::cout << "\t-> analysis" << std::endl;
+
 }
 
 void	ConfigurationParser::transpiling(void)
