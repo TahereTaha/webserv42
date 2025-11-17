@@ -133,6 +133,14 @@ void	ConfigurationParser::analysis(void)
 {
 	std::cout << "\t-> analysis" << std::endl;
 
+	Tree<AEvaluable*>::iterator	iter = this->_AST->begin();
+	Tree<AEvaluable*>::iterator	end = this->_AST->end();
+
+	while (iter != end)
+	{
+		(*iter)->getContent()->evaluate(*iter);
+		iter++;
+	}
 }
 
 void	ConfigurationParser::transpiling(void)
