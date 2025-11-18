@@ -17,12 +17,27 @@
 	- text
 	- number
 
+- [ ] print one socket.
+	- [ ] print the type.
+	- [ ] print the port.
+	- [ ] print the ip.
 
+- [ ] add functions to print each struct of the IR.
+		- [ ] print t_server.
+			- [x] print the internal stuff.
+				- [x] print the server_name.
+				- [x] print the max_body_size.
+			- [ ] print the sockets.
+				- [ ] print one socket.
+			- [ ] print the error pages.
+			- [ ] print the routes.
 
 - [ ] make a check for each ast node.
 	- [x] make the code on the configuration parser.
 		- [x] fix the errors on the tree container.
 	- [ ] add some printing functions to debug the analysis.
+		- [x] add printig of the tree nodes id.
+		- [ ] add functions to print each struct of the IR.
 	- [ ] make location.
 		- [ ] make make the return.
 		- [ ] make root.
