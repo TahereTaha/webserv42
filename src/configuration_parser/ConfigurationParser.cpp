@@ -176,13 +176,15 @@ static void	print_ast(Tree<AEvaluable*> *ast, size_t depth = 0)
 	if (ast->getNodeType() == LEAF)
 	{
 		align_tabulation(depth);
-		std::cout << ast->getContent()->what() << ";\n";
+		std::cout << ast->getContent()->what();
+		std::cout << " with a id of: " << (void *) ast->getContent() << ";\n";
 		return ;
 	}
 
 	align_tabulation(depth);
-	std::cout << ast->getContent()->what() << "\n";
-	
+	std::cout << ast->getContent()->what();
+	std::cout << " with a id of: " << (void *) ast->getContent() << "\n";
+
 	align_tabulation(depth);
 	std::cout << "{\n";
 	
