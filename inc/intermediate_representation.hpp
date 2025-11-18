@@ -26,6 +26,7 @@ typedef enum
 	STATIC,
 }	t_response_type;
 
+//	this is used both for the redirections as the static respenses.
 typedef struct
 {
 	t_status_code	status_code;
@@ -53,7 +54,7 @@ typedef struct
 
 typedef struct
 {
-	std::vector<sockaddr_storage>	socket;
+	std::vector<struct sockaddr_storage>	socket;
 	std::string						server_name;
 	std::vector<t_error_page>		error_page;
 	size_t							client_max_body_size;

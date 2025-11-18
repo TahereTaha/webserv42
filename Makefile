@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/11/17 13:59:36 by tatahere         ###   ########.fr        #
+#    Updated: 2025/11/18 15:51:14 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ NAME	=	webserv
 OBJ		:=	main.o						\
 										\
 			Args.o						\
+			IR_printing_functions.o		\
 			ConfigurationParser.o		\
 										\
 			parse_exception.o			\
