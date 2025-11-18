@@ -20,8 +20,9 @@
 
 
 - [ ] make a check for each ast node.
-	- [ ] make the code on the configuration parser.
+	- [x] make the code on the configuration parser.
 		- [x] fix the errors on the tree container.
+	- [ ] add some printing functions to debug the analysis.
 	- [ ] make location.
 		- [ ] make make the return.
 		- [ ] make root.
