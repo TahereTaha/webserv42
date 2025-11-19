@@ -17,6 +17,8 @@ std::string	getResponseTypeSring(t_response_type type);
 //void	printDefaultResponse(t_default_response default_response);
 //void	printRoute(t_route route);
 
+void	printErrorPage(t_error_page error_page);
+
 void	printSocket(struct sockaddr_storage);
 
 void	printClientMaxBodySize(size_t size);
