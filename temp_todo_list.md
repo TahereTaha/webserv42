@@ -24,9 +24,12 @@
 				- [x] print the max_body_size.
 			- [x] print the sockets.
 				- [x] print one socket.
-			- [ ] print the error pages.
-				- [ ] print one error page.
+			- [x] print the error pages.
+				- [x] print one error page.
 			- [ ] print the routes.
+				- [ ] print  individual routes.
+					- [ ] print static routes.
+					- [ ] default routes.
 
 - [ ] make a check for each ast node.
 	- [x] make the code on the configuration parser.
