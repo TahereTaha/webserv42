@@ -17,19 +17,15 @@
 	- text
 	- number
 
-- [ ] print one socket.
-	- [ ] print the type.
-	- [ ] print the port.
-	- [ ] print the ip.
-
 - [ ] add functions to print each struct of the IR.
 		- [ ] print t_server.
 			- [x] print the internal stuff.
 				- [x] print the server_name.
 				- [x] print the max_body_size.
-			- [ ] print the sockets.
-				- [ ] print one socket.
+			- [x] print the sockets.
+				- [x] print one socket.
 			- [ ] print the error pages.
+				- [ ] print one error page.
 			- [ ] print the routes.
 
 - [ ] make a check for each ast node.
