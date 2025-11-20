@@ -62,6 +62,12 @@ Tree<T>		*Tree<T>::getParentNode(void)
 }
 
 template <typename T>
+size_t		Tree<T>::getChildNodeSize(void) const
+{
+	return (this->_children.size());
+}
+
+template <typename T>
 Tree<T>		*Tree<T>::getChildNode(size_t index)
 {
 	if (index >= this->_children.size())
