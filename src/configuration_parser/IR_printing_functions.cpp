@@ -39,10 +39,57 @@ std::string	getResponseTypeSring(t_response_type type)
 	return ("");
 }
 
-//void	printStaticResponse(t_static_response static_response);
-//void	printRedirectResponse(t_redirect_response redirect_response);
-//void	printDefaultResponse(t_default_response default_response);
-//void	printRoute(t_route route);
+static void printRouteDefault_local(t_default_response route, size_t tab_level)
+{
+	print_tab_level(tab_level);
+	std::cout << "type: default\n";
+	print_tab_level(tab_level);
+	std::cout << "accepted_methods:";
+	size_t i = 0;
+	while (i < route.accepted_methods.size())
+	{
+		std::cout << " " << getHTTPMethodSring(route.accepted_methods[i]);
+		i++;
+		if (i < route.accepted_methods.size())
+			std::cout << ",";
+	}
+	std::cout << ";\n";
+	print_tab_level(tab_level);
+	std::cout << "root: " << route.root << ";\n";
+	print_tab_level(tab_level);
+	std::cout << "directory_listing: " << route.directory_listing_enabled << ";\n";
+	print_tab_level(tab_level);
+	std::cout << "index_file: " << route.index_file << ";\n";
+}
+
+static void printRouteStatic_local(t_static_response route, size_t tab_level)
+{
+	print_tab_level(tab_level);
+	std::cout << "type: static\n";
+	print_tab_level(tab_level);
+	std::cout << "status_code: " << route.status_code << "\n";
+	print_tab_level(tab_level);
+	std::cout << "body_text: " << route.text << "\n";
+}
+
+static void	printRoute_local(t_route route, size_t tab_level)
+{
+	print_tab_level(tab_level);
+	std::cout << "location: " << route.uri << "\n";
+	if (route.response_type == DEFAULT)
+		printRouteDefault_local(route.default_response, tab_level);
+	if (route.response_type == STATIC)
+		printRouteStatic_local(route.static_response, tab_level);
+}
+
+void	printRoute(t_route route)
+{
+	std::cout << "route\n";
+	std::cout << "{\n";
+	printRoute_local(route, 1);
+	std::cout << "}\n";
+	std::cout << std::endl;
+}
 
 static void	printErrorPage_local(t_error_page error_page, size_t tab_level)
 {
@@ -175,6 +222,8 @@ void	printServer(t_server server)
 	printServerName(server.server_name);
 	print_tab_level(1);
 	printClientMaxBodySize(server.client_max_body_size);
+
+	// print sockets.
 	print_tab_level(1);
 	std::cout << "sockets\n";
 	print_tab_level(1);
@@ -196,6 +245,7 @@ void	printServer(t_server server)
 	print_tab_level(1);
 	std::cout << "}\n";
 	
+	// print error pages.
 	print_tab_level(1);
 	std::cout << "error_pages\n";
 	print_tab_level(1);
@@ -216,6 +266,29 @@ void	printServer(t_server server)
 
 	print_tab_level(1);
 	std::cout << "}\n";
+
+	//	print the diferent routes.
+	print_tab_level(1);
+	std::cout << "routes\n";
+	print_tab_level(1);
+	std::cout << "{\n";
+	
+	i = 0;
+	while (i < server.route.size())
+	{
+		print_tab_level(2);
+		std::cout << "route number: " << (i + 1) << "\n";
+		print_tab_level(2);
+		std::cout << "{\n";
+		printRoute_local(server.route[i], 3);
+		print_tab_level(2);
+		std::cout << "}\n";
+		i++;
+	}
+
+	print_tab_level(1);
+	std::cout << "}\n";
+
 
 	std::cout << "}\n";
 	std::cout << std::endl;

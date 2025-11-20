@@ -26,10 +26,10 @@
 				- [x] print one socket.
 			- [x] print the error pages.
 				- [x] print one error page.
-			- [ ] print the routes.
-				- [ ] print  individual routes.
-					- [ ] print static routes.
-					- [ ] default routes.
+			- [x] print the routes.
+				- [x] print  individual routes.
+					- [x] print static routes.
+					- [x] default routes.
 
 - [ ] make a check for each ast node.
 	- [x] make the code on the configuration parser.
