@@ -41,6 +41,8 @@ Fragment::Fragment(std::string text)
 
 Fragment::Fragment(std::vector<std::string>::iterator &iter,std::vector<std::string>::iterator end)
 {
+	if (iter == end)
+		throw (std::invalid_argument("no fragment"));
 	if (*iter != "#")
 		throw (std::invalid_argument("no fragment"));
 	iter++;
