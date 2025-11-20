@@ -31,13 +31,14 @@ class Tree
 
 		//	tree navigation.
 
-		Tree<T>			*getParentNode(void) ;
-		Tree<T>			*getChildNode(size_t index) ;
-		Tree<T>			*operator [] (size_t index) ;
-		Tree<T>			*getRootNode(void) ;
-		Tree<T>			*getRightBranchNode(void) ;
-		Tree<T>			*getLeftLeafNode(void) ;
-		Tree<T>			*getLeftMostLeafNode(void) ;
+		Tree<T>				*getParentNode(void) ;
+		size_t				getChildNodeSize(void) const ;
+		Tree<T>				*getChildNode(size_t index) ;
+		Tree<T>				*operator [] (size_t index) ;
+		Tree<T>				*getRootNode(void) ;
+		Tree<T>				*getRightBranchNode(void) ;
+		Tree<T>				*getLeftLeafNode(void) ;
+		Tree<T>				*getLeftMostLeafNode(void) ;
 
 		//	content manipulation.
 
