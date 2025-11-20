@@ -8,6 +8,8 @@
 class SymbolReturn : public ANonTerminal
 {
 	private:
+		int			_statusCode;
+		std::string	_bodyText;
 	protected:
 	public:
 		SymbolReturn(void);
@@ -18,4 +20,7 @@ class SymbolReturn : public ANonTerminal
 		void			evaluate(Tree<AEvaluable*> *self);
 
 		AParser	*getParser(void) const;
+
+		int			getStatusCode(void) const ;
+		std::string	getBodyText(void) const ;
 };
