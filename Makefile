@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/11/19 14:46:58 by tatahere         ###   ########.fr        #
+#    Updated: 2025/11/20 15:00:36 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -125,6 +125,8 @@ OBJ		:=	main.o						\
 			Query.o						\
 			Fragment.o					\
 			URI.o						\
+										\
+										\
 
 #			subTreeGenerationUtils.o	\
 			SymbolServer.o				\
