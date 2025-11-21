@@ -8,6 +8,7 @@
 class SymbolAutoIndex : public ANonTerminal
 {
 	private:
+		int	_isSet;
 	protected:
 	public:
 		SymbolAutoIndex(void);
@@ -18,4 +19,6 @@ class SymbolAutoIndex : public ANonTerminal
 		void			evaluate(Tree<AEvaluable*> *self);
 
 		AParser	*getParser(void) const;
+
+		int	getIsSet(void) const ;
 };

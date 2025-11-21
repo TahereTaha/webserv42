@@ -16,6 +16,8 @@
 #include <ParsingRuleOr.hpp>
 #include <ParsingRuleRepetition.hpp>
 
+#include <stdexcept>
+
 SymbolAutoIndex::SymbolAutoIndex(void)
 {
 }
@@ -36,7 +38,22 @@ SymbolAutoIndex	*SymbolAutoIndex::clone(void) const
 
 void		SymbolAutoIndex::evaluate(Tree<AEvaluable*> *self)
 {
-	(void) self;
+	TextConfigFile	*value;
+	this->_isSet = 0;
+
+	//	error checking.
+	if (self->getChildNodeSize() != 1)
+		throw (std::invalid_argument("incorrect arrguments to autoindex."));
+	if (!dynamic_cast<TextConfigFile *>(self->getChildNode(0)->getContent()))
+		throw (std::invalid_argument("incorrect arrguments to autoindex."));
+
+	value = dynamic_cast<TextConfigFile *>(self->getChildNode(0)->getContent());
+	if (value->getText() == "on")
+		this->_isSet = 1;
+	else if (value->getText() == "off")
+		this->_isSet = 0;
+	else
+		throw (std::invalid_argument("incorrect arrguments to autoindex."));
 }
 
 AParser	*SymbolAutoIndex::getParser(void) const
@@ -47,5 +64,10 @@ AParser	*SymbolAutoIndex::getParser(void) const
 			new ParsingRuleSymbol(KeySemicolon().clone()),\
 			NULL);
 	return (new AParser(this->clone(), rule));
+}
+
+int		SymbolAutoIndex::getIsSet(void) const
+{
+	return (this->_isSet);
 }
 
