@@ -26,14 +26,14 @@
 	- [ ] make location.
 		- [x] make make the return.
 		- [x] make root.
-		- [ ] make autoindex.
-		- [ ] make index.
+		- [x] make autoindex.
+		- [x] make index.
+		- [ ] make limit exept.
 	- [ ] make server.
 		- [ ] make server name.
 		- [ ] make listen.
 		- [ ] make client max body size.
 		- [ ] make error page.
-		- [ ] make limit exept.
 - [ ] write the translator to the structure.
 
 - [ ] web server
