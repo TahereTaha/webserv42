@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include <ATerminal.hpp>
 #include <ANonTerminal.hpp>
@@ -8,6 +9,7 @@
 class SymbolIndex : public ANonTerminal
 {
 	private:
+		std::vector<std::string>	_indexFiles;
 	protected:
 	public:
 		SymbolIndex(void);
@@ -18,4 +20,6 @@ class SymbolIndex : public ANonTerminal
 		void			evaluate(Tree<AEvaluable*> *self);
 
 		AParser	*getParser(void) const;
+
+		std::vector<std::string>	getIndexFiles(void) const ;
 };

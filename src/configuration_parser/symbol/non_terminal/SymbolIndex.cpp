@@ -15,6 +15,10 @@
 #include <ParsingRuleOr.hpp>
 #include <ParsingRuleRepetition.hpp>
 
+#include <string>
+#include <vector>
+#include <stdexcept>
+
 SymbolIndex::SymbolIndex(void)
 {
 }
@@ -35,7 +39,18 @@ SymbolIndex	*SymbolIndex::clone(void) const
 
 void		SymbolIndex::evaluate(Tree<AEvaluable*> *self)
 {
-	(void) self;
+	TextConfigFile	*name;
+
+	//	error checking.
+	size_t	i = 0;
+	while (i < self->getChildNodeSize())
+	{
+		name = dynamic_cast<TextConfigFile *>(self->getChildNode(i)->getContent());
+		if (!name)
+			throw (std::invalid_argument("incorrect arrguments to index."));
+		this->_indexFiles.push_back(name->getText());
+		i++;
+	}
 }
 
 AParser	*SymbolIndex::getParser(void) const
@@ -46,5 +61,10 @@ AParser	*SymbolIndex::getParser(void) const
 			new ParsingRuleSymbol(KeySemicolon().clone()),\
 			NULL);
 	return (new AParser(this->clone(), rule));
+}
+
+std::vector<std::string>	SymbolIndex::getIndexFiles(void) const 
+{
+	return (this->_indexFiles);
 }
 
