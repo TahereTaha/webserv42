@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include <ATerminal.hpp>
 #include <ANonTerminal.hpp>
@@ -8,6 +9,7 @@
 class SymbolRoot : public ANonTerminal
 {
 	private:
+		std::string	_path;
 	protected:
 	public:
 		SymbolRoot(void);
@@ -18,4 +20,6 @@ class SymbolRoot : public ANonTerminal
 		void			evaluate(Tree<AEvaluable*> *self);
 
 		AParser	*getParser(void) const;
+
+		std::string	getPath(void) const ;
 };

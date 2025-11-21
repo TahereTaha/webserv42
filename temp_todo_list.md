@@ -26,6 +26,8 @@
 	- [ ] make location.
 		- [x] make make the return.
 		- [ ] make root.
+			- [ ] make the geters and values for the symbol.
+			- [x] make the evaluate function.
 		- [ ] make autoindex.
 		- [ ] make index.
 	- [ ] make server.
