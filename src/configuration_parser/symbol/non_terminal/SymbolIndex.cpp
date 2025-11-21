@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <Path.hpp>
 
 SymbolIndex::SymbolIndex(void)
 {
@@ -48,7 +49,10 @@ void		SymbolIndex::evaluate(Tree<AEvaluable*> *self)
 		name = dynamic_cast<TextConfigFile *>(self->getChildNode(i)->getContent());
 		if (!name)
 			throw (std::invalid_argument("incorrect arrguments to index."));
-		this->_indexFiles.push_back(name->getText());
+		Path file(name->getText());
+		if (file.getSections().size() != 1)
+			throw (std::invalid_argument("incorrect arrguments to index."));
+		this->_indexFiles.push_back(file.getPathText());
 		i++;
 	}
 }
