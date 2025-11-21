@@ -25,9 +25,7 @@
 		- [x] add functions to print each struct of the IR.
 	- [ ] make location.
 		- [x] make make the return.
-		- [ ] make root.
-			- [ ] make the geters and values for the symbol.
-			- [x] make the evaluate function.
+		- [x] make root.
 		- [ ] make autoindex.
 		- [ ] make index.
 	- [ ] make server.
