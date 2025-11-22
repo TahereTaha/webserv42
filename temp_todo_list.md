@@ -28,7 +28,7 @@
 		- [x] make root.
 		- [x] make autoindex.
 		- [x] make index.
-		- [ ] make limit exept.
+		- [x] make limit exept.
 	- [ ] make server.
 		- [ ] make server name.
 		- [ ] make listen.

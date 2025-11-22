@@ -40,16 +40,16 @@ SymbolIndex	*SymbolIndex::clone(void) const
 
 void		SymbolIndex::evaluate(Tree<AEvaluable*> *self)
 {
-	TextConfigFile	*name;
+	TextConfigFile	*text;
 
 	//	error checking.
 	size_t	i = 0;
 	while (i < self->getChildNodeSize())
 	{
-		name = dynamic_cast<TextConfigFile *>(self->getChildNode(i)->getContent());
-		if (!name)
+		text = dynamic_cast<TextConfigFile *>(self->getChildNode(i)->getContent());
+		if (!text)
 			throw (std::invalid_argument("incorrect arrguments to index."));
-		Path file(name->getText());
+		Path file(text->getText());
 		if (file.getSections().size() != 1)
 			throw (std::invalid_argument("incorrect arrguments to index."));
 		this->_indexFiles.push_back(file.getPathText());
