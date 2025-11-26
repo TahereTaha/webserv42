@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:51:48 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 14:41:57 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:14:55 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ testCases getTestCases() {
         Headers hdrs;
         hdrs["Host"] = "example.com";
         hdrs["User-Agent"] = "TestAgent";
+        hdrs["Content-Length"] = "34";
         Request req(ControlData("GET", "/index.html", "HTTP/1.1"), hdrs, "");
         cases.push_back(TestCase(
-            "GET /index.html HTTP/1.1\r\nHost: example.com\r\nUser-Agent: TestAgent\r\n\r\n",
+            "GET /index.html HTTP/1.1\r\nHost: example.com\r\nUser-Agent: TestAgent\r\nContent-Length: 34\r\n\r\n",
             req
         ));
     }
@@ -55,9 +56,10 @@ testCases getTestCases() {
         Headers hdrs;
         hdrs["Host"] = "example.com";
         hdrs["Authorization"] = "Bearer token123";
+        hdrs["Content-Length"] = "34";
         Request req(ControlData("PUT", "/update", "HTTP/1.1"), hdrs, "");
         cases.push_back(TestCase(
-            "PUT /update HTTP/1.1\r\nHost: example.com\r\nAuthorization: Bearer token123\r\n\r\n",
+            "PUT /update HTTP/1.1\r\nHost: example.com\r\nAuthorization: Bearer token123\r\nContent-Length: 34\r\n\r\n",
             req
         ));
     }
@@ -66,9 +68,10 @@ testCases getTestCases() {
     {
         Headers hdrs;
         hdrs["Host"] = "example.com";
+        hdrs["Content-Length"] = "34";
         Request req(ControlData("POST", "/check", "HTTP/1.1"), hdrs, "");
         cases.push_back(TestCase(
-            "POST /check HTTP/1.1\r\nHost: example.com\r\n\r\n",
+            "POST /check HTTP/1.1\r\nHost: example.com%%\r\nContent-Length: 34\r\n\r\n",
             req
         ));
     }
@@ -77,9 +80,10 @@ testCases getTestCases() {
     {
         Headers hdrs;
         hdrs["Host"] = "example.com";
+          hdrs["Content-Length"] = "34";
         Request req(ControlData("GET", "/search?q=test&lang=en", "HTTP/1.1"), hdrs, "");
         cases.push_back(TestCase(
-            "GET /search?q=test&lang=en HTTP/1.1\r\nHost: example.com\r\n\r\n",
+            "GET /search?q=test&lang=en HTTP/1.1\r\nHost: example.com\r\nContent-Length: 34\r\n\r\n",
             req
         ));
     }
@@ -149,10 +153,11 @@ testCases getTestCases() {
     {
         Headers hdrs;
         hdrs["Host"] = "example.com";
+        hdrs["Content-Length"] = "34";
         Request req(ControlData("GET", "/hola/", "HTTP/1.1"), hdrs, "");
         req.setErrorCode(400); // Expected: invalid, no path
         cases.push_back(TestCase(
-            "GET /hola/ HTTP/1.1\r\nHost: example.com\r\n\r\n",
+            "GET /hola/%% HTTP/1.1\r\nHost: example.com\r\nContent-Length: 34\r\n\r\n",
             req // Expected: invalid (no path)
         ));
     }
