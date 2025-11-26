@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/06 19:43:51 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/07 14:53:24 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <cstring>
 #include <cerrno>
 #include <cstdio>
-#include "Event.hpp"
+#include "Log.hpp"
+#include "ErrorHandler.hpp"
 #include "../http_request_parser/Schemas.hpp"
 
 // =====================================================================
@@ -37,10 +38,7 @@ void EpollConnectionManager::setInstance(int fd, uint32_t events, int op) {
     ev.data.fd = fd;
     
     if (epoll_ctl(epfd, op, fd, &ev) == -1)
-    {
-        std::cerr << "Error setting epoll instance for fd " << fd << ": " << strerror(errno) << "\n";
         exit(EXIT_FAILURE);
-    }
   
 }
 
@@ -70,7 +68,7 @@ void EpollConnectionManager::run() {
       
     while (true) {
         int n           = epoll_wait(epfd, events, 1024, 5000);
-        double now      = getCurrentTimeMs();
+        double now      = getCurrentTimeMs(); // Maybe move this to clean up idle connections only
 
         for (int i = 0; i < n; i++) 
             handleEvent(events[i]);
@@ -95,7 +93,6 @@ void EpollConnectionManager::handleEvent(epoll_event &ev) {
 void EpollConnectionManager::handleNewConnection(Socket *sock) {
     int         connfd;
     
-
     EventLog::log(NEW_CONNECTION, sock->getFd());
     while ((connfd = sock->acceptConnection()) > 0) {
         makeNonBlocking(connfd);
@@ -109,21 +106,28 @@ void EpollConnectionManager::handleNewConnection(Socket *sock) {
         perror("accept");
 }
 
-void EpollConnectionManager::badRequest(int fd) {
+void EpollConnectionManager::badRequest(const int fd) {
 
     EventLog::log(EPOLL_EVENT_ERROR, fd);
     connections[fd].readBuffer.clear();
     std::ostringstream oss;
     // oss << connections[fd].request.getErrorCode();
-    oss << 400;
-    connections[fd].writeBuffer = "HTTP/1.1 " + oss.str() + " Error\r\n\r\n";
+    oss << 200;
+    connections[fd].writeBuffer = "HTTP/1.1 " + oss.str() + " Success\r\n\r\n";
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
+
+// void EpollConnectionManager::requestHandler(const int clientfd) {
+    // Placeholder for request handling logic
+    // connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
+    // if (connections[clientfd].request.getErrorCode() != 0) 
+    //     badRequest(clientfd);
+    
+// }
 
 void EpollConnectionManager::handleRead(int clientfd) {
     char buf[4096];
     int bytesRead;
-
 
     EventLog::log(EPOLL_EVENT_READING, clientfd);
     while ((bytesRead = read(clientfd, buf, sizeof(buf))) > 0)
@@ -133,9 +137,10 @@ void EpollConnectionManager::handleRead(int clientfd) {
     }
     if (bytesRead == 0)
         closeConnection(clientfd);
-    // connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
-    // if (connections[clientfd].request.getErrorCode() != 0) 
-    //     badRequest(clientfd);
+    // requestHandler(clientfd);
+    // temporary
+    badRequest(clientfd);
+    // closeConnection(clientfd);
 }
 
 void EpollConnectionManager::handleWrite(int clientfd) {
@@ -157,7 +162,7 @@ void EpollConnectionManager::handleWrite(int clientfd) {
 // 	IDDLE CONNECTION CLEANUP
 // =====================================================================
 void EpollConnectionManager::cleanupIdleConnections(const double &now) { 
-    const int TIMEOUT_MS = 50000;
+    const int TIMEOUT_MS = 1000;
     
     for (ConnectionIterator it = connections.begin(); it != connections.end();) {
         ConnectionIterator toDelete = it;

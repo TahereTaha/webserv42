@@ -13,3 +13,4 @@ bin/
 **/*.swp
 .vscode/
 .DS_Store
+event.log
