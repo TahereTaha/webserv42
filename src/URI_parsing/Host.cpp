@@ -7,6 +7,7 @@
 #include <percent_encoding_utils.hpp>
 
 #include <IpLiteral.hpp>
+#include <tokenize.hpp>
 
 //	class methods.
 
@@ -17,6 +18,21 @@ Host::Host(void)
 Host::Host(std::string text)
 {
 	this->_text = text;
+	
+	try
+	{
+		this->_ip = IpLiteral(this->_text);
+		this->_type = IP_LITERAL;
+	}
+	catch (std::exception &e)
+	{
+		if (std::string(e.what()) == std::string("ip literal unsuported"))
+			throw ;
+		if (this->_text[0] == '[')
+			throw ;
+		this->_type = REG_NAME;
+		this->_text = decode_pct_encoded_string(this->_text);
+	}
 }
 
 Host::Host(std::vector<std::string>::iterator &iter, std::vector<std::string>::iterator end)
