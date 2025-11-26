@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 14:10:45 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:39:42 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,12 @@ bool validMethod(const std::string& method) {
 }
 
 bool isValidRequest(const std::string& target) {
-	try {
-		
+	try {	
 		URI a = URI(target);
 	}
 	catch (const std::exception& e)
-	{
-		
+	{	
+
 		return false;
 	}
 	return !target.empty();

@@ -6,15 +6,15 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 14:39:26 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:38:28 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 #include "Schemas.hpp"
 #include "Request.hpp"
-// #include <URI.hpp>
 #include <limits.h>
+#include "../URI_parsing/URI.hpp"
 
 
 // =====================================================================
@@ -46,26 +46,31 @@ std::string remove_leading(const std::string& str, const std::string& chars = " 
     return str.substr(start);
 }
 
-inline std::string getField(size_t& pos, const std::string& raw, const std::string& delimiter, bool optionalSpaces = false)
+inline std::string getField(size_t& pos,
+                            const std::string& raw,
+                            const std::string& delimiter,
+                            bool optionalSpaces = false)
 {
-    
-	size_t endPos = raw.find(delimiter, pos);
-	if (endPos == std::string::npos)
-		return (""); // No delimiter found
-        
-	std::string field = raw.substr(pos, endPos - pos);
-	pos = endPos + delimiter.size();
+    size_t endPos = raw.find(delimiter, pos);
+
+    if (endPos == std::string::npos)
+        return ("");
+    if (delimiter == EOL)
+        endPos = raw.size();
+    std::string field = raw.substr(pos, endPos - pos);
+    pos = endPos + delimiter.size();
     if (optionalSpaces)
     {
         field = remove_leading(field);
         field = remove_trailing(field);
     }
-	return (field); // Field may be empty after trimming
+
+    return field;
 }
+
 
 std::string extractAndValidate(size_t& pos, const std::string& raw, const SchemaItem& item) {
     std::string value = getField(pos, raw, item.delimiter, item.flags);
-
     if ((item.flags & IS_REQUIRED && value.empty()) || (item.fn && !item.fn(value)))
     {
         Request::setActiveError(item.errorCode);
@@ -89,7 +94,7 @@ std::string extractAndValidate(size_t& pos, const std::string& raw, const Schema
 static SchemaItem controlDataItems[] = {
     { SP, validMethod, "Invalid HTTP method", 501, IS_REQUIRED },
     { SP, isValidRequest, "Invalid request target", 400, IS_REQUIRED },
-    { "", isValidProtocol, "Invalid HTTP version", 505, IS_REQUIRED },
+    { EOL, isValidProtocol, "Invalid HTTP version", 505, IS_REQUIRED },
 };
 
 static SchemaItem headersItems[] = {
@@ -99,7 +104,7 @@ static SchemaItem headersItems[] = {
 
 static SchemaItem HeaderBlock[] = {
 	{ END_OF_LINE, NULL, "Invalid request line", 400, IS_REQUIRED},
-	{ "", NULL, "Invalid headers", 400, NONE },
+	{ EOL, NULL, "Invalid headers", 400, IS_REQUIRED },
 };
 
 static SchemaItem requestItems[] = {
@@ -153,33 +158,32 @@ bool isValidContentLength(const std::string& contentLength) {
     return length >= 0 && length <= INT_MAX;
 }
 
-// Headers specificHeadersValidation(Headers& headers)
-// {
-//     if (headers.has("Host") == false || headers.has("Content-Length") == false)
-//     {
-//         Request::setActiveError(400);
-//         throw std::runtime_error("Missing Host or COntent-Lenth header");
-//     }
-//     try 
-//     {
-//         URI hostURI = URI(headers.get("Host"));
-//     }
-//     catch (std::runtime_error e)
-//     { 
-//         Request::setActiveError(400);
-//         throw std::runtime_error("Invalid Host header value");
-//     }
-//     std::string contentLength = headers.get("Content-Length");
-//     if (!isValidContentLength(contentLength))
-//     {
-//         Request::setActiveError(400);
-//         throw std::runtime_error("Invalid Content-Length header value");
-//     }
-// }
+void specificHeadersValidation(Headers& headers)
+{
+    if (headers.has("Host") == false || headers.has("Content-Length") == false)
+    {
+        Request::setActiveError(400);
+        throw std::runtime_error("Missing Host or Content-Lenght header");
+    }
+    try 
+    {
+        URI hostURI = URI(headers.get("Host"));
+    }
+    catch (std::exception e)
+    { 
+        Request::setActiveError(400);
+        throw std::runtime_error("Invalid Host header value");
+    }
+    std::string contentLength = headers.get("Content-Length");
+    if (!isValidContentLength(contentLength))
+    {
+        Request::setActiveError(400);
+        throw std::runtime_error("Invalid Content-Length header value");
+    }
+}
 
 Headers validateHeaders(const std::string& raw) {
     Headers result;
-    if (raw.empty()) return result;
 
     size_t pos = 0;
     while (pos < raw.size())  
@@ -192,9 +196,7 @@ Headers validateHeaders(const std::string& raw) {
         std::string value = extractAndValidate(pos, raw, headersItems[1]);
         result.add(key, value);
     }
-    
-   
-    
+    specificHeadersValidation(result);
     return result;
 }
 
@@ -213,6 +215,7 @@ Request validateRequest(const std::string& raw) {
         req.setControlData(validateControlData(controlBlock));
 
         std::string headersBlock = extractAndValidate(headerPos, headers, HeaderBlock[1]);
+        headersBlock.append(END_OF_LINE);
         req.setHeaders(validateHeaders(headersBlock));
 
         std::string bodyBlock = extractAndValidate(pos, raw, requestItems[1]);

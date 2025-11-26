@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:02:42 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 14:31:06 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 16:19:43 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 #define TB				"\t"
 #define END_OF_HEADERS 	"\r\n\r\n"
 #define END_OF_LINE 	"\r\n"
+#define NEW_LINE        "\n"
 
 // =====================================================================
 // 	SCHEMA DEFINITIONS
