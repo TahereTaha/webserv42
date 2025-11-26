@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Event.hpp                                          :+:      :+:    :+:   */
+/*   Log.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:17:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/06 19:40:49 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:48:29 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ enum EventType {
     EPOLL_EVENT_READING,
     EPOLL_EVENT_WRITING,
     EPOLL_EVENT_ERROR,
+    EPOLL_EVENT_SUCCESS,
     NEW_CONNECTION,
     INFO,
     ERROR

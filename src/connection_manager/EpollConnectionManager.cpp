@@ -6,9 +6,12 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/07 14:53:24 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:50:46 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+// c++ -Wall -Wextra -Werror -std=c++98 -MMD -g *.cpp ../URI_parsing/**/*.cpp -I../URI_parsing/ -I../URI_parsing/utils -I../http_request_parser
 
 #include "EpollConnectionManager.hpp"
 #include <stdlib.h>
@@ -111,19 +114,29 @@ void EpollConnectionManager::badRequest(const int fd) {
     EventLog::log(EPOLL_EVENT_ERROR, fd);
     connections[fd].readBuffer.clear();
     std::ostringstream oss;
-    // oss << connections[fd].request.getErrorCode();
+    oss << connections[fd].request.getErrorCode();
+    connections[fd].writeBuffer = "HTTP/1.1 " + oss.str() + " Bad request\r\n\r\n";
+    setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
+}
+
+void EpollConnectionManager::successRequest(const int fd) {
+
+    EventLog::log(EPOLL_EVENT_SUCCESS, fd);
+    connections[fd].readBuffer.clear();
+    std::ostringstream oss;
     oss << 200;
     connections[fd].writeBuffer = "HTTP/1.1 " + oss.str() + " Success\r\n\r\n";
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
 
-// void EpollConnectionManager::requestHandler(const int clientfd) {
-    // Placeholder for request handling logic
-    // connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
-    // if (connections[clientfd].request.getErrorCode() != 0) 
-    //     badRequest(clientfd);
-    
-// }
+
+void EpollConnectionManager::requestHandler(const int clientfd) {
+    connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
+    if (connections[clientfd].request.getErrorCode() != 0) 
+        badRequest(clientfd);
+    else 
+        successRequest(clientfd);
+}
 
 void EpollConnectionManager::handleRead(int clientfd) {
     char buf[4096];
@@ -137,9 +150,9 @@ void EpollConnectionManager::handleRead(int clientfd) {
     }
     if (bytesRead == 0)
         closeConnection(clientfd);
-    // requestHandler(clientfd);
+    requestHandler(clientfd);
     // temporary
-    badRequest(clientfd);
+    // badRequest(clientfd);
     // closeConnection(clientfd);
 }
 
