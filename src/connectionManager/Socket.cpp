@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:53 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/06 19:03:35 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/07 13:27:07 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <cstring>
 #include <cerrno>     // for errno, EAGAIN, EWOULDBLOCK
 #include <cstdio>     // for perror
-#include "Event.hpp"
+#include "Log.hpp"
 #include <sstream>
 
 Socket::Socket(int port) {

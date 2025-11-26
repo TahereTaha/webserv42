@@ -6,11 +6,12 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/06 19:43:13 by capapes          ###   ########.fr       */
+/*   Updated: 2025/10/07 13:32:22 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+
 #include "Socket.hpp"
 #include <sys/epoll.h>
 #include <map>
@@ -50,5 +51,7 @@ class EpollConnectionManager {
         void handleWrite(int clientfd);
         void cleanupIdleConnections(const double &now);
         void closeConnection(int fd);
-        void badRequest(int fd);
+        // Request handler things
+        void badRequest(const int fd);
+        void requestHandler(const int clientfd);
 };
