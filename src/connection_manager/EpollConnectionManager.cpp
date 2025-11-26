@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:50:46 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:58:08 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void EpollConnectionManager::requestHandler(const int clientfd) {
     if (connections[clientfd].request.getErrorCode() != 0) 
         badRequest(clientfd);
     else 
-        successRequest(clientfd);
+        successRequest(clientfd); // here is that we try to hook the server part.
 }
 
 void EpollConnectionManager::handleRead(int clientfd) {

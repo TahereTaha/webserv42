@@ -55,7 +55,7 @@ Authority::Authority(std::string text)
 	if (*this_iter != ":")
 		throw (std::invalid_argument("incorrect port"));
 	this_iter++;
-	this->_port = stricter_unsigned_stoi(*this_iter, (size_t *)std::string::npos);
+	this->_port = htons((uint16_t)stricter_unsigned_stoi(*this_iter, (size_t *)std::string::npos));
 	this->_isPortSet = 1;
 	this_iter++;
 	if (this_iter != this_end)
@@ -157,7 +157,7 @@ std::vector<struct sockaddr *>	Authority::getSockaddrFromIpLiteral(IpLiteral &ip
 		addr_in = (struct sockaddr_in *) addr;
 		addr_in->sin_family = AF_INET;
 		if (this->_isPortSet == 1)
-			addr_in->sin_port = htons(this->_port);
+			addr_in->sin_port = this->_port;
 		else
 			addr_in->sin_port = htons(80);
 		std::memmove(&(addr_in->sin_addr), ip.getData(), IP_V4_DATA_SIZE);
@@ -169,7 +169,7 @@ std::vector<struct sockaddr *>	Authority::getSockaddrFromIpLiteral(IpLiteral &ip
 		addr_in6 = (struct sockaddr_in6 *) addr;
 		addr_in6->sin6_family = AF_INET6;
 		if (this->_isPortSet == 1)
-			addr_in6->sin6_port = htons(this->_port);
+			addr_in6->sin6_port = this->_port;
 		else
 			addr_in6->sin6_port = htons(80);
 		std::memmove(&(addr_in6->sin6_addr), ip.getData(), IP_V6_DATA_SIZE);
