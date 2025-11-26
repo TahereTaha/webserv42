@@ -24,6 +24,42 @@ Authority::Authority(std::string text)
 {
 	this->_isUserInfoSet = 0;
 	this->_text = text;
+	
+	this->_tokens = tokenize(this->_text, AUTHORITY_DELIMITERS);
+
+	std::vector<std::string>::iterator	this_iter = this->_tokens.begin();
+	std::vector<std::string>::iterator	this_end = this->_tokens.end();
+
+	//	set the user info.
+	{
+		std::vector<std::string>::iterator	check_point = this_iter;
+		try
+		{
+			this->_userInfo = UserInfo(this_iter, this_end);
+			this->_isUserInfoSet = 1;
+		}
+		catch (std::exception &e)
+		{
+			if (std::string("no userinfo") != std::string(e.what()))
+				throw ;
+			this_iter = check_point;
+		}
+	}
+	//	set the host.
+	this->_host = Host(this_iter, this_end);
+
+	//	set the port.
+	this->_port = 0;
+	if (this_iter == this_end)
+		return ;
+	if (*this_iter != ":")
+		throw (std::invalid_argument("incorrect port"));
+	this_iter++;
+	this->_port = stricter_unsigned_stoi(*this_iter, (size_t *)std::string::npos);
+	this->_isPortSet = 1;
+	this_iter++;
+	if (this_iter != this_end)
+		throw (std::invalid_argument("incorrect authority"));
 }
 
 #include <iostream>
@@ -81,6 +117,7 @@ Authority::Authority(	std::vector<std::string>::iterator &iter, \
 	this_iter++;
 	this->_port = stricter_unsigned_stoi(*this_iter, (size_t *)std::string::npos);
 	this->_isPortSet = 1;
+	this_iter++;
 	if (this_iter != this_end)
 		throw (std::invalid_argument("incorrect authority"));
 }
