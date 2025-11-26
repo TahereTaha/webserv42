@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:51:48 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/04 12:02:39 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 14:41:57 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,17 @@ testCases getTestCases() {
         cases.push_back(TestCase(
             "GET /test HTTP/1.1\r\nHost:\r\n\r\n",
             req // Expected: invalid (empty header value)
+        ));
+    }
+    // Case 11: URI fails
+    {
+        Headers hdrs;
+        hdrs["Host"] = "example.com";
+        Request req(ControlData("GET", "/hola/", "HTTP/1.1"), hdrs, "");
+        req.setErrorCode(400); // Expected: invalid, no path
+        cases.push_back(TestCase(
+            "GET /hola/ HTTP/1.1\r\nHost: example.com\r\n\r\n",
+            req // Expected: invalid (no path)
         ));
     }
 

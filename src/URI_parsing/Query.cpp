@@ -41,7 +41,8 @@ Query::Query(std::string text)
 
 Query::Query(std::vector<std::string>::iterator &iter,std::vector<std::string>::iterator end)
 {
-	if (*iter != "?")
+
+	if (iter == end || *iter != "?")
 		throw (std::invalid_argument("no query"));
 	iter++;
 	this->_text = "";
