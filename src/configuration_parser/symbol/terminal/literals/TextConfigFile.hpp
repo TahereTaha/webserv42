@@ -1,9 +1,10 @@
 #pragma once
 
 #include <ATerminal.hpp>
+#include <AEvaluable.hpp>
 #include <stddef.h>
 
-class TextConfigFile : public ATerminal
+class TextConfigFile : public ATerminal, public AEvaluable
 {
 	private:
 	protected:
@@ -13,8 +14,8 @@ class TextConfigFile : public ATerminal
 
 		const char	*what(void) const ;
 		size_t		getTerminalSizeOnStr(const std::string & str) const;
-		ATerminal*	clone(void) const;
+		TextConfigFile*	clone(void) const;
 
-		std::string	getValue(void) const;
+		void	evaluate(Tree<AEvaluable*> *self);
 };
 

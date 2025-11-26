@@ -6,7 +6,7 @@
 #include <ConfigFileLexer.hpp>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
-#include <SymbolServer.hpp>
+#include <SymbolConfigContext.hpp>
 #include <AParser.hpp>
 
 #include <stddef.h>
@@ -95,11 +95,11 @@ void	ConfigurationParser::scanning(void)
 void	ConfigurationParser::parsing(void)
 {
 	std::cout << "\t-> parsing " << std::endl;
-	
+
 	std::vector<ATerminal *>::iterator	iter = this->_terminalList.begin();
 	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
 
-	AParser	*parser = SymbolServer().getParser();
+	AParser	*parser = SymbolConfigContext().getParser();
 
 	try 
 	{
@@ -132,6 +132,15 @@ void	ConfigurationParser::parsing(void)
 void	ConfigurationParser::analysis(void)
 {
 	std::cout << "\t-> analysis" << std::endl;
+
+	Tree<AEvaluable*>::iterator	iter = this->_AST->begin();
+	Tree<AEvaluable*>::iterator	end = this->_AST->end();
+
+	while (iter != end)
+	{
+		(*iter)->getContent()->evaluate(*iter);
+		iter++;
+	}
 }
 
 void	ConfigurationParser::transpiling(void)
@@ -148,27 +157,46 @@ void	ConfigurationParser::printTerminalList(void) const
 	{
 		std::cout << "  " << this->_terminalList[i]->what() << "\n";
 		i++;
-//		if (i < this->_terminalList.size())
-//			std::cout << "|";
 	}
 	std::cout << std::endl;
 }
 
-static void	print_ast(Tree<AEvaluable*> *ast)
+static void align_tabulation(size_t	depth)
+{
+	size_t	i = 0;
+	while (i < depth)
+	{
+		std::cout << "   >";
+		i++;
+	}
+}
+
+static void	print_ast(Tree<AEvaluable*> *ast, size_t depth = 0)
 {
 	if (ast->getNodeType() == LEAF)
 	{
-		std::cout << ast->getContent()->what() << "; ";
+		align_tabulation(depth);
+		std::cout << ast->getContent()->what();
+		std::cout << " with a id of: " << (void *) ast->getContent() << ";\n";
 		return ;
 	}
-	std::cout << ast->getContent()->what() << " { ";
+
+	align_tabulation(depth);
+	std::cout << ast->getContent()->what();
+	std::cout << " with a id of: " << (void *) ast->getContent() << "\n";
+
+	align_tabulation(depth);
+	std::cout << "{\n";
+	
 	Tree<AEvaluable*>	*node = (*ast)[0];
 	while (node)
 	{
-		print_ast(node);
+		print_ast(node, depth + 1);
 		node = node->getRightBranchNode();
 	}
-	std::cout << " } ";
+	
+	align_tabulation(depth);
+	std::cout << "}\n";
 }
 
 void	ConfigurationParser::printAST(void) const

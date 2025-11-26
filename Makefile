@@ -6,7 +6,7 @@
 #    By: tatahere <tatahere@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/10/06 16:02:22 by tatahere         ###   ########.fr        #
+#    Updated: 2025/11/20 15:00:36 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,9 @@ VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/character_lexeme:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/keywords:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/literals:
-VPATH	+= $(SRC_DIR)exceptions
+VPATH	+= $(SRC_DIR)exceptions:
+VPATH	+= $(SRC_DIR)URIParsing:
+VPATH	+= $(SRC_DIR)URIParsing/utils
 
 CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD -g
 
@@ -53,6 +55,7 @@ NAME	=	webserv
 OBJ		:=	main.o						\
 										\
 			Args.o						\
+			IR_printing_functions.o		\
 			ConfigurationParser.o		\
 										\
 			parse_exception.o			\
@@ -92,8 +95,38 @@ OBJ		:=	main.o						\
 			AParser.o					\
 			AParsingRule.o				\
 			ParsingRuleSymbol.o			\
+			ParsingRuleAnd.o			\
+			ParsingRuleOr.o				\
+			ParsingRuleRepetition.o		\
 										\
+			SymbolConfigContext.o		\
 			SymbolServer.o				\
+			SymbolServerName.o			\
+			SymbolListen.o				\
+			SymbolClientMaxBodySize.o	\
+			SymbolErrorPage.o			\
+			SymbolLocation.o			\
+			SymbolLimitExcept.o			\
+			SymbolReturn.o				\
+			SymbolRoot.o				\
+			SymbolAutoIndex.o			\
+			SymbolIndex.o				\
+										\
+			tokenize.o					\
+			percent_encoding_utils.o	\
+			utils.o						\
+										\
+			Scheme.o					\
+			UserInfo.o					\
+			IpLiteral.o					\
+			Host.o						\
+			Authority.o					\
+			Path.o						\
+			Query.o						\
+			Fragment.o					\
+			URI.o						\
+										\
+										\
 
 #			subTreeGenerationUtils.o	\
 			SymbolServer.o				\

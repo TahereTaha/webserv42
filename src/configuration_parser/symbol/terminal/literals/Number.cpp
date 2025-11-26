@@ -14,7 +14,7 @@ Number::~Number(void)
 {
 }
 
-ASymbol* Number::clone() const
+Number* Number::clone() const
 {
 	return new Number(*this);
 }
@@ -31,12 +31,12 @@ size_t	Number::getTerminalSizeOnStr(const std::string & str) const
 	return (i);
 }
 
-int		Number::getValue(void) const
-{
-	return (atoi(this->_text.c_str()));
-}
-
 const char	*Number::what(void) const 
 {
 	return ("number");
+}
+
+void	Number::evaluate(Tree<AEvaluable*> *self)
+{
+	(void) self;
 }
