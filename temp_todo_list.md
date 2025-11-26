@@ -17,23 +17,17 @@
 	- text
 	- number
 
-- [x] evaluate the locations.
-	- [x] set up the route of this location.
-		- [x] init the route.
-			- [x] set the location path.
-			- [x] set the return.
-			- [x] set the root.
-			- [x] set the autoindex.
-			- [x] set the index.
-			- [x] set the limit except.
-	- [x] set up the route of all sub locations.
+- [ ] make the evaluate function on the childs of the server symbol.
+	- [x] make the listen.
+	- [ ] make the client max body size.
+	- [ ] make error page.
+
+- [ ] make the server symbol.
+	- [ ] class boiler plait.
+	- [ ] set up the listen.
+	- [ ] set up the client max body size.
 
 - [ ] make a check for each ast node.
-	- [x] make the code on the configuration parser.
-		- [x] fix the errors on the tree container.
-	- [x] add some printing functions to debug the analysis.
-		- [x] add printig of the tree nodes id.
-		- [x] add functions to print each struct of the IR.
 	- [x] make location.
 		- [x] make make the return.
 		- [x] make root.
@@ -41,7 +35,7 @@
 		- [x] make index.
 		- [x] make limit exept.
 	- [ ] make server.
-		- [ ] make server name.
+		- [/] make server name.
 		- [ ] make listen.
 		- [ ] make client max body size.
 		- [ ] make error page.

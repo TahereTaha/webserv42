@@ -140,7 +140,7 @@ static void	printSocket_in6_local(struct sockaddr_in6 *addr, size_t tab_level)
 	print_tab_level(tab_level);
 	std::cout << "type: AF_INET6;\n";
 	print_tab_level(tab_level);
-	std::cout << "port: " << ntohl(addr->sin6_port) << "\n";
+	std::cout << "port: " << ntohs(addr->sin6_port) << "\n";
 	print_tab_level(tab_level);
 	std::cout << "ip: ";
 	print_ipv6((char *)&addr->sin6_addr);
@@ -152,7 +152,7 @@ static void	printSocket_in_local(struct sockaddr_in *addr, size_t tab_level)
 	print_tab_level(tab_level);
 	std::cout << "type: AF_INET;\n";
 	print_tab_level(tab_level);
-	std::cout << "port: " << ntohl(addr->sin_port) << "\n";
+	std::cout << "port: " << ntohs(addr->sin_port) << "\n";
 	print_tab_level(tab_level);
 	std::cout << "ip: ";
 	print_ipv4((char *)&addr->sin_addr);

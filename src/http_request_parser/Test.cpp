@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:51:48 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:14:55 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:54:08 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,8 @@ void testRunner()
 	}
 }
 
-int main () {
-	testRunner();
-	return 0;
-}
+//
+//int main () {
+//	testRunner();
+//	return 0;
+//}
