@@ -6,14 +6,14 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/12 14:33:23 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 14:39:26 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 #include "Schemas.hpp"
 #include "Request.hpp"
-#include "URIParser.hpp"
+// #include <URI.hpp>
 #include <limits.h>
 
 
@@ -89,7 +89,7 @@ std::string extractAndValidate(size_t& pos, const std::string& raw, const Schema
 static SchemaItem controlDataItems[] = {
     { SP, validMethod, "Invalid HTTP method", 501, IS_REQUIRED },
     { SP, isValidRequest, "Invalid request target", 400, IS_REQUIRED },
-    { "", isValidProtocol, "Invalid HTTP version", 505, IS_REQUIRED }
+    { "", isValidProtocol, "Invalid HTTP version", 505, IS_REQUIRED },
 };
 
 static SchemaItem headersItems[] = {
@@ -118,11 +118,6 @@ ControlData validateControlData(const std::string& raw) {
 
     result.method        = extractAndValidate(pos, raw, controlDataItems[0]);
     result.requestTarget = extractAndValidate(pos, raw, controlDataItems[1]);
-    result.uri           = URIParser(result.requestTarget).getURI();
-    if (!result.uri.isValid()) {
-        Request::setActiveError(400);
-        throw std::runtime_error("Invalid URI in request target");
-    }
     result.httpVersion   = extractAndValidate(pos, raw, controlDataItems[2]);
 
     return result;
@@ -158,26 +153,29 @@ bool isValidContentLength(const std::string& contentLength) {
     return length >= 0 && length <= INT_MAX;
 }
 
-Headers specificHeadersValidation(Headers& headers)
-{
-    if (headers.has("Host") == false || headers.has("Content-Length") == false)
-    {
-        Request::setActiveError(400);
-        throw std::runtime_error("Missing Host or COntent-Lenth header");
-    }
-    URI hostURI = URIParser(headers.get("Host")).getURI();
-    if (!hostURI.isValid())
-    {
-        Request::setActiveError(400);
-        throw std::runtime_error("Invalid Host header value");
-    }
-    std::string contentLength = headers.get("Content-Length");
-    if (!isValidContentLength(contentLength))
-    {
-        Request::setActiveError(400);
-        throw std::runtime_error("Invalid Content-Length header value");
-    }
-}
+// Headers specificHeadersValidation(Headers& headers)
+// {
+//     if (headers.has("Host") == false || headers.has("Content-Length") == false)
+//     {
+//         Request::setActiveError(400);
+//         throw std::runtime_error("Missing Host or COntent-Lenth header");
+//     }
+//     try 
+//     {
+//         URI hostURI = URI(headers.get("Host"));
+//     }
+//     catch (std::runtime_error e)
+//     { 
+//         Request::setActiveError(400);
+//         throw std::runtime_error("Invalid Host header value");
+//     }
+//     std::string contentLength = headers.get("Content-Length");
+//     if (!isValidContentLength(contentLength))
+//     {
+//         Request::setActiveError(400);
+//         throw std::runtime_error("Invalid Content-Length header value");
+//     }
+// }
 
 Headers validateHeaders(const std::string& raw) {
     Headers result;

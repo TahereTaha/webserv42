@@ -6,12 +6,13 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/30 17:56:25 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 14:10:45 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 #include <iostream>
+#include "../URI_parsing/URI.hpp"
 
 // =====================================================================
 // 					GENERIC FIELD VALIDATORS
@@ -58,6 +59,15 @@ bool validMethod(const std::string& method) {
 }
 
 bool isValidRequest(const std::string& target) {
+	try {
+		
+		URI a = URI(target);
+	}
+	catch (const std::exception& e)
+	{
+		
+		return false;
+	}
 	return !target.empty();
 }
 
