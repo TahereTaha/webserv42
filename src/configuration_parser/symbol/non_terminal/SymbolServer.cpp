@@ -5,10 +5,20 @@
 #include <KeyWordServer.hpp>
 #include <KeyLeftCurlyBracket.hpp>
 #include <KeyRightCurlyBracket.hpp>
+#include <Number.hpp>
+
+#include <SymbolServerName.hpp>
+#include <SymbolListen.hpp>
+#include <SymbolClientMaxBodySize.hpp>
+#include <SymbolErrorPage.hpp>
+#include <SymbolLocation.hpp>
 
 #include <AParser.hpp>
 #include <AParsingRule.hpp>
 #include <ParsingRuleSymbol.hpp>
+#include <ParsingRuleAnd.hpp>
+#include <ParsingRuleOr.hpp>
+#include <ParsingRuleRepetition.hpp>
 
 SymbolServer::SymbolServer(void)
 {
@@ -28,11 +38,25 @@ SymbolServer	*SymbolServer::clone(void) const
 	return (new SymbolServer(*this));
 }
 
-AParser	*SymbolServer::getParser(void) const
+void		SymbolServer::evaluate(Tree<AEvaluable*> *self)
 {
-	AParsingRule	*rule =	new ParsingRuleSymbol(KeyWordServer().clone());
-	return (new AParser(this->clone(), rule));
+	(void) self;
 }
 
-
+AParser	*SymbolServer::getParser(void) const
+{
+	AParsingRule	*rule =	new ParsingRuleAnd(\
+			new ParsingRuleSymbol(KeyWordServer().clone()),\
+			new ParsingRuleSymbol(KeyLeftCurlyBracket().clone()),\
+			new ParsingRuleRepetition(1, -1, new ParsingRuleOr(\
+				new ParsingRuleSymbol(SymbolServerName().clone()),\
+				new ParsingRuleSymbol(SymbolListen().clone()),\
+				new ParsingRuleSymbol(SymbolClientMaxBodySize().clone()),\
+				new ParsingRuleSymbol(SymbolErrorPage().clone()),\
+				new ParsingRuleSymbol(SymbolLocation().clone()),\
+				NULL)),\
+			new ParsingRuleSymbol(KeyRightCurlyBracket().clone()),\
+			NULL);
+	return (new AParser(this->clone(), rule));
+}
 

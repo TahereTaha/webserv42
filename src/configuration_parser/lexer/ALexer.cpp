@@ -41,12 +41,12 @@ std::vector<ATerminal*>	ALexer::tokenizeStr(const std::string & str) const
 		catch (const std::exception & e)
 		{
 			freeTerminalList(terminalList);
-			throw (e);
+			throw ;
 		}
 		catch (parse_exception & e)
 		{
 			freeTerminalList(terminalList);
-			throw (e);
+			throw ;
 		}
 		terminalList.push_back(terminal);
 		i += terminal->getSize();

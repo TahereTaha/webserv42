@@ -8,6 +8,7 @@ const static char	*g_parse_errno_msg_type[] = {\
 	"unrecognized character.",	\
 	"quote sign not closed.",	\
 	"unrecognized symbol.",	\
+	"all symbols consumed whitout finishing the ast.",	\
 	"." \
 };
 
