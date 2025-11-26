@@ -11,11 +11,10 @@
 
 static void	print_tab_level(size_t tab_level)
 {
-	size_t	i = 0;
 	while (tab_level)
 	{
 		std::cout << "\t";
-		i--;
+		tab_level--;
 	}
 }
 

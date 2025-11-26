@@ -17,13 +17,24 @@
 	- text
 	- number
 
+- [x] evaluate the locations.
+	- [x] set up the route of this location.
+		- [x] init the route.
+			- [x] set the location path.
+			- [x] set the return.
+			- [x] set the root.
+			- [x] set the autoindex.
+			- [x] set the index.
+			- [x] set the limit except.
+	- [x] set up the route of all sub locations.
+
 - [ ] make a check for each ast node.
 	- [x] make the code on the configuration parser.
 		- [x] fix the errors on the tree container.
 	- [x] add some printing functions to debug the analysis.
 		- [x] add printig of the tree nodes id.
 		- [x] add functions to print each struct of the IR.
-	- [ ] make location.
+	- [x] make location.
 		- [x] make make the return.
 		- [x] make root.
 		- [x] make autoindex.
@@ -41,7 +52,6 @@
 	- [ ] parse the file.
 		- [x] read the file.
 		- [x] tokenize.
-			- [ ] add the literal class.
 		- [x] parse.
 			- [x] change the target simbol to a server vector.
 		- [ ] check.
