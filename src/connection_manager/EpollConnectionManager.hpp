@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/07 13:32:22 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:47:47 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@
 #include <sys/time.h> 
 #include "../http_request_parser/Request.hpp"
 
+
 struct Connection {
     int          fd;
     std::string  readBuffer;
-    // Request      request;
+    Request      request;
     std::string  writeBuffer;
     bool         keepAlive;
     double       lastActive;
@@ -53,5 +54,6 @@ class EpollConnectionManager {
         void closeConnection(int fd);
         // Request handler things
         void badRequest(const int fd);
+        void successRequest(const int fd);
         void requestHandler(const int clientfd);
 };
