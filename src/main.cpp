@@ -23,7 +23,6 @@
 #include <AParser.hpp>
 
 
-
 int	main(int argc, char **argv)
 {
 	try
