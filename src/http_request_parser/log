@@ -1,5 +1,0 @@
-Schemas.cpp:62:46: error: expected ';' after expression
-    std::cout << "EVAL : " << field << "\n\n"
-                                             ^
-                                             ;
-1 error generated.
