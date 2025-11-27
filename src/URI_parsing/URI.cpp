@@ -122,7 +122,7 @@ void	URI::identifyURIType(void)
 		}
 	}
 	//	identify absolute path reference.
-	if (this->_tokens[0] == "/" && this->_tokens.size() > 1 && this->_tokens[1] != "/")
+	if (this->_tokens[0] == "/" && ((this->_tokens.size() > 1 && this->_tokens[1] != "/") || this->_tokens.size() == 1))
 	{
 		this->_type = ABSOLUTE_PATH;
 		return ;
