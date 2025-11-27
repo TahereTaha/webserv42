@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:58:08 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:10:38 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,10 @@ void EpollConnectionManager::badRequest(const int fd) {
     connections[fd].readBuffer.clear();
     std::ostringstream oss;
     oss << connections[fd].request.getErrorCode();
-    connections[fd].writeBuffer = "HTTP/1.1 " + oss.str() + " Bad request\r\n\r\n";
+    connections[fd].writeBuffer =   "HTTP/1.1 400 Bad Request\r\n"
+                                    "Content-Length: 0\r\n"
+                                    "Connection: close\r\n"
+                                    "\r\n";
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
 
@@ -125,7 +128,10 @@ void EpollConnectionManager::successRequest(const int fd) {
     connections[fd].readBuffer.clear();
     std::ostringstream oss;
     oss << 200;
-    connections[fd].writeBuffer = "HTTP/1.1 " + oss.str() + " Success\r\n\r\n";
+    connections[fd].writeBuffer =   "HTTP/1.1 200 Success\r\n"
+                                    "Content-Length: 0\r\n"
+                                    "Connection: close\r\n"
+                                    "\r\n";
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
 
@@ -151,9 +157,6 @@ void EpollConnectionManager::handleRead(int clientfd) {
     if (bytesRead == 0)
         closeConnection(clientfd);
     requestHandler(clientfd);
-    // temporary
-    // badRequest(clientfd);
-    // closeConnection(clientfd);
 }
 
 void EpollConnectionManager::handleWrite(int clientfd) {

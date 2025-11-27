@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:39:42 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:36:23 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ inline bool isValidLength(const std::string& str, size_t maxLength, size_t minLe
 }
 
 inline bool isValidCharSet(const std::string& str, bool (*fn)(const char& c)) {
-    for (size_t i = 0; i < str.size(); ++i)
+    for (size_t i = 0; i < str.size(); i++)
         if (!fn(str[i])) return false;
     return true;
 }
@@ -35,8 +35,9 @@ inline bool keyValidChar(const char& c) {
 	return isalnum(c) || c == '-' || c == '_';
 }
 
+// TO DO replace for localhost:8080 remove c != ':'
 inline bool valueValidChar(const char& c) {
-	return isprint(c) && c != '\r' && c != '\n' && c != ':';
+	return isprint(c) && c != '\r' && c != '\n';
 }
 
 // =====================================================================
@@ -59,14 +60,13 @@ bool validMethod(const std::string& method) {
 }
 
 bool isValidRequest(const std::string& target) {
-	try {	
-		URI a = URI(target);
-	}
-	catch (const std::exception& e)
-	{	
-
-		return false;
-	}
+	// try {	
+	// 	URI a = URI(target);
+	// }
+	// catch (const std::exception& e)
+	// {	
+	// 	throw std::runtime_error("Invalid URI");
+	// }
 	return !target.empty();
 }
 
