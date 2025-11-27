@@ -6,12 +6,20 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:17:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:48:29 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 13:47:44 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <string>
+#include <pthread.h>
+#include <fstream>
+#include <iostream>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+#include "ErrorHandler.hpp"
+
 
 extern pthread_mutex_t logMutex;
 enum EventType {

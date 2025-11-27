@@ -6,11 +6,12 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:05:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:14:24 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 15:49:49 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Headers.hpp"
+#include <iostream>
 
 Headers::Headers() {}
 
@@ -37,7 +38,9 @@ void Headers::add(const std::string& key, const std::string& value) {
     if (!isValidKey(key))
         throw std::runtime_error("Invalid header key: " + key);
     if (!isValidValue(value))
+    {
         throw std::runtime_error("Invalid header value for key: " + key);
+    }
     values[key] = value;
 }
 

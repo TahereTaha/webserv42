@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:38:28 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:34:41 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,22 +160,23 @@ bool isValidContentLength(const std::string& contentLength) {
 
 void specificHeadersValidation(Headers& headers)
 {
-    if (headers.has("Host") == false || headers.has("Content-Length") == false)
+    // Check if it has contnt lenght only when has body and encoding
+    if (headers.has("Host") == false)
     {
         Request::setActiveError(400);
         throw std::runtime_error("Missing Host or Content-Lenght header");
     }
-    try 
-    {
-        URI hostURI = URI(headers.get("Host"));
-    }
-    catch (std::exception e)
-    { 
-        Request::setActiveError(400);
-        throw std::runtime_error("Invalid Host header value");
-    }
+    // try 
+    // {
+    //     URI hostURI = URI(headers.get("Host"));
+    // }
+    // catch (std::exception e)
+    // { 
+    //     Request::setActiveError(400);
+    //     throw std::runtime_error("Invalid Host header value URI");
+    // }
     std::string contentLength = headers.get("Content-Length");
-    if (!isValidContentLength(contentLength))
+    if (contentLength != "" && !isValidContentLength(contentLength))
     {
         Request::setActiveError(400);
         throw std::runtime_error("Invalid Content-Length header value");
@@ -226,5 +227,6 @@ Request validateRequest(const std::string& raw) {
 		std::cerr << "Error: " << e.what() << std::endl;
 		return req;
 	}
+  
     return req;
 }

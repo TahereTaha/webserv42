@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:51:48 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:54:08 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:50:38 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ testCases getTestCases() {
         hdrs["Host"] = "example.com";
         hdrs["User-Agent"] = "TestAgent";
         hdrs["Content-Length"] = "34";
-        Request req(ControlData("GET", "/index.html", "HTTP/1.1"), hdrs, "");
+        Request req(ControlData("GET", "/", "HTTP/1.1"), hdrs, "");
         cases.push_back(TestCase(
-            "GET /index.html HTTP/1.1\r\nHost: example.com\r\nUser-Agent: TestAgent\r\nContent-Length: 34\r\n\r\n",
+            "GET / HTTP/1.1\r\nHost: example.com\r\nUser-Agent: TestAgent\r\nContent-Length: 34\r\n\r\n",
             req
         ));
     }
@@ -199,8 +199,7 @@ void testRunner()
 	}
 }
 
-//
-//int main () {
-//	testRunner();
-//	return 0;
-//}
+// int main () {
+// 	testRunner();
+// 	return 0;
+// }
