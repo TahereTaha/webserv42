@@ -8,6 +8,7 @@
 class SymbolClientMaxBodySize : public ANonTerminal
 {
 	private:
+		size_t	_max_body_size;
 	protected:
 	public:
 		SymbolClientMaxBodySize(void);
@@ -18,4 +19,6 @@ class SymbolClientMaxBodySize : public ANonTerminal
 		void			evaluate(Tree<AEvaluable*> *self);
 
 		AParser	*getParser(void) const;
+
+		size_t	getMaxBodySize(void) const ;
 };
