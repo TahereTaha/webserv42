@@ -6,17 +6,11 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:17:47 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/07 15:00:51 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 15:04:33 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Log.hpp"
-#include <fstream>
-#include <iostream>
-#include <ctime>
-#include <iomanip>
-#include <sstream>
-#include "ErrorHandler.hpp"
 
 
 static std::ofstream logFile;
@@ -41,9 +35,10 @@ std::string Event::toString() const {
         case SOCKET_BIND:               typeStr = "[SOCKET] Socket created on port:"; break;
         case EPOLL_ADD_CONNECTION:      typeStr = "[EPOLL] Added connection to epoll: "; break;
         case EPOLL_ADD_SOCKET:          typeStr = "[EPOLL] Added socket to epoll: "; break;
+        case EPOLL_EVENT_SUCCESS:       typeStr = "[EPOLL] Request success for client: "; break;
         case EPOLL_EVENT_CLOSE:         typeStr = "[EVENT] Closing idle connection: "; break;
         case EPOLL_EVENT_READING:       typeStr = "[EVENT] Handling read event for client: "; break;
-        case EPOLL_EVENT_WRITING:       typeStr = "[EVENT]"; break;
+        case EPOLL_EVENT_WRITING:       typeStr = "[EVENT] Writing"; break;
         case EPOLL_EVENT_ERROR:         typeStr = "[EVENT] Request error for client: "; break;
         case NEW_CONNECTION:            typeStr = "[CONNECTION] New connection from: "; break;
         case INFO:                      typeStr = "[INFO]"; break;
