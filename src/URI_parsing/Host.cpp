@@ -18,7 +18,7 @@ Host::Host(void)
 Host::Host(std::string text)
 {
 	this->_text = text;
-	
+
 	try
 	{
 		this->_ip = IpLiteral(this->_text);

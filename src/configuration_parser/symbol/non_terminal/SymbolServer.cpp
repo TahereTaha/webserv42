@@ -100,7 +100,6 @@ static	void	set_default_server(t_server &server)
 	server.client_max_body_size = 1024;
 }
 
-#include <IR_printing_functions.hpp>
 
 void		SymbolServer::evaluate(Tree<AEvaluable*> *self)
 {
@@ -120,7 +119,7 @@ void		SymbolServer::evaluate(Tree<AEvaluable*> *self)
 	if (!(bit_field_directives & (1 << SERVER_LISTEN)) || !(bit_field_directives & (1 << SERVER_LOCATION)))
 		throw (std::invalid_argument("server important directives unset."));
 
-	printServer(this->_server);
+//	printServer(this->_server);
 }
 
 AParser	*SymbolServer::getParser(void) const
