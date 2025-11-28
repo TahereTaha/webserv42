@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/08/05 16:51:42 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 22:19:27 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ public:
     ~Socket();
 
     int     getFd() const;
+    int     getPort() const;
     int     acceptConnection();
 
 private:
     int fd;
+    int port;
 };
 
 #endif

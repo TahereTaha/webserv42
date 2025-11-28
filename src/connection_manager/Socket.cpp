@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:53 by capapes           #+#    #+#             */
-/*   Updated: 2025/10/07 13:27:07 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 22:19:36 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ Socket::Socket(int port) {
 
     makeNonBlocking(fd);
     EventLog::log(SOCKET_BIND, port);
+    this->port = port;
 }
 
 Socket::~Socket() {
@@ -66,4 +67,8 @@ int Socket::acceptConnection() {
     socklen_t   clilen = sizeof(cli);
     
     return accept(fd, (sockaddr*)&cli, &clilen);
+}
+
+int Socket::getPort() const {
+    return port;
 }
