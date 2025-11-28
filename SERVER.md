@@ -1,7 +1,7 @@
 ## Server Class Overview
 
-The `Server` class is a HTTP server backed by a single `t_server`
-configuration. It accepts a parsed `Request` and returns a `ServerResponse`.
+The `Server` class is a server built from a `t_server` configuration. 
+It accepts a `Request` and returns a `ServerResponse`.
 
 It is responsible for:
 
