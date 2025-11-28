@@ -6,18 +6,15 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 17:54:40 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 20:41:18 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
-#include <iostream>
-#include <limits.h>
 
 // =====================================================================
 // 					GENERIC FIELD VALIDATORS
 // =====================================================================
-
 inline bool isValidLength(const std::string& str, size_t maxLength, size_t minLength) {
     return !(str.empty() || str.size() > maxLength || str.size() < minLength);
 }
@@ -67,7 +64,6 @@ bool isValidProtocol(const std::string& version) {
 	return version == "HTTP/1.1" || version == "HTTP/2.0";
 }
 
-
 // =====================================================================
 // 					VALIDATORS FOR HEADER FIELDS
 // =====================================================================
@@ -99,4 +95,47 @@ bool isValidContentLength(const std::string& contentLength) {
     }
     long length = string_to_long(contentLength);
     return length >= 0 && length <= INT_MAX;
+}
+
+
+// =====================================================================
+// 	ODDLY SPECIFIC VALIDATORS VALIDATORS
+// =====================================================================
+void specificControlDataValidation(const std::string& target)
+{
+    try {	
+		URI a = URI(target);
+	}
+	catch (const std::exception& e)
+	{	
+        Request::setActiveError(400);
+		throw std::runtime_error("Invalid URI");
+	}
+}
+
+// [ TO DO ] Check if it has content lenght only when has body and encoding
+void specificHeadersValidation(Headers& headers)
+{
+    if (headers.has("Content-Length") && !isValidContentLength(headers.get("Content-Length")))
+    {
+        Request::setActiveError(400);
+        throw std::runtime_error("Invalid Content-Length header value");
+    }
+    
+    if (headers.has("Host"))
+    {
+        try 
+        {
+            Authority hostURI = Authority(headers.get("Host"));
+        }
+        catch (const std::exception& e)
+        { 
+			Request::setActiveError(400);
+            throw std::runtime_error("Invalid Host header value URI");
+        }
+    }
+    else
+    {   
+        throw std::runtime_error("Missing Host or Content-Lenght header");
+    }
 }
