@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:05:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 15:49:49 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 20:30:01 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,6 @@ Headers::const_iterator Headers::begin() const { return values.begin(); }
 Headers::const_iterator Headers::end() const { return values.end(); }
 
 void Headers::add(const std::string& key, const std::string& value) {
-    if (!isValidKey(key))
-        throw std::runtime_error("Invalid header key: " + key);
-    if (!isValidValue(value))
-    {
-        throw std::runtime_error("Invalid header value for key: " + key);
-    }
     values[key] = value;
 }
 
@@ -61,7 +55,5 @@ const std::string& Headers::get(const std::string& key) const {
 }
 
 std::string& Headers::operator[](const std::string& key) {
-    if (!isValidKey(key))
-        throw std::runtime_error("Invalid header key: " + key);
     return values[key];
 }

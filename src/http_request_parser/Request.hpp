@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:17:20 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/30 18:06:22 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 20:31:26 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ public:
     Request& operator=(const Request& other);
     ~Request();
 
-    bool                operator==(const Request& other) const;
+    // bool                operator==(const Request& other) const;
     void 				setControlData(const ControlData& cd);
     void 				setHeaders(const Headers& h);
     void 				setBody(const std::string& b);

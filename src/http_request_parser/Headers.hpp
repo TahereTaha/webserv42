@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:53:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/28 15:02:03 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 20:29:03 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <map>
 #include <string>
 #include <stdexcept>
-#include "FieldValidators.hpp"
 
 class Headers {
 public:
