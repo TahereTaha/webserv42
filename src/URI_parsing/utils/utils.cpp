@@ -26,6 +26,8 @@ int	stoi(std::string num_str, size_t *pos, int base)
 	{
 		num_str[i] = std::tolower(num_str[i]);
 		digit = std::string(digit_char).find(num_str[i]);
+		if (digit >= base)
+			break ;
 		digit *= sign;
 		num *= base;
 		num += digit;
