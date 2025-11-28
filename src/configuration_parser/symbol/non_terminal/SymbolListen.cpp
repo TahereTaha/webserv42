@@ -36,8 +36,6 @@ SymbolListen	*SymbolListen::clone(void) const
 	return (new SymbolListen(*this));
 }
 
-#include <IR_printing_functions.hpp>
-#include <iostream>
 
 void		SymbolListen::evaluate(Tree<AEvaluable*> *self)
 {
@@ -45,7 +43,6 @@ void		SymbolListen::evaluate(Tree<AEvaluable*> *self)
 	struct sockaddr_storage	socket;
 	std::vector<struct sockaddr*>	socket_arr;
 
-	std::cout << "taha\n\n\n\n\n" << std::endl;
 	size_t i = 0;
 	while (i < self->getChildNodeSize())
 	{
@@ -69,14 +66,6 @@ void		SymbolListen::evaluate(Tree<AEvaluable*> *self)
 		i++;
 	}
 
-	i = 0;
-	while (i < this->_sockets.size())
-	{
-		std::cout << "this is a socket" << std::endl;
-		printSocket(this->_sockets[i]);
-		std::cout << std::endl;
-		i++;
-	}
 }
 
 AParser	*SymbolListen::getParser(void) const
