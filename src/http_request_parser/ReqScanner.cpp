@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:02:01 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 15:52:15 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 18:47:22 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,82 @@
 #include "Schemas.hpp"
 
 ReqScanner::ReqScanner(const std::string& raw)
-	: _raw(raw), _pos(0) {}
-
+	: _raw(raw), _pos(0) {
+		_ended = false;
+	}
+ReqScanner::~ReqScanner()
+{}
 #define LEADING 1
 #define TRAILING 1 << 1
 #define OPTIONAL_SPACES (LEADING | TRAILING)
 #define SPACES " \t\n\r\f\v"
 
-std::string trim(std::string& str, int flags, size_t start, size_t end)
-{
-	size_t length = end - start;
+std::string trim(const std::string& str, int flags)
+{	
+	size_t start = 0;
+	size_t end = str.size();
 	
-	if (flags | LEADING)
-		start = str.find_first_not_of(SPACES, start, length);
-    if (start == std::string::npos)
-        return ("");
-	if (flags | TRAILING)
-    	end = str.find_last_not_of(SPACES, end - 1, length) + 1;
+	if (flags & LEADING)
+	{
+		start = str.find_first_not_of(SPACES, start);
+    	if (start == std::string::npos)
+	   		return ("");
+	}
+	if (flags & TRAILING)
+	{
+    	end = str.find_last_not_of(SPACES, end - 1) + 1;
+	}
+
     return (str.substr(start, end - start));
 }
 
-
-std::string ReqScanner::getField(const std::string& delimiter, int flags) {		
-	
-	size_t 			end;
-	std::string 	field = "";
-	
-	if (_ended)
-		return (field);
-	
-	end = delimiter == EOF
-			? _raw.size()
-			: _raw.find(delimiter, _pos);
-					
-	_ended = end == std::string::npos;
-	if (_ended)
-	   return (field);
-	
-	field = flags 
-		? trim(_raw, flags, _pos, end) 
-		: _raw.substr(_pos, end - _pos);				
-	_pos = end + delimiter.size();
-	return (field);
+std::string remove_trailing(const std::string& str, const std::string& chars = " \t\r\n")
+{
+    size_t end = str.find_last_not_of(chars);
+    if (end == std::string::npos)
+        return "";
+    return str.substr(0, end + 1);
 }
 
+std::string remove_leading(const std::string& str, const std::string& chars = " \t\r\n")
+{
+    size_t start = str.find_first_not_of(chars);
+    if (start == std::string::npos)
+        return "";
+    return str.substr(start);
+}
+
+std::string ReqScanner::getField(const std::string& delimiter, int flags) {		
+		
+
+	size_t endPos = _raw.find(delimiter, _pos);
+
+    if (endPos == std::string::npos)
+	{
+		_ended = true;
+        return ("");
+	}
+    if (delimiter == EOF_)
+        endPos = _raw.size();
+    std::string field = _raw.substr(_pos, endPos - _pos);
+    _pos = endPos + delimiter.size();
+    if (flags & LEADING)
+	{
+        field = remove_leading(field);
+	}
+	if (flags & TRAILING)
+	{
+        field = remove_trailing(field);
+	}
+	if (_pos == _raw.size())
+		_ended = true;
+    return field;
+}
+
+bool	ReqScanner::get_ended()
+{
+	return _ended;
+}
 
 
 
@@ -80,8 +112,8 @@ void reqScannerTest()
 	std::cout << "\n === EMPTY DELIMITER TEST===\n";
 	{
 		ReqScanner scanner("Some data here");
-		std::string field = scanner.getField("", OPTIONAL_SPACES);
-		printfield(field, "");
+		std::string field = scanner.getField(EOF_, OPTIONAL_SPACES);
+		printfield(field, "Some data here");
 	}
 
 	std::cout << "\n === EMPTY FIELD AND DELIMITER===\n";
@@ -163,8 +195,8 @@ void reqScannerTest()
 
 	{
 		ReqScanner s("\t  Mixed \t Spaces \n\nDone");
-		std::string f1 = s.getField("\n", OPTIONAL_SPACES);
-		std::string f2 = s.getField("\n", OPTIONAL_SPACES);
+		std::string f1 = s.getField("\n\n", OPTIONAL_SPACES);
+		std::string f2 = s.getField("", OPTIONAL_SPACES);
 
 		printfield(f1, "Mixed \t Spaces");
 		printfield(f2, "Done");
@@ -176,7 +208,7 @@ void reqScannerTest()
 		ReqScanner s("\nABC\nDEF");
 		std::string f1 = s.getField("\n", OPTIONAL_SPACES);
 		std::string f2 = s.getField("\n", OPTIONAL_SPACES);
-		std::string f3 = s.getField("\n", OPTIONAL_SPACES);
+		std::string f3 = s.getField("", OPTIONAL_SPACES);
 
 		printfield(f1, "");
 		printfield(f2, "ABC");

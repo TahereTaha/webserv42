@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:02:42 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 15:04:11 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 17:57:40 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@
 #include "Headers.hpp"
 #include "ControlData.hpp"
 #include "FieldValidators.hpp"
-#include <cstdlib>   // for std::strtol
-#include <cerrno>    // for errno, ERANGE
+
 
 // =====================================================================
 // 	DELIMITERS DEFINITIONS
 // =====================================================================
-#define EOF				"\0"
+#define EOF_				"\0"
 #define SP				" "
 #define TB				"\t"
 #define END_OF_HEADERS 	"\r\n\r\n"
