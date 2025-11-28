@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:58:15 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/28 13:55:32 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 17:57:46 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 #include <stdexcept>
 #include <string>
+#include <cstdlib>   // for std::strtol
+#include <cerrno>    // for errno, ERANGE
 
 
 // ABNF: https://datatracker.ietf.org/doc/html/rfc9110#section-9.3
@@ -56,3 +58,5 @@ bool isValidValue(const std::string& value);
 bool validMethod(const std::string& method);
 bool isValidRequest(const std::string& target);
 bool isValidProtocol(const std::string& version);
+bool string_to_long(const std::string& s, size_t* pos, int base);
+bool isValidContentLength(const std::string& contentLength);
