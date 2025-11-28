@@ -1,308 +1,336 @@
-#include "../inc/Server.hpp"
-#include <fstream>
-#include <sstream>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <cstdlib>
-#include <algorithm>
+#include "Server.hpp"          
+#include <sys/stat.h>           
+#include <dirent.h>            
+#include <fcntl.h>              
+#include <unistd.h>             
+#include <errno.h>              
+#include <fstream>              
+#include <sstream>              
 
-Server::Server(const t_server& config) : config(config) {
-}
 
-Server::~Server() {
-}
+Server::Server(const t_server &config)
+	: _config(config) {}
 
-ServerResponse Server::handleRequest(const Request& request) {
-    const std::string& uri = request.getControlData().uri.getPathString();
-    const std::string& method = request.getControlData().method;
-    
-    
-    if (!isRequestBodySizeValid(request)) {
-        return getErrorPage(413); 
-    }
-    
-    
-    for (size_t i = 0; i < config.route.size(); ++i) {
-        const t_route& route = config.route[i];
-        if (uri.find(route.uri) == 0) {  /
-            
-            
-            if (!isMethodAllowed(method, route)) {
-                return getErrorPage(405); 
-            }
-            
-           
-            if (route.response_type == STATIC) {
-                return ServerResponse(route.static_response.status_code, 
-                                    "text/html", 
-                                    route.static_response.text);
-            }
-            else if (route.response_type == REDIRECT) {
-                return handleRedirection(route);
-            }
-            else if (route.response_type == DEFAULT) {
-                std::string file_path = joinPath(route.default_response.root, uri.substr(route.uri.length()));
-                
-                
-                if (method == "POST" && route.default_response.upload_enabled) {
-                    return handleFileUpload(request, route);
-                }
-                
-               
-                if (method == "DELETE") {
-                    if (fileExists(file_path)) {
-                        if (unlink(file_path.c_str()) == 0) {
-                            return ServerResponse(200, "text/html", "<html><body><h1>File deleted successfully</h1></body></html>");
-                        } else {
-                            return getErrorPage(500);
-                        }
-                    } else {
-                        return getErrorPage(404);
-                    }
-                }
-                
-                
-                if (uri == route.uri && !route.default_response.index_file.empty()) {
-                    file_path = joinPath(route.default_response.root, route.default_response.index_file);
-                }
-                
-                
-                if (isDirectory(file_path)) {
-                    if (route.default_response.directory_listing_enabled) {
-                        return generateDirectoryListing(file_path);
-                    } else {
-                        return getErrorPage(403); // Forbidden
-                    }
-                }
-                
-                /
-                return serveFile(file_path);
-            }
-        }
-    }
-    
-    
-    return getErrorPage(404);
-}
 
-const std::string& Server::getServerName() const {
-    return config.server_name;
-}
+Server::Server(const Server &other)
+	: _config(other._config) {}
 
-ServerResponse Server::serveFile(const std::string& path) {
-    if (!fileExists(path)) {
-        return ServerResponse(404, "text/html", "<html><body><h1>404 Not Found</h1></body></html>");
-    }
-    
-    std::ifstream file(path.c_str());
-    if (!file.is_open()) {
-        return ServerResponse(500, "text/html", "<html><body><h1>500 Internal Server Error</h1></body></html>");
-    }
-    
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    file.close();
-    
-    return ServerResponse(200, getContentType(path), buffer.str());
-}
 
-std::string Server::getContentType(const std::string& filename) {
-    size_t dot_pos = filename.find_last_of('.');
-    if (dot_pos == std::string::npos) {
-        return "text/plain";
-    }
-    
-    std::string extension = filename.substr(dot_pos + 1);
-    if (extension == "html" || extension == "htm") {
-        return "text/html";
-    } else if (extension == "css") {
-        return "text/css";
-    } else if (extension == "js") {
-        return "application/javascript";
-    } else if (extension == "jpg" || extension == "jpeg") {
-        return "image/jpeg";
-    } else if (extension == "png") {
-        return "image/png";
-    } else if (extension == "gif") {
-        return "image/gif";
-    }
-    
-    return "text/plain";
-}
-
-bool Server::fileExists(const std::string& path) {
-    struct stat buffer;
-    return (stat(path.c_str(), &buffer) == 0);
+Server &Server::operator=(const Server &other) {
+	if (this != &other)
+		_config = other._config;    
+	return *this;                
 }
 
 
-bool Server::isRequestBodySizeValid(const Request& request) {
-    const std::string& body = request.getBody();
-    return body.length() <= config.client_max_body_size;
+Server::~Server() {}
+
+
+const std::string &Server::getServerName() const {
+	return _config.server_name;
 }
 
-bool Server::isMethodAllowed(const std::string& method, const t_route& route) {
-    if (route.response_type != DEFAULT) {
-        return true; // STATIC and REDIRECT routes allow all methods
-    }
-    
-    const std::vector<t_http_method>& allowed = route.default_response.accepted_methods;
-    
-    t_http_method request_method;
-    if (method == "GET") request_method = GET;
-    else if (method == "POST") request_method = POST;
-    else if (method == "DELETE") request_method = DELETE;
-    else return false; 
-    
-    return std::find(allowed.begin(), allowed.end(), request_method) != allowed.end();
+// =====================================================================
+//                         INTERNAL HELPERS
+// =====================================================================
+
+// convert an HTTP method string into the corresponding
+// t_http_method enum value in the intermediate representation
+static t_http_method methodFromString(const std::string &m) {
+	if (m == "GET")
+		return GET;       
+	if (m == "POST")
+		return POST;      
+	if (m == "DELETE")
+		return DELETE;   
+	return GET;          
 }
 
-ServerResponse Server::handleRedirection(const t_route& route) {
-    std::string location = route.redirect_response.location;
-    std::string body = "<html><body><h1>Redirecting to " + location + "</h1></body></html>";
-    
-    ServerResponse response(route.redirect_response.status_code, "text/html", body);
-    // 
-    return response;
+// check whether the given route allows the specified method...
+// is this implemented method allowed on this specific route according to config?
+static bool methodAllowed(const t_route &route, const std::string &method) {
+	t_http_method m = methodFromString(method);  // Convert string to enum.
+	for (std::vector<t_http_method>::const_iterator it = route.default_response.accepted_methods.begin();
+		 it != route.default_response.accepted_methods.end(); ++it) {
+		if (*it == m)
+			return true;   // found a matching allowed method.
+	}
+	return false;        // method not in the allowed list
 }
 
-ServerResponse Server::handleFileUpload(const Request& request, const t_route& route) {
-    const std::string& body = request.getBody();
-    const std::string& upload_dir = route.default_response.upload_dir;
-    
-    if (upload_dir.empty()) {
-        return getErrorPage(403); 
-    }
-    
-    
-    std::string filename = "uploaded_file.txt"; 
-    std::string full_path = joinPath(upload_dir, filename);
-    
-    if (saveUploadedFile(body, full_path, upload_dir)) {
-        return ServerResponse(200, "text/html", "<html><body><h1>File uploaded successfully</h1></body></html>");
-    } else {
-        return getErrorPage(500);
-    }
+// find the best matching route for the given request path. It iterates over
+// all routes and chooses the one whose URI is the longest prefix of path
+static const t_route *findBestRoute(const t_server &cfg, const std::string &path) {
+	const t_route *best = NULL;  // pointer to the best route found so far
+	std::string    bestUri;      // store the URI string of the best route
+
+	for (std::vector<t_route>::const_iterator it = cfg.route.begin(); it != cfg.route.end(); ++it) {
+		const std::string &loc = it->uri;   // location prefix / or /static
+		if (loc.empty())
+			continue;                      // skip empty route URIs
+		if (path.compare(0, loc.size(), loc) == 0) {
+			
+			if (best == NULL || loc.size() > bestUri.size()) {
+				best = &(*it);              
+				bestUri = loc;              
+			}
+		}
+	}
+	return best;                          // may be NULL if no route matched
 }
 
-bool Server::saveUploadedFile(const std::string& content, const std::string& filename, const std::string& upload_dir) {
-   
-    struct stat st;
-    if (stat(upload_dir.c_str(), &st) != 0) {
-        
-        if (mkdir(upload_dir.c_str(), 0755) != 0) {
-            return false;
-        }
-    }
-    
-    std::ofstream file(filename.c_str(), std::ios::binary);
-    if (!file.is_open()) {
-        return false;
-    }
-    
-    file.write(content.c_str(), content.length());
-    file.close();
-    
-    return true;
+
+static bool isSupportedMethod(const std::string &method) {
+	return (method == "GET" || method == "POST" || method == "DELETE");
 }
 
-ServerResponse Server::generateDirectoryListing(const std::string& path) {
-    DIR* dir = opendir(path.c_str());
-    if (!dir) {
-        return getErrorPage(500);
-    }
-    
-    std::stringstream html;
-    html << "<html><head><title>Directory listing for " << path << "</title></head>";
-    html << "<body><h1>Directory listing for " << path << "</h1>";
-    html << "<ul>";
-    
-    struct dirent* entry;
-    while ((entry = readdir(dir)) != NULL) {
-        std::string name = entry->d_name;
-        if (name == ".") continue; 
-        
-        html << "<li><a href=\"" << name;
-        if (entry->d_type == DT_DIR) {
-            html << "/";
-        }
-        html << "\">" << name;
-        if (entry->d_type == DT_DIR) {
-            html << "/";
-        }
-        html << "</a></li>";
-    }
-    
-    html << "</ul></body></html>";
-    closedir(dir);
-    
-    return ServerResponse(200, "text/html", html.str());
+// check whether a POST request exceeds the client_max_body_size
+
+static bool isPostTooLarge(const t_server &cfg, const Request &request) {
+	const ControlData  &cd   = request.getControlData();
+	const std::string  &meth = cd.method;
+	if (meth != "POST")
+		return false;                            //only checks POST
+	const std::string &body = request.getBody();
+	if (cfg.client_max_body_size > 0 &&
+	    body.size() > cfg.client_max_body_size)
+		return true;
+	return false;
 }
 
-bool Server::isDirectory(const std::string& path) {
-    struct stat buffer;
-    return (stat(path.c_str(), &buffer) == 0 && S_ISDIR(buffer.st_mode));
+// this is used to set
+// an appropriate content type header when serving static files
+// probably not strictly necessary, we can discuss if keep it or not
+static std::string detectMimeType(const std::string &path) {
+	std::string::size_type dot = path.rfind('.'); 
+	if (dot == std::string::npos)
+		return "text/plain";                  // no extension: default text
+	std::string ext = path.substr(dot + 1);    
+	if (ext == "html" || ext == "htm")
+		return "text/html";
+	if (ext == "css")
+		return "text/css";
+	if (ext == "js")
+		return "application/javascript";
+	if (ext == "png")
+		return "image/png";
+	if (ext == "jpg" || ext == "jpeg")
+		return "image/jpeg";
+	if (ext == "gif")
+		return "image/gif";
+	if (ext == "ico")
+		return "image/x-icon";
+	return "application/octet-stream";       // unknown extensions.
 }
 
-std::string Server::joinPath(const std::string& base, const std::string& path) {
-    if (base.empty()) return path;
-    if (path.empty()) return base;
-    
-    std::string result = base;
-    if (result[result.length() - 1] != '/') {
-        result += "/";
-    }
-    
-    
-    std::string clean_path = path;
-    if (!clean_path.empty() && clean_path[0] == '/') {
-        clean_path = clean_path.substr(1);
-    }
-    
-    return result + clean_path;
+// Read the entire contents of a file into string
+// used when serving files (GET, error pages): 
+// it gives you “file -> string (body)” and tells you if the read worked
+static bool readFileToString(const std::string &path, std::string &out) {
+	std::ifstream file(path.c_str(), std::ios::in | std::ios::binary); // open file
+	if (!file)
+		return false;                        // opening failed
+	std::ostringstream ss;                 // string stream
+	ss << file.rdbuf();                    // read entire file buffer into stream
+	out = ss.str();                        // Copy resulting string to 'out'.
+	return true;                         
 }
 
-std::string Server::extractFilenameFromPath(const std::string& path) {
-    size_t pos = path.find_last_of('/');
-    if (pos == std::string::npos) {
-        return path;
-    }
-    return path.substr(pos + 1);
+// Return true if is a directory
+static bool isDirectory(const std::string &path) {
+	struct stat st;                        
+	if (stat(path.c_str(), &st) == -1)
+		return false;                        // stat failed: non-directory.
+	return S_ISDIR(st.st_mode);            
 }
 
-ServerResponse Server::getErrorPage(int status_code) {
-    // Try to find configured error page
-    for (size_t i = 0; i < config.error_page.size(); ++i) {
-        if (config.error_page[i].status_code == static_cast<t_status_code>(status_code)) {
-            return serveFile(config.error_page[i].uri);
-        }
-    }
-    
-    
-    return getDefaultErrorPage(status_code);
+// look for a configured error page matching the given status code
+static const t_error_page *findErrorPage(const t_server &cfg, int code) {
+	for (std::vector<t_error_page>::const_iterator it = cfg.error_page.begin();
+		 it != cfg.error_page.end(); ++it) {
+		if ((int)it->status_code == code)
+			return &(*it);                  // found a matching error page 
+	}
+	return NULL;                           // none found
 }
 
-ServerResponse Server::getDefaultErrorPage(int status_code) {
-    std::string title, message;
-    
-    switch (status_code) {
-        case 400: title = "Bad Request"; message = "The request could not be understood."; break;
-        case 403: title = "Forbidden"; message = "Access to this resource is forbidden."; break;
-        case 404: title = "Not Found"; message = "The requested resource was not found."; break;
-        case 405: title = "Method Not Allowed"; message = "The request method is not allowed."; break;
-        case 413: title = "Payload Too Large"; message = "The request body is too large."; break;
-        case 500: title = "Internal Server Error"; message = "An internal server error occurred."; break;
-        default: title = "Error"; message = "An error occurred."; break;
-    }
-    
-    std::stringstream ss;
-    ss << status_code;
-    std::string status_str = ss.str();
-    
-    std::string body = "<html><head><title>" + title + "</title></head>"
-                      "<body><h1>" + status_str + " " + title + "</h1><p>" + message + "</p></body></html>";
-    
-    return ServerResponse(status_code, "text/html", body);
+// build a ServerResponse representing an error if a custom error page is
+// configured it is used as the body if not a
+// simple HTML message is generated
+static ServerResponse buildErrorResponse(const t_server &cfg, int code, const std::string &fallbackMsg) {
+	const t_error_page *ep = findErrorPage(cfg, code); // look for custom page.
+	std::string body;
+	if (ep && readFileToString(ep->uri, body))
+		return ServerResponse(code, "text/html", body); 
+	// HTML error body with the provided fallback message
+	return ServerResponse(code, "text/html",
+	                      std::string("<html><body><h1>") + fallbackMsg + "</h1></body></html>");
+}
+
+
+static std::string joinPath(const std::string &root, const std::string &suffix) {
+	if (root.empty())
+		return suffix;                       //no root: just return the suffix
+	if (!root.empty() && root[root.size() - 1] == '/') {
+		// root already ends with / avoid putting a double /
+		if (!suffix.empty() && suffix[0] == '/')
+			return root + suffix.substr(1); // skip leading / in suffix
+		return root + suffix;              
+	}
+	if (!suffix.empty() && suffix[0] == '/')
+		return root + suffix;              // root has no / but suffix already does
+	return root + "/" + suffix;         //put a separator between them
+}
+
+// simple autoindex HTML generation for a directory
+static bool generateAutoIndex(const std::string &path, const std::string &uri,
+	                           std::string &out) {
+	DIR *dir = opendir(path.c_str());      // open directory for reading entries
+	if (!dir)
+		return false;                        // could not open directory
+	std::ostringstream html;
+	html << "<html><body><h1>Index of " << uri << "</h1><ul>";
+	struct dirent *ent;
+	while ((ent = readdir(dir)) != NULL) {
+		const char *name = ent->d_name;    // entry name (file or directory)
+		// i'm skipping "." and ".." to avoid self and parent references
+		if (name[0] == '.' && (name[1] == '\0' || (name[1] == '.' && name[2] == '\0')))
+			continue;
+		// add a list item with a simple hyperlink to the entry
+		html << "<li><a href=\"" << name << "\">" << name << "</a></li>";
+	}
+	closedir(dir);                         
+	html << "</ul></body></html>";       
+	out = html.str();                      
+	return true;                           
+}
+
+// build the response for a STATIC route
+static ServerResponse handleStaticRoute(const t_route &route) {
+	ServerResponse res;
+	res.status_code = (int)route.static_response.status_code;
+	res.content_type = "text/html";
+	const std::string &loc = route.static_response.text;
+	std::string body = "<html><body><h1>Redirect</h1>";
+	if (!loc.empty())
+		body += "<a href=\"" + loc + "\">" + loc + "</a>";
+	body += "</body></html>";
+	res.body = body;
+	return res;
+}
+
+// build the response for a DEFAULT route: map URI, handle directories,dispatch
+// to method logic for files
+static ServerResponse handleDefaultRoute(const t_server &cfg,
+	const t_route &route,
+	const std::string &method,
+	const std::string &target,
+	const Request &request) {
+	
+	std::string rel = target;       
+	if (route.uri != "/" && rel.compare(0, route.uri.size(), route.uri) == 0)
+		rel = rel.substr(route.uri.size()); 
+	if (rel.empty())
+		rel = "/";                     
+
+	std::string fullPath = joinPath(route.default_response.root, rel);
+
+	// if the result is a directory handle index or autoindex
+	if (isDirectory(fullPath)) {
+		if (!route.default_response.index_file.empty()) {
+			// if an index file is configured append it and serve that
+			fullPath = joinPath(fullPath, route.default_response.index_file);
+		} else {
+			// no index: either generate autoindex or return 403
+			ServerResponse res;
+			if (route.default_response.directory_listing_enabled) {
+				std::string body;
+				if (generateAutoIndex(fullPath, target, body)) {
+					res.status_code = 200;
+					res.content_type = "text/html";
+					res.body = body;
+				} else {
+					res = buildErrorResponse(cfg, 500, "500 Internal Server Error");
+				}
+			} else {
+				res = buildErrorResponse(cfg, 403, "403 Forbidden");
+			}
+			return res;               
+		}
+	}
+
+	// handle method behavior for nondirectory targets
+	if (method == "GET") {
+		std::string body;
+		if (!readFileToString(fullPath, body)) {
+			// file missing or unreadable: 404.
+			return buildErrorResponse(cfg, 404, "404 Not Found");
+		}
+		ServerResponse res;
+		res.status_code = 200;              // OK
+		res.content_type = detectMimeType(fullPath);
+		res.body = body;                    // file contents
+		return res;
+	} else if (method == "POST") {
+		// simple upload: overwrite target file with body
+		const std::string &reqBody = request.getBody();
+		std::ofstream out(fullPath.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
+		if (!out)
+			return buildErrorResponse(cfg, 500, "500 Internal Server Error");
+		out.write(reqBody.c_str(), reqBody.size());
+		if (!out)
+			return buildErrorResponse(cfg, 500, "500 Internal Server Error");
+		ServerResponse res;
+		res.status_code = 201;          // created
+		res.content_type = "text/plain";
+		res.body = "Created";          // simple confirmation body
+		return res;
+	} else if (method == "DELETE") {
+		
+		if (unlink(fullPath.c_str()) == -1) {
+			if (errno == ENOENT)
+				return buildErrorResponse(cfg, 404, "404 Not Found");
+			return buildErrorResponse(cfg, 500, "500 Internal Server Error");
+		}
+		ServerResponse res;
+		res.status_code = 200;              // deletion successful
+		res.content_type = "text/plain";
+		res.body = "Deleted";             
+		return res;
+	}
+
+	// should not be reached because unsupported methods are handled earlier
+	return buildErrorResponse(cfg, 405, "405 Method Not Allowed");
+}
+
+// =====================================================================
+//                      MAIN REQUEST HANDLER
+// =====================================================================
+
+ServerResponse Server::handleRequest(const Request &request) {
+	const ControlData  &cd      = request.getControlData(); 
+	const std::string  &method  = cd.method;                
+	const std::string  &target  = cd.requestTarget;       
+
+	// 1) validate method
+	if (!isSupportedMethod(method))
+		return buildErrorResponse(_config, 405, "405 Method Not Allowed");
+
+	// 2) check body size
+	if (isPostTooLarge(_config, request))
+		return buildErrorResponse(_config, 413, "413 Payload Too Large");
+
+	// 3) find best route
+	const t_route *route = findBestRoute(_config, target);
+	if (!route)
+		return buildErrorResponse(_config, 404, "404 Not Found");
+
+	// 4) check method allowance for DEFAULT routes
+	if (route->response_type == DEFAULT && !methodAllowed(*route, method))
+		return buildErrorResponse(_config, 405, "405 Method Not Allowed");
+
+	// 5) dispatch to STATIC or DEFAULT handling
+	if (route->response_type == STATIC)
+		return handleStaticRoute(*route);
+	return handleDefaultRoute(_config, *route, method, target, request);
 }
