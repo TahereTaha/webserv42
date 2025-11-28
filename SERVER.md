@@ -1,4 +1,4 @@
-## Server Class Overview
+## Server Class 
 
 The `Server` class is a server built from a `t_server` configuration. 
 It accepts a `Request` and returns a `ServerResponse`.
