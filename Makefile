@@ -6,7 +6,7 @@
 #    By: capapes <capapes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/11/26 13:28:01 by capapes          ###   ########.fr        #
+#    Updated: 2025/11/28 21:00:37 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/keywords:
 VPATH	+= $(SRC_DIR)configuration_parser/symbol/terminal/literals:
 VPATH	+= $(SRC_DIR)exceptions:
 VPATH	+= $(SRC_DIR)URI_parsing:
-VPATH	+= $(SRC_DIR)URI_parsing/utils
+VPATH	+= $(SRC_DIR)URI_parsing/utils:
+VPATH	+= $(SRC_DIR)connection_manager:
+VPATH	+= $(SRC_DIR)http_request_parser
 
 CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD -g
 
@@ -126,7 +128,17 @@ OBJ		:=	main.o						\
 			Fragment.o					\
 			URI.o						\
 										\
+			EpollConnectionManager.o	\
+			Log.o						\
+			Socket.o					\
+			setUpSockets.o				\
 										\
+			ControlData.o				\
+			FieldValidators.o			\
+			Headers.o					\
+			ReqScanner.o				\
+			Request.o					\
+			Schemas.o					\
 
 #			subTreeGenerationUtils.o	\
 			SymbolServer.o				\

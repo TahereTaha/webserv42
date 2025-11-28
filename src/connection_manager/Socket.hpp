@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 22:19:27 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 20:13:33 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 #include <iostream>
 #include <cstdlib>
 
+#include <intermediate_representation.hpp>
+
 #define EXIT_FAILURE 1
 void makeNonBlocking(int fd);
 
 class Socket {
 public:
-    Socket(int port);
+    Socket(struct sockaddr_storage socket_addr);
     ~Socket();
 
     int     getFd() const;
