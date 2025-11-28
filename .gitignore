@@ -13,4 +13,6 @@ bin/
 **/*.swp
 .vscode/
 .DS_Store
-event.log
+**/event.log
+src/connection_manager/connection_manager
+
