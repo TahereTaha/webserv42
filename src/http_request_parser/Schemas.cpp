@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 18:34:41 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 22:01:05 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "Schemas.hpp"
 #include "Request.hpp"
 #include <limits.h>
-#include "../URI_parsing/URI.hpp"
+#include "../URI_parsing/Authority.hpp"
 
 
 // =====================================================================
@@ -166,15 +166,15 @@ void specificHeadersValidation(Headers& headers)
         Request::setActiveError(400);
         throw std::runtime_error("Missing Host or Content-Lenght header");
     }
-    // try 
-    // {
-    //     URI hostURI = URI(headers.get("Host"));
-    // }
-    // catch (std::exception e)
-    // { 
-    //     Request::setActiveError(400);
-    //     throw std::runtime_error("Invalid Host header value URI");
-    // }
+    try 
+    {
+        Authority hostURI = Authority(headers.get("Host"));
+    }
+    catch (const std::exception& e)
+    { 
+        Request::setActiveError(400);
+        throw std::runtime_error("Invalid Host header value URI");
+    }
     std::string contentLength = headers.get("Content-Length");
     if (contentLength != "" && !isValidContentLength(contentLength))
     {
