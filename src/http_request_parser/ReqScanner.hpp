@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 09:58:11 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 15:06:51 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 18:33:22 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@
 class ReqScanner {
 public:
 	ReqScanner(const std::string& raw);
-	std::string getField(const std::string& delimiter, int flags = 0); ;
+	~ReqScanner();
+	std::string getField(const std::string& delimiter, int flags = 0);
+	bool	get_ended();
 
 private:
 	std::string 	_raw;
 	size_t 			_pos;
 	bool			_ended;
 };
+void reqScannerTest();
