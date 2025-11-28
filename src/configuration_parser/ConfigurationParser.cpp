@@ -143,9 +143,9 @@ void	ConfigurationParser::analysis(void)
 	}
 }
 
-void	ConfigurationParser::transpiling(void)
+std::vector<t_server>	ConfigurationParser::getServers(void) const
 {
-	std::cout << "\t-> transpiling" << std::endl;
+	return (dynamic_cast<SymbolConfigContext *>(this->_AST->getContent())->getServers());
 }
 
 void	ConfigurationParser::printTerminalList(void) const 

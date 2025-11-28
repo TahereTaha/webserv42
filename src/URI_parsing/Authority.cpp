@@ -180,7 +180,7 @@ std::vector<struct sockaddr *>	Authority::getSockaddrFromIpLiteral(IpLiteral &ip
 	return (res);
 }
 
-static std::vector<struct sockaddr *>	get_addresses(struct addrinfo *addr_info)
+static std::vector<struct sockaddr *>	get_addresses(struct addrinfo *addr_info, int is_port_set, uint16_t port)
 {
 	std::vector<struct sockaddr *>	res;
 	struct sockaddr	*addr;
@@ -207,6 +207,18 @@ static std::vector<struct sockaddr *>	get_addresses(struct addrinfo *addr_info)
 
 		addr_info = addr_info->ai_next;
 	}
+	size_t	i = 0;
+	while (i < res.size())
+	{
+		struct sockaddr_in	*addr_in;
+		addr_in = (struct sockaddr_in *)res[i];
+		if (is_port_set)
+			addr_in->sin_port = port;
+		else
+			addr_in->sin_port = htons(80);
+		i++;
+	}
+
 	return (res);
 }
 
@@ -225,7 +237,7 @@ std::vector<struct sockaddr *>	Authority::getSockaddrFromRegname(std::string nam
 		throw (std::invalid_argument("incorrect name"));
 
 	std::vector<struct sockaddr *>	addresses;
-	addresses = get_addresses(res);
+	addresses = get_addresses(res, this->_isPortSet, this->_port);
 	freeaddrinfo(res);
 	return (addresses);
 }

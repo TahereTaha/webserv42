@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:30:40 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:45:04 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 18:45:18 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "Socket.hpp"
 #include <iostream>
 #include "Log.hpp"
-
 
 // c++ -Wall -Wextra -Werror -std=c++98 -MMD -g *.cpp ../URI_parsing/**/*.cpp -I../URI_parsing/ -I../URI_parsing/utils
 

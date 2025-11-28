@@ -9,6 +9,8 @@
 #include <Args.hpp>
 #include <Tree.hpp>
 
+#include <intermediate_representation.hpp>
+
 //	this class in responsible for transforming the file in the IR for the web server to execute.
 class ConfigurationParser
 {
@@ -30,5 +32,5 @@ class ConfigurationParser
 		void	scanning(void);
 		void	parsing(void);
 		void	analysis(void);
-		void	transpiling(void);
+		std::vector<t_server>	getServers(void) const ;
 };

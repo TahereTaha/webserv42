@@ -19,9 +19,18 @@
 #include <textColors.h>
 #include <parse_exception.hpp>
 #include <multy_parse_exception.hpp>
+#include <intermediate_representation.hpp>
 
 #include <AParser.hpp>
 
+#include <map>
+
+#include <EpollConnectionManager.hpp>
+#include <Socket.hpp>
+#include <iostream>
+#include <Log.hpp>
+
+#include <setUpSockets.hpp>
 
 int	main(int argc, char **argv)
 {
@@ -34,7 +43,14 @@ int	main(int argc, char **argv)
 		parser.scanning();
 		parser.parsing();
 		parser.analysis();
-		parser.transpiling();
+		std::vector<t_server>	servers = parser.getServers();
+	
+        EventLog::init("event.log");
+		std::map<int, Socket *>	listeningSockets = set_up_sockets(servers);
+
+        EpollConnectionManager manager(listeningSockets);
+        EventLog::shutdown();
+
 		std::cout << "starting web server." << std::endl;
 	}
 	catch (multy_parse_exception & e)
@@ -53,6 +69,23 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
+//#include <URI.hpp>
+//
+//int main(void)
+//{
+//	try
+//	{
+//		URI	uri("/");
+//		(void)uri;
+//		std::cout << uri.getPath().getPathText() << std::endl;
+//	}
+//	catch (std::exception &e)
+//	{
+//		std::cout << e.what() << std::endl;
+//	}
+//	return (0);
+//}
+//
 
 #include <URI.hpp>
 #include <UserInfo.hpp>
