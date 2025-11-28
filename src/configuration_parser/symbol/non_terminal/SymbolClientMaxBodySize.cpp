@@ -37,13 +37,13 @@ static size_t	get_file_size_unit(std::string unit_str)
 {
 	if (unit_str == "")
 		return (1);
-	if (unit_str == "KB")
+	if (unit_str == "KiB")
 		return (1024);
-	if (unit_str == "MB")
+	if (unit_str == "MiB")
 		return (1048576);
-	if (unit_str == "GB")
+	if (unit_str == "GiB")
 		return (1073741824);
-	throw (std::invalid_argument("incorect file size unit."));
+	return (0);
 }
 
 static size_t	parse_file_size(std::string file_size_str)
@@ -51,7 +51,7 @@ static size_t	parse_file_size(std::string file_size_str)
 	size_t	i = 0;
 	size_t	body_size = stoi(file_size_str, &i);
 	body_size = body_size * get_file_size_unit(file_size_str.substr(i));
-	return (0);
+	return (body_size);
 }
 
 void		SymbolClientMaxBodySize::evaluate(Tree<AEvaluable*> *self)
@@ -62,6 +62,8 @@ void		SymbolClientMaxBodySize::evaluate(Tree<AEvaluable*> *self)
 	if (!text)
 		throw (std::invalid_argument("incorrect arrguments to client max body size."));
 	this->_max_body_size = parse_file_size(text->getText());
+	if (this->_max_body_size == 0)
+		throw (std::invalid_argument("incorect file size unit."));
 }
 
 AParser	*SymbolClientMaxBodySize::getParser(void) const

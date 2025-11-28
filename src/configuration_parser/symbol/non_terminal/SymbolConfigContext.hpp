@@ -5,9 +5,12 @@
 #include <ATerminal.hpp>
 #include <ANonTerminal.hpp>
 
+#include <intermediate_representation.hpp>
+
 class SymbolConfigContext : public ANonTerminal
 {
 	private:
+		std::vector<t_server>	_servers;
 	protected:
 	public:
 		SymbolConfigContext(void);
@@ -18,4 +21,5 @@ class SymbolConfigContext : public ANonTerminal
 		void			evaluate(Tree<AEvaluable*> *self);
 
 		AParser	*getParser(void) const;
+		std::vector<t_server>	getServers(void) const ;
 };
