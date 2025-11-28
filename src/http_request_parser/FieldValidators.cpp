@@ -6,13 +6,13 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 18:36:23 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 17:54:40 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 #include <iostream>
-#include "../URI_parsing/URI.hpp"
+#include <limits.h>
 
 // =====================================================================
 // 					GENERIC FIELD VALIDATORS
@@ -60,16 +60,43 @@ bool validMethod(const std::string& method) {
 }
 
 bool isValidRequest(const std::string& target) {
-	// try {	
-	// 	URI a = URI(target);
-	// }
-	// catch (const std::exception& e)
-	// {	
-	// 	throw std::runtime_error("Invalid URI");
-	// }
 	return !target.empty();
 }
 
 bool isValidProtocol(const std::string& version) {
 	return version == "HTTP/1.1" || version == "HTTP/2.0";
+}
+
+
+// =====================================================================
+// 					VALIDATORS FOR HEADER FIELDS
+// =====================================================================
+bool string_to_long(const std::string& s, size_t* pos = 0, int base = 10) {
+    char* end;
+    errno = 0;
+    long result = std::strtol(s.c_str(), &end, base);
+
+    if (pos) {
+        *pos = end - s.c_str();
+    }
+    if (errno == ERANGE || result > LONG_MAX || result < LONG_MIN) {
+		return false;
+    }
+    if (end == s.c_str()) {
+        return false;
+    }
+    return result >= 0 && result <= INT_MAX;
+}
+
+bool isValidContentLength(const std::string& contentLength) {
+    if (contentLength.empty()) return false;
+    
+    std::string::const_iterator it = contentLength.begin();
+    for (;it != contentLength.end(); ++it) {
+        if (!isdigit(*it)) {
+			return (false);
+        }
+    }
+    long length = string_to_long(contentLength);
+    return length >= 0 && length <= INT_MAX;
 }

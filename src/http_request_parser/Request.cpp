@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:20:26 by capapes           #+#    #+#             */
-/*   Updated: 2025/07/30 18:06:04 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 17:17:42 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,16 @@
 #include <iostream>
 
 Request::Request()
-    : controlData(), headers(), body(""), errorCode(0) {}
+    : controlData(), headers(), body(""), errorCode(0) {
+            Request::setActiveRequest(this);
+            Request::setActiveError(0);
+    }
 
 Request::Request(const ControlData& cd, const Headers& h, const std::string& b)
-    : controlData(cd), headers(h), body(b), errorCode(0) {}
+    : controlData(cd), headers(h), body(b), errorCode(0) {
+            Request::setActiveRequest(this);
+            Request::setActiveError(0);
+    }
 
 Request::Request(const Request& other)
     : controlData(other.controlData),
