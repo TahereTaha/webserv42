@@ -17,15 +17,11 @@
 	- text
 	- number
 
-- [ ] make the evaluate function on the childs of the server symbol.
-	- [x] make the listen.
-	- [x] make the client max body size.
-	- [ ] make error page.
-
 - [ ] make the server symbol.
-	- [ ] class boiler plait.
-	- [ ] set up the listen.
-	- [ ] set up the client max body size.
+	- [x] class boiler plait.
+	- [x] set up the listen.
+	- [x] set up the client max body size.
+	- [ ] add some simple error.
 
 - [ ] make a check for each ast node.
 	- [x] make location.
@@ -36,9 +32,9 @@
 		- [x] make limit exept.
 	- [ ] make server.
 		- [/] make server name.
-		- [ ] make listen.
-		- [ ] make client max body size.
-		- [ ] make error page.
+		- [x] make listen.
+		- [x] make client max body size.
+		- [x] make error page.
 - [ ] write the translator to the structure.
 
 - [ ] web server
