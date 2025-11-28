@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 22:01:05 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 15:24:01 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ inline std::string getField(size_t& pos,
 
     if (endPos == std::string::npos)
         return ("");
-    if (delimiter == EOL)
+    if (delimiter == EOF)
         endPos = raw.size();
     std::string field = raw.substr(pos, endPos - pos);
     pos = endPos + delimiter.size();
@@ -94,7 +94,7 @@ std::string extractAndValidate(size_t& pos, const std::string& raw, const Schema
 static SchemaItem controlDataItems[] = {
     { SP, validMethod, "Invalid HTTP method", 501, IS_REQUIRED },
     { SP, isValidRequest, "Invalid request target", 400, IS_REQUIRED },
-    { EOL, isValidProtocol, "Invalid HTTP version", 505, IS_REQUIRED },
+    { EOF, isValidProtocol, "Invalid HTTP version", 505, IS_REQUIRED },
 };
 
 static SchemaItem headersItems[] = {
@@ -104,12 +104,12 @@ static SchemaItem headersItems[] = {
 
 static SchemaItem HeaderBlock[] = {
 	{ END_OF_LINE, NULL, "Invalid request line", 400, IS_REQUIRED},
-	{ EOL, NULL, "Invalid headers", 400, IS_REQUIRED },
+	{ EOF, NULL, "Invalid headers", 400, IS_REQUIRED },
 };
 
 static SchemaItem requestItems[] = {
     { END_OF_HEADERS, NULL, "Invalid request", 400, IS_REQUIRED },
-    { "", NULL, "Invalid body", 400, NONE }
+    { EOF, NULL, "Invalid body", 400, NONE }
 };
 
 
