@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:02:01 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 10:18:51 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 14:51:31 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,56 @@ ReqScanner::ReqScanner(const std::string& raw)
 #define OPTIONAL_SPACES (LEADING | TRAILING)
 #define SPACES " \t\n\r\f\v"
 
-std::string ReqScanner::getField(const std::string& delimiter, unsigned int optionalSpaces = 0) {
-	size_t 		endPos;
-	std::string field;
-
-	if (optionalSpaces | LEADING)
-		_pos = _raw.find_first_not_of(SPACES, _pos);
- 	endPos = _raw.find(delimiter, _pos);
-	if (endPos == std::string::npos)
-		return ("");
-	if (optionalSpaces & TRAILING)
-		endPos = _raw.find_last_not_of(SPACES, endPos - 1) + 1;
-	field = _raw.substr(_pos, endPos - _pos);
-	_pos = endPos + delimiter.size();
-	return field;
+std::string trim(std::string& str, int flags, size_t start, size_t end)
+{
+	size_t length = end - start;
+	
+	if (flags | LEADING)
+		start = str.find_first_not_of(SPACES, start, length);
+    if (start == std::string::npos)
+        return ("");
+	if (flags | TRAILING)
+    	end = str.find_last_not_of(SPACES, end - 1, length) + 1;
+    return (str.substr(start, end - start));
 }
+
+
+std::string ReqScanner::getField(const std::string& delimiter) {		
+	
+	size_t 			end;
+	std::string 	field = "";
+	
+	if (_ended)
+		return ("");
+	
+	end = delimiter == EOF
+		? _raw.size()
+		: _raw.find(delimiter, _pos);
+					
+	_ended = end == std::string::npos;
+	
+	if (_ended)
+		field = "";
+	else
+	{
+		field =_raw.substr(_pos, end - _pos);				
+		_pos = end + delimiter.size();
+	}
+	return (field);
+}
+
+
+// if (!flags)
+// 		return (field);
+		
+// 	if (flags | LEADING)
+// 		start = ignore_spaces(start, LEADING);
+// 	if (flags | TRAILING)
+// 		end = ignore_spaces(end, TRAILING);
+// 	if (start == -1 || end == -1 || start == end)
+// 		return ("");
+// 	return (field.substr(start, end - start));
+
 
 // Previous get field function 
 
