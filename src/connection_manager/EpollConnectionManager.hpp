@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/26 17:47:47 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 23:47:00 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ class EpollConnectionManager {
         void badRequest(const int fd);
         void successRequest(const int fd);
         void requestHandler(const int clientfd);
+        void exitWithError(const std::string& message);
 };

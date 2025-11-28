@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 16:10:38 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/27 23:50:42 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,22 @@
 #include <cerrno>
 #include <cstdio>
 #include "Log.hpp"
-#include "ErrorHandler.hpp"
 #include "../http_request_parser/Schemas.hpp"
+#include "colors.hpp"
+
 
 // =====================================================================
-// 	UTILITIES
+// 	        MESSAGES
+// =====================================================================
+void serverUpMessage(int port) {
+    std::cout << COLOR_GREEN << "✔ Server up and running "
+      << COLOR_CYAN   << "on port "
+      << COLOR_YELLOW << port
+      << COLOR_RESET  << std::endl;
+}
+
+// =====================================================================
+//       UTILS
 // =====================================================================
 double getCurrentTimeMs() {
     struct timeval tv;
@@ -41,28 +52,31 @@ void EpollConnectionManager::setInstance(int fd, uint32_t events, int op) {
     ev.data.fd = fd;
     
     if (epoll_ctl(epfd, op, fd, &ev) == -1)
-        exit(EXIT_FAILURE);
+        exitWithError("Failed to set epoll instance");
   
+}
+
+void EpollConnectionManager::exitWithError(const std::string& message) {
+    std::cerr << COLOR_RED << "✘ " << message << COLOR_RESET << std::endl;
+    exit(EXIT_FAILURE);
 }
 
 // =====================================================================
 // 	CONNECTION MANAGER CONSTRUCTOR
 // =====================================================================
 
-EpollConnectionManager::EpollConnectionManager(std::map<int, Socket*> socks) : epfd(-1) {
+EpollConnectionManager::EpollConnectionManager(std::map<int, Socket*> socks) : epfd(-1), listeningSockets(socks) {
     if (socks.empty())
         return;
-    
     epfd = epoll_create1(0);
     if (epfd == -1)
-        exit(EXIT_FAILURE);
-    listeningSockets = socks;
+        exitWithError("Failed to create epoll file descriptor");
     for (std::map<int, Socket*>::iterator it = listeningSockets.begin(); it != listeningSockets.end(); ++it)
     {
         setInstance(it->first, EPOLLIN, EPOLL_CTL_ADD);
+        serverUpMessage(it->second->getPort());
         EventLog::log(EPOLL_ADD_SOCKET, it->first);
     }
-
     run();
 }
 
@@ -101,7 +115,7 @@ void EpollConnectionManager::handleNewConnection(Socket *sock) {
         makeNonBlocking(connfd);
         setInstance(connfd, EPOLLIN , EPOLL_CTL_ADD);
         connections[connfd].fd = connfd;
-        connections[connfd].keepAlive = true;
+        connections[connfd].keepAlive = false;
         connections[connfd].lastActive = getCurrentTimeMs();
         EventLog::log(EPOLL_ADD_CONNECTION, connfd);
     }
@@ -115,6 +129,7 @@ void EpollConnectionManager::badRequest(const int fd) {
     connections[fd].readBuffer.clear();
     std::ostringstream oss;
     oss << connections[fd].request.getErrorCode();
+    // This wont be here
     connections[fd].writeBuffer =   "HTTP/1.1 400 Bad Request\r\n"
                                     "Content-Length: 0\r\n"
                                     "Connection: close\r\n"
@@ -138,6 +153,11 @@ void EpollConnectionManager::successRequest(const int fd) {
 
 void EpollConnectionManager::requestHandler(const int clientfd) {
     connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
+    if (connections[clientfd].request.getHeaders().has("Connection")) {
+        std::string connHeader = connections[clientfd].request.getHeaders().get("Connection");
+        if (connHeader == "close")
+            connections[clientfd].keepAlive = false;
+    }
     if (connections[clientfd].request.getErrorCode() != 0) 
         badRequest(clientfd);
     else 
@@ -188,9 +208,14 @@ void EpollConnectionManager::cleanupIdleConnections(const double &now) {
     }
 }
 
+// =====================================================================
+// 	CLOSE CONNECTION
+// Node.js wont close without shutting down connections check if valid
+// =====================================================================
 void EpollConnectionManager::closeConnection(int fd) {
     EventLog::log(EPOLL_EVENT_CLOSE, fd);
     epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
+    shutdown(fd, SHUT_RDWR);
     close(fd);
     connections.erase(fd);
 }
