@@ -6,11 +6,12 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:02:01 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 14:51:31 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/28 15:52:15 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ReqScanner.hpp"
+#include "Schemas.hpp"
 
 ReqScanner::ReqScanner(const std::string& raw)
 	: _raw(raw), _pos(0) {}
@@ -34,29 +35,179 @@ std::string trim(std::string& str, int flags, size_t start, size_t end)
 }
 
 
-std::string ReqScanner::getField(const std::string& delimiter) {		
+std::string ReqScanner::getField(const std::string& delimiter, int flags) {		
 	
 	size_t 			end;
 	std::string 	field = "";
 	
 	if (_ended)
-		return ("");
+		return (field);
 	
 	end = delimiter == EOF
-		? _raw.size()
-		: _raw.find(delimiter, _pos);
+			? _raw.size()
+			: _raw.find(delimiter, _pos);
 					
 	_ended = end == std::string::npos;
-	
 	if (_ended)
-		field = "";
-	else
-	{
-		field =_raw.substr(_pos, end - _pos);				
-		_pos = end + delimiter.size();
-	}
+	   return (field);
+	
+	field = flags 
+		? trim(_raw, flags, _pos, end) 
+		: _raw.substr(_pos, end - _pos);				
+	_pos = end + delimiter.size();
 	return (field);
 }
+
+
+
+
+void printfield(const std::string& field, const std::string& expected)
+{
+	std::cout << (field == expected ? "PASS: " : "FAIL: ");
+	std::cout << "'" << field << "'  (expected '" << expected << "')" << std::endl;
+}
+
+// TEST CASES [generated with ChatGPT]
+void reqScannerTest()
+{
+	std::cout << "\n === EMPTY STRING TEST ===\n";
+	{
+		ReqScanner scanner("");
+		std::string field = scanner.getField("\r\n", OPTIONAL_SPACES);
+		printfield(field, "");
+	}
+
+	std::cout << "\n === EMPTY DELIMITER TEST===\n";
+	{
+		ReqScanner scanner("Some data here");
+		std::string field = scanner.getField("", OPTIONAL_SPACES);
+		printfield(field, "");
+	}
+
+	std::cout << "\n === EMPTY FIELD AND DELIMITER===\n";
+	{
+		ReqScanner scanner("");
+		std::string field = scanner.getField("", OPTIONAL_SPACES);
+		printfield(field, "");
+	}
+
+	std::cout << "\n=== BASIC TRIM TESTS ===\n";
+	{
+		ReqScanner scanner("   Hello World   \r\nThis is a test string.\r\n\r\n");
+		std::string field1 = scanner.getField("\r\n", OPTIONAL_SPACES);
+		std::string field2 = scanner.getField("\r\n\r\n", OPTIONAL_SPACES);
+		printfield(field1, "Hello World");
+		printfield(field2, "This is a test string.");
+	}
+
+	std::cout << "\n=== NO-TRIM TESTS ===\n";
+
+	{
+		ReqScanner scanner2("NoSpacesHere\r\nAnotherLine.  \r\n");
+		std::string field3 = scanner2.getField("\r\n", 0);
+		std::string field4 = scanner2.getField("\r\n", 0);
+		printfield(field3, "NoSpacesHere");
+		printfield(field4, "AnotherLine.  ");
+	}
+
+	std::cout << "\n=== LEADING / TRAILING ONLY ===\n";
+
+	{
+		ReqScanner s("   LeadingOnly   \r\n   TrailingOnly   \r\n");
+		std::string f1 = s.getField("\r\n", LEADING);
+		std::string f2 = s.getField("\r\n", TRAILING);
+
+		printfield(f1, "LeadingOnly   ");
+		printfield(f2, "   TrailingOnly");
+	}
+
+	std::cout << "\n=== EMPTY FIELD TESTS ===\n";
+
+	{
+		ReqScanner s("\r\nA\r\n\r\nB\r\n");
+		std::string f1 = s.getField("\r\n", OPTIONAL_SPACES);
+		std::string f2 = s.getField("\r\n", OPTIONAL_SPACES);
+		std::string f3 = s.getField("\r\n", OPTIONAL_SPACES);
+		std::string f4 = s.getField("\r\n", OPTIONAL_SPACES);
+
+		printfield(f1, "");  // empty line
+		printfield(f2, "A");
+		printfield(f3, "");  // empty line
+		printfield(f4, "B");
+	}
+
+	std::cout << "\n=== MULTIPLE DELIMITER TESTS ===\n";
+
+	{
+		ReqScanner s("A--B----C--D");
+		std::string f1 = s.getField("--", 0);
+		std::string f2 = s.getField("----", 0);
+		std::string f3 = s.getField("--", 0);
+
+		printfield(f1, "A");
+		printfield(f2, "B");
+		printfield(f3, "C");
+	}
+
+	std::cout << "\n=== NO MATCHING DELIMITER ===\n";
+
+	{
+		ReqScanner s("HelloWorld");
+		std::string f = s.getField("\r\n", OPTIONAL_SPACES);
+		std::string f2 = s.getField("\r\n", OPTIONAL_SPACES);
+		printfield(f, "");
+		printfield(f2, "");
+	}
+
+	std::cout << "\n=== MIXED WHITESPACE ===\n";
+
+	{
+		ReqScanner s("\t  Mixed \t Spaces \n\nDone");
+		std::string f1 = s.getField("\n", OPTIONAL_SPACES);
+		std::string f2 = s.getField("\n", OPTIONAL_SPACES);
+
+		printfield(f1, "Mixed \t Spaces");
+		printfield(f2, "Done");
+	}
+
+	std::cout << "\n=== DELIMITER AT START ===\n";
+
+	{
+		ReqScanner s("\nABC\nDEF");
+		std::string f1 = s.getField("\n", OPTIONAL_SPACES);
+		std::string f2 = s.getField("\n", OPTIONAL_SPACES);
+		std::string f3 = s.getField("\n", OPTIONAL_SPACES);
+
+		printfield(f1, "");
+		printfield(f2, "ABC");
+		printfield(f3, "DEF");
+	}
+
+	std::cout << "\n=== DELIMITER AT END ===\n";
+
+	{
+		ReqScanner s("XYZ\n");
+		std::string f1 = s.getField("\n", OPTIONAL_SPACES);
+		std::string f2 = s.getField("\n", OPTIONAL_SPACES);
+
+		printfield(f1, "XYZ");
+		printfield(f2, "");
+	}
+
+	std::cout << "\n=== LONG STRING WITH MULTIPLE SPACING VARIATIONS ===\n";
+
+	{
+		ReqScanner s("   Alpha  \r\n Beta\t\t \r\n\tGamma   \r\n");
+		std::string f1 = s.getField("\r\n", OPTIONAL_SPACES);
+		std::string f2 = s.getField("\r\n", OPTIONAL_SPACES);
+		std::string f3 = s.getField("\r\n", OPTIONAL_SPACES);
+
+		printfield(f1, "Alpha");
+		printfield(f2, "Beta");
+		printfield(f3, "Gamma");
+	}
+}
+
 
 
 // if (!flags)
