@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 09:53:48 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/29 16:47:06 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ struct Connection {
 
 typedef std::map<int, Connection>::iterator ConnectionIterator;
 
+typedef int clientFd;
+typedef int pipeFd;
+
 class EpollConnectionManager {
     public:
         EpollConnectionManager(std::map<int, Socket*>);
@@ -43,6 +46,7 @@ class EpollConnectionManager {
         int epfd;
         std::map<int, Socket*> listeningSockets;
         std::map<int, Connection> connections;
+        std::map<pipeFd, clientFd> pipeToClient;
 
         void run();
         void setInstance(int fd, uint32_t events, int op);
@@ -57,4 +61,7 @@ class EpollConnectionManager {
         void successRequest(const int fd);
         void requestHandler(const int clientfd);
         void exitWithError(const std::string& message);
+        void CGIHandler(const int fd, const std::string& path);
+        bool isPipeEvent(int fd);
+        void handlePipeResponse(int fd);
 };

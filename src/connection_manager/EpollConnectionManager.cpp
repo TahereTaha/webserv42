@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 23:50:42 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/29 17:32:16 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 #include "Log.hpp"
 #include "../http_request_parser/Schemas.hpp"
 #include "colors.hpp"
+
+#include <sys/wait.h>
+
 
 
 // =====================================================================
@@ -51,6 +54,7 @@ void EpollConnectionManager::setInstance(int fd, uint32_t events, int op) {
     ev.events = events | EPOLLET;
     ev.data.fd = fd;
     
+    std::cout << "events" << fd << std::endl;
     if (epoll_ctl(epfd, op, fd, &ev) == -1)
         exitWithError("Failed to set epoll instance");
   
@@ -103,6 +107,7 @@ void EpollConnectionManager::handleEvent(epoll_event &ev) {
     Socket *sock    = listeningSockets.find(fd) != listeningSockets.end() ? listeningSockets[fd] : NULL;
     
     if (sock) handleNewConnection(sock);
+    else if (ev.events & EPOLLIN && isPipeEvent(fd)) handlePipeResponse(fd); 
     else if (ev.events & EPOLLIN) handleRead(fd);
     else if (ev.events & EPOLLOUT) handleWrite(fd);
 }
@@ -158,15 +163,19 @@ void EpollConnectionManager::requestHandler(const int clientfd) {
         if (connHeader == "close")
             connections[clientfd].keepAlive = false;
     }
-    if (connections[clientfd].request.getErrorCode() != 0) 
+    if (connections[clientfd].request.getErrorCode() != 0)
+    {
         badRequest(clientfd);
+    }
+    else if (connections[clientfd].request.getControlData().requestTarget == "/cgi")
+        CGIHandler(clientfd, ".cgiTest.py");
     else 
         successRequest(clientfd); // here is that we try to hook the server part.
 }
 
 void EpollConnectionManager::handleRead(int clientfd) {
-    char buf[4096];
-    int bytesRead;
+    char    buf[4096];
+    int     bytesRead;
 
     EventLog::log(EPOLL_EVENT_READING, clientfd);
     while ((bytesRead = read(clientfd, buf, sizeof(buf))) > 0)
@@ -218,4 +227,83 @@ void EpollConnectionManager::closeConnection(int fd) {
     shutdown(fd, SHUT_RDWR);
     close(fd);
     connections.erase(fd);
+    // TODO: erase pipes asociated with client on close
+}
+
+void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
+{
+
+    std::cout << path;
+    const char* cgiPath = "/home/capapes/Desktop/webserver/cgiTest.py";
+	int pipefd[2];
+
+	pipe(pipefd);
+	makeNonBlocking(pipefd[0]);
+    std::cout << "\n\nhandle pipe creation" << std::endl;
+	pid_t pid = fork();
+    if (pid == -1)
+    {
+        // [TODO] send error message to client
+        std::cout << "Fork failed" << std::endl;
+        return;
+    }
+
+    if (pid != 0) {
+        setInstance(pipefd[0], EPOLLIN, EPOLL_CTL_ADD);
+	    pipeToClient[pipefd[0]] = fd;
+    }
+	if (pid == 0) {
+        // [TODO] send environment variables
+		dup2(pipefd[1], STDOUT_FILENO);
+
+		close(pipefd[0]);
+		close(pipefd[1]);
+
+		execl(cgiPath, cgiPath, (char*)NULL);
+         std::cout << "Execl failed" << std::endl;
+		_exit(1);
+	}
+    
+	close(pipefd[1]);
+
+	waitpid(pid, NULL, WNOHANG);
+}
+
+bool EpollConnectionManager::isPipeEvent(int fd)
+{
+    return (pipeToClient.find(fd) != pipeToClient.end());
+}
+
+void EpollConnectionManager::handlePipeResponse(int fd)
+{
+    char    buf[4096];
+    int     bytesRead;
+    std::string  readBuffer;
+
+    std::cout << "handle pipe response" << std::endl;
+    EventLog::log(EPOLL_EVENT_READING, fd);
+    while ((bytesRead = read(fd, buf, sizeof(buf))) > 0)
+        readBuffer.append(buf, bytesRead);
+    if (bytesRead == 0)
+    {
+        // Delete pipe register
+        EventLog::log(EPOLL_EVENT_CLOSE, fd);
+        epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
+        close(fd);
+        pipeToClient.erase(fd);
+        // send error to client
+    }
+    int clientFd = pipeToClient[fd];
+    EventLog::log(EPOLL_EVENT_SUCCESS, clientFd);
+    connections[clientFd].readBuffer.clear();
+    std::ostringstream oss;
+    oss << 200;
+    connections[clientFd].writeBuffer = readBuffer;
+    setInstance(clientFd, EPOLLOUT, EPOLL_CTL_MOD);
+
+    // Delete pipe register
+    EventLog::log(EPOLL_EVENT_CLOSE, fd);
+    epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
+    close(fd);
+    pipeToClient.erase(fd);
 }
