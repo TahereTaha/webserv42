@@ -1,7 +1,6 @@
 # binaries
 
 webserv
-test
 a.out
 **/*.o
 **/*.a
