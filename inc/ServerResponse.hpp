@@ -13,3 +13,15 @@ public:
 	
 	ServerResponse(int code, const std::string &type, const std::string &b);
 };
+
+enum ResponseStatus {
+	RESP_OK,
+	RESP_ERR,
+	RESP_CGI
+};
+
+struct Response {
+	ResponseStatus status;
+	ServerResponse sres;
+	std::string    pathToCgi;
+};

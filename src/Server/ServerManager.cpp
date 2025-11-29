@@ -11,17 +11,19 @@ ServerManager::~ServerManager() {
 }
 
 void ServerManager::addServer(const t_server& config) {
-    servers.push_back(new Server(config));
+	servers.push_back(new Server(config));
 }
 
-ServerResponse ServerManager::handleRequest(const Request& request) {
-    Server* server = findServer(request);
-    if (server) {
-        return server->handleRequest(request);
-    }
-    
-   
-    return ServerResponse(404, "text/html", "<html><body><h1>404 Not Found</h1></body></html>");
+Response ServerManager::handleRequest(const Request& request) {
+	Server* server = findServer(request);
+	if (server) {
+		return server->handleRequest(request);
+	}
+	Response r;
+	r.status = RESP_ERR;
+	r.sres = ServerResponse(404, "text/html", "<html><body><h1>404 Not Found</h1></body></html>");
+	r.pathToCgi = "";
+	return r;
 }
 
 Server* ServerManager::findServer(const Request& request) {
