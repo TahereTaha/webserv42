@@ -35,6 +35,7 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleSymbol::consumeTerminals(terminal_ite
 	{
 		AParser	*parser = nonTerminal->getParser();
 		return_val.push_back(parser->generateSubTree(iter, end));
+		delete (parser);
 		return (return_val);
 	}
 	//	check if this simbol is in the current iterator of the terminal list.

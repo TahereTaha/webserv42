@@ -108,11 +108,13 @@ void	ConfigurationParser::parsing(void)
 	// wrap correctly any parsing errors.
 	catch (parse_exception & e)
 	{
+		delete (parser);
 		multy_parse_exception	multy_e(e);
 
 		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
 		throw (multy_e);
 	}
+	delete (parser);
 	// checking if there are still tokens left to consume.
 	if (iter != end)
 	{

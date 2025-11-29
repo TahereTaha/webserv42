@@ -32,6 +32,8 @@
 
 #include <setUpSockets.hpp>
 
+#include <ServerManager.hpp>
+
 int	main(int argc, char **argv)
 {
 	try
@@ -45,6 +47,7 @@ int	main(int argc, char **argv)
 		parser.analysis();
 		std::vector<t_server>	servers = parser.getServers();
 
+		return (0);
 		ServerManager	server_manager;
 		size_t	i = 0;
 		while (i < servers.size())
