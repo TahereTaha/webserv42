@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 20:42:08 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/29 15:05:40 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,41 @@ enum SchemaFlags {
 };
 
 // =====================================================================
+//  Flags utility functions
+// =====================================================================
+
+std::string remove_trailing(const std::string& str, const std::string& chars = SPACES)
+{
+    size_t end = str.find_last_not_of(chars);
+    if (end == std::string::npos)
+        return "";
+    return str.substr(0, end + 1);
+}
+
+std::string remove_leading(const std::string& str, const std::string& chars = SPACES)
+{
+    size_t start = str.find_first_not_of(chars);
+
+    if (start == std::string::npos)
+		return ("");
+    return (str.substr(start));
+}
+
+std::string applyFlags(std::string str, int flags)
+{
+	if (flags & LEADING)
+		str = remove_leading(str);
+	if (flags & TRAILING)
+		str = remove_trailing(str);
+	return str;
+}
+
+inline bool isRequired(int flags, const std::string& value)
+{
+    return (flags & IS_REQUIRED && value.empty());
+}
+
+// =====================================================================
 // 	Common schema functions
 // =====================================================================
 //  - if delimitator instance exist return substring, else empty string
@@ -37,15 +72,15 @@ enum SchemaFlags {
 // =====================================================================
 
 std::string extractAndValidate(ReqScanner &scanner, const SchemaItem& item) {
-    std::string value = scanner.getField(item.delimiter, item.flags);
-    if ((item.flags & IS_REQUIRED && value.empty()) || (item.fn && !item.fn(value)))
+    std::string value = scanner.getField(item.delimiter);
+    value = applyFlags(value, item.flags);
+    if (isRequired(item.flags, value) || (item.fn && !item.fn(value)))
     {
         Request::setActiveError(item.errorCode);
         throw std::runtime_error(item.error);
     }
     return value;
 }
-
 
 // =====================================================================
 // 	SCHEMAS
