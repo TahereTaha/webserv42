@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 17:32:16 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/29 19:23:48 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ void EpollConnectionManager::exitWithError(const std::string& message) {
 // 	CONNECTION MANAGER CONSTRUCTOR
 // =====================================================================
 
-EpollConnectionManager::EpollConnectionManager(std::map<int, Socket*> socks) : epfd(-1), listeningSockets(socks) {
+EpollConnectionManager::EpollConnectionManager(std::map<int, Socket*> socks, ServerManager server) 
+    : epfd(-1), listeningSockets(socks), serverManager(server)
+{
     if (socks.empty())
         return;
     epfd = epoll_create1(0);
@@ -148,6 +150,10 @@ void EpollConnectionManager::successRequest(const int fd) {
     connections[fd].readBuffer.clear();
     std::ostringstream oss;
     oss << 200;
+    ServerResponse sRes = connections[fd].response.sres;
+    connections[fd].writeBuffer =   "HTTP/1.1 ";
+
+
     connections[fd].writeBuffer =   "HTTP/1.1 200 Success\r\n"
                                     "Content-Length: 0\r\n"
                                     "Connection: close\r\n"
@@ -167,10 +173,19 @@ void EpollConnectionManager::requestHandler(const int clientfd) {
     {
         badRequest(clientfd);
     }
-    else if (connections[clientfd].request.getControlData().requestTarget == "/cgi")
-        CGIHandler(clientfd, ".cgiTest.py");
+    // else if (connections[clientfd].request.getControlData().requestTarget == "/cgi")
+    //     CGIHandler(clientfd, ".cgiTest.py");
     else 
-        successRequest(clientfd); // here is that we try to hook the server part.
+    {
+        connections[clientfd].response = serverManager.handleRequest(connections[clientfd].request);
+        if (connections[clientfd].response.pathToCgi != "")
+             CGIHandler(clientfd, connections[clientfd].response.pathToCgi);
+        else
+        {
+            connections[clientfd].writeBuffer = connections[clientfd].response.sres.to_string();
+            setInstance(clientfd, EPOLLOUT, EPOLL_CTL_MOD); // here is that we try to hook the server part.
+        }
+    }
 }
 
 void EpollConnectionManager::handleRead(int clientfd) {

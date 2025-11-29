@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 
 class ServerResponse {
 public:
@@ -12,6 +13,8 @@ public:
 	ServerResponse();
 	
 	ServerResponse(int code, const std::string &type, const std::string &b);
+	std::string to_string() const;
+	std::string get_status_message(int code) const;
 };
 
 enum ResponseStatus {

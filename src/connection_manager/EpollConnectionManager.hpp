@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 16:47:06 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/29 19:01:30 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@
 #include <ctime>    
 #include <sys/time.h> 
 #include "../http_request_parser/Request.hpp"
+#include <ServerManager.hpp>
 
 
 struct Connection {
     int          fd;
     std::string  readBuffer;
     Request      request;
+    Response     response;
     std::string  writeBuffer;
     bool         keepAlive;
     double       lastActive;
@@ -40,13 +42,14 @@ typedef int pipeFd;
 
 class EpollConnectionManager {
     public:
-        EpollConnectionManager(std::map<int, Socket*>);
+        EpollConnectionManager(std::map<int, Socket*>, ServerManager);
 
     private:
         int epfd;
-        std::map<int, Socket*> listeningSockets;
-        std::map<int, Connection> connections;
-        std::map<pipeFd, clientFd> pipeToClient;
+        std::map<int, Socket*>      listeningSockets;
+        ServerManager               serverManager;
+        std::map<int, Connection>   connections;
+        std::map<pipeFd, clientFd>  pipeToClient;
 
         void run();
         void setInstance(int fd, uint32_t events, int op);
