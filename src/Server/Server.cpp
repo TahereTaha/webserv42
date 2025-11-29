@@ -307,30 +307,57 @@ static ServerResponse handleDefaultRoute(const t_server &cfg,
 //                      MAIN REQUEST HANDLER
 // =====================================================================
 
-ServerResponse Server::handleRequest(const Request &request) {
+Response Server::handleRequest(const Request &request) {
 	const ControlData  &cd      = request.getControlData(); 
 	const std::string  &method  = cd.method;                
 	const std::string  &target  = cd.requestTarget;       
 
 	// 1) validate method
-	if (!isSupportedMethod(method))
-		return buildErrorResponse(_config, 405, "405 Method Not Allowed");
+	if (!isSupportedMethod(method)) {
+		Response r;
+		r.status = RESP_ERR;
+		r.sres = buildErrorResponse(_config, 405, "405 Method Not Allowed");
+		r.pathToCgi = "";
+		return r;
+	}
 
 	// 2) check body size
-	if (isPostTooLarge(_config, request))
-		return buildErrorResponse(_config, 413, "413 Payload Too Large");
+	if (isPostTooLarge(_config, request)) {
+		Response r;
+		r.status = RESP_ERR;
+		r.sres = buildErrorResponse(_config, 413, "413 Payload Too Large");
+		r.pathToCgi = "";
+		return r;
+	}
 
 	// 3) find best route
 	const t_route *route = findBestRoute(_config, target);
-	if (!route)
-		return buildErrorResponse(_config, 404, "404 Not Found");
+	if (!route) {
+		Response r;
+		r.status = RESP_ERR;
+		r.sres = buildErrorResponse(_config, 404, "404 Not Found");
+		r.pathToCgi = "";
+		return r;
+	}
 
 	// 4) check method allowance for DEFAULT routes
-	if (route->response_type == DEFAULT && !methodAllowed(*route, method))
-		return buildErrorResponse(_config, 405, "405 Method Not Allowed");
+	if (route->response_type == DEFAULT && !methodAllowed(*route, method)) {
+		Response r;
+		r.status = RESP_ERR;
+		r.sres = buildErrorResponse(_config, 405, "405 Method Not Allowed");
+		r.pathToCgi = "";
+		return r;
+	}
 
 	// 5) dispatch to STATIC or DEFAULT handling
-	if (route->response_type == STATIC)
-		return handleStaticRoute(*route);
-	return handleDefaultRoute(_config, *route, method, target, request);
+	Response r;
+	r.pathToCgi = "";
+	if (route->response_type == STATIC) {
+		r.status = RESP_OK;
+		r.sres = handleStaticRoute(*route);
+	} else {
+		r.status = RESP_OK;
+		r.sres = handleDefaultRoute(_config, *route, method, target, request);
+	}
+	return r;
 }
