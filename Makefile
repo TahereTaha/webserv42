@@ -6,7 +6,7 @@
 #    By: capapes <capapes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/11/28 21:00:37 by tatahere         ###   ########.fr        #
+#    Updated: 2025/11/29 16:27:27 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ VPATH	+= $(SRC_DIR)exceptions:
 VPATH	+= $(SRC_DIR)URI_parsing:
 VPATH	+= $(SRC_DIR)URI_parsing/utils:
 VPATH	+= $(SRC_DIR)connection_manager:
-VPATH	+= $(SRC_DIR)http_request_parser
+VPATH	+= $(SRC_DIR)http_request_parser:
+VPATH	+= $(SRC_DIR)Server
 
 CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -MMD -g
 
@@ -139,6 +140,10 @@ OBJ		:=	main.o						\
 			ReqScanner.o				\
 			Request.o					\
 			Schemas.o					\
+										\
+			Server.o					\
+			ServerManager.o				\
+			ServerResponse.o			\
 
 #			subTreeGenerationUtils.o	\
 			SymbolServer.o				\
