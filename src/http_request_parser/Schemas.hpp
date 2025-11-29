@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:02:42 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 19:31:21 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/29 14:58:03 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 // =====================================================================
 // 	DELIMITERS DEFINITIONS
 // =====================================================================
-#define EOF_				"\0"
+#define EOF_			"\0"
 #define SP				" "
 #define TB				"\t"
 #define END_OF_HEADERS 	"\r\n\r\n"
 #define END_OF_LINE 	"\r\n"
 #define NEW_LINE        "\n"
+#define EMPTY_STRING    ""
+#define SPACES          " \t\n\r\f\v"
 
 // =====================================================================
 // 	SCHEMA DEFINITIONS

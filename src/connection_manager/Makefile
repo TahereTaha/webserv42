@@ -11,7 +11,7 @@ BUILDDIR := build
 TARGET   := connection_manager
 
 # Allow <header.hpp> everywhere by adding ALL subdirectories
-INCLUDES := -I. -I./ -I./http_request_parser -I./http_request_parser/test -I./URI_parsing -I./URI_parsing/utils -I../http_request_parser -I../URI_parsing -I../URI_parsing/utils
+INCLUDES := -I. -I./ -I../http_request_parser -I../URI_parsing -I../URI_parsing/utils
 
 # Recursively find all .cpp files
 SRC := $(shell find $(SRCDIRS) -name '*.cpp')
