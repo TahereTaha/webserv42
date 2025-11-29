@@ -40,14 +40,15 @@ static t_server makeTestServer() {
 	return s;                                         
 }
 
-static void printSummary(const std::string &label, const ServerResponse &res) {
+static void printSummary(const std::string &label, const Response &resp) {
+	const ServerResponse &res = resp.sres;
 	std::cout << "== " << label << " ==\n";
 	std::cout << "Status: " << res.status_code
 	          << ", Content-Type: " << res.content_type
 	          << ", Body length: " << res.body.size() << "\n\n";
 }
 
-static ServerResponse runCase(Server &srv, const std::string &method,
+static Response runCase(Server &srv, const std::string &method,
 		const std::string &target, const std::string &body) {
 	ControlData cd(method, target, "HTTP/1.1");
 	Headers     h;
