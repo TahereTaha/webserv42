@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:17:47 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 15:04:33 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/29 16:47:00 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ std::string Event::toString() const {
         case EPOLL_EVENT_ERROR:         typeStr = "[EVENT] Request error for client: "; break;
         case NEW_CONNECTION:            typeStr = "[CONNECTION] New connection from: "; break;
         case INFO:                      typeStr = "[INFO]"; break;
+        case EPOLL_EVENT_READING_FROM_CGI: typeStr = "[EVENT] Reading from pipe"; break;
         default:
         case ERROR:                     typeStr = "[ERROR]"; break;
     }
