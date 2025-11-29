@@ -47,7 +47,7 @@ int	main(int argc, char **argv)
 		parser.analysis();
 		std::vector<t_server>	servers = parser.getServers();
 
-		return (0);
+
 		ServerManager	server_manager;
 		size_t	i = 0;
 		while (i < servers.size())
@@ -59,7 +59,7 @@ int	main(int argc, char **argv)
 		EventLog::init("event.log");
 		std::map<int, Socket *>	listeningSockets = set_up_sockets(servers);
 
-        EpollConnectionManager manager(listeningSockets);
+        EpollConnectionManager manager(listeningSockets, server_manager);
         EventLog::shutdown();
 
 		std::cout << "starting web server." << std::endl;
