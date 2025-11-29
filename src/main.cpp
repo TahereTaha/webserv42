@@ -44,8 +44,16 @@ int	main(int argc, char **argv)
 		parser.parsing();
 		parser.analysis();
 		std::vector<t_server>	servers = parser.getServers();
-	
-        EventLog::init("event.log");
+
+		ServerManager	server_manager;
+		size_t	i = 0;
+		while (i < servers.size())
+		{
+			server_manager.addServer(servers[i]);
+			i++;
+		}
+        
+		EventLog::init("event.log");
 		std::map<int, Socket *>	listeningSockets = set_up_sockets(servers);
 
         EpollConnectionManager manager(listeningSockets);

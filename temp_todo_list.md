@@ -17,23 +17,17 @@
 	- text
 	- number
 
-- [ ] set up the server
-	- [ ] open the diferent sokets.
-		- [x] get all the diferent sockets.
-		- [ ] initialize them onem by one.
-			- [ ] modify the soket constructor to recive a struct sockaddr.
-		- [ ] make all the sockets stored on a map.
-- [ ] run the server.
-
 - [ ] web server
 	- [x] read the arguments.
-	- [ ] parse the file.
+	- [x] parse the file.
 		- [x] read the file.
 		- [x] tokenize.
 		- [x] parse.
 		- [x] check.
 		- [x] init.
 	- [ ] set up the server.
+		- [x] set the sockets for the socket manager.
+		- [ ] set the servers for the server manager.
 	- [ ] run the server.
 
 error msg 1:
