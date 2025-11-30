@@ -307,11 +307,15 @@ static ServerResponse handleDefaultRoute(const t_server &cfg,
 //                      MAIN REQUEST HANDLER
 // =====================================================================
 
+#include <iostream>
+
 Response Server::handleRequest(const Request &request) {
 	const ControlData  &cd      = request.getControlData(); 
 	const std::string  &method  = cd.method;                
 	const std::string  &target  = cd.requestTarget;       
 
+//	std::cout << "this is a server log:" << std::endl;
+//	std::cout << cd.requestTarget << std::endl;
 	// 1) validate method
 	if (!isSupportedMethod(method)) {
 		Response r;

@@ -17,7 +17,11 @@
 	- text
 	- number
 
-- [ ] web server
+- [ ] make a bit of a beter testing enviroment.
+- [ ] add a root element to the server context for the error pages.
+- [ ] fix all the memory leacks in the file parsing.
+
+- [x] web server
 	- [x] read the arguments.
 	- [x] parse the file.
 		- [x] read the file.
@@ -25,10 +29,11 @@
 		- [x] parse.
 		- [x] check.
 		- [x] init.
-	- [ ] set up the server.
+	- [x] set up the server.
 		- [x] set the sockets for the socket manager.
-		- [ ] set the servers for the server manager.
-	- [ ] run the server.
+		- [x] set the servers for the server manager.
+	- [x] run the server.
+- [ ] test it and fix errors.
 
 error msg 1:
 - error kind
