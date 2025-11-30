@@ -12,6 +12,8 @@
 #include <ParsingRuleOr.hpp>
 #include <ParsingRuleRepetition.hpp>
 
+#include <defines.hpp>
+
 SymbolConfigContext::SymbolConfigContext(void)
 {
 }
@@ -41,6 +43,8 @@ void		SymbolConfigContext::evaluate(Tree<AEvaluable*> *self)
 		i++;
 	}
 
+	if (!DEBUG_PRINT)
+		return ;
 	i = 0;
 	while (i < this->_servers.size())
 	{

@@ -9,6 +9,8 @@
 #include <SymbolConfigContext.hpp>
 #include <AParser.hpp>
 
+#include <defines.hpp>
+
 #include <stddef.h>
 
 ConfigurationParser::ConfigurationParser(const Args & args)
@@ -89,7 +91,8 @@ void	ConfigurationParser::scanning(void)
 		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
 		throw (multy_e);
 	}
-	this->printTerminalList();
+	if (DEBUG_PRINT)
+		this->printTerminalList();
 }
 
 void	ConfigurationParser::parsing(void)
@@ -128,7 +131,8 @@ void	ConfigurationParser::parsing(void)
 		multy_e.makeErrorMsg(this->_configFileName, this->_configFileContent);
 		throw (multy_e);
 	}
-	this->printAST();
+	if (DEBUG_PRINT)
+		this->printAST();
 }
 
 void	ConfigurationParser::analysis(void)
