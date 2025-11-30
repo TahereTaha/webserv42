@@ -216,6 +216,11 @@ static ServerResponse handleStaticRoute(const t_route &route) {
 		body += "<a href=\"" + loc + "\">" + loc + "</a>";
 	body += "</body></html>";
 	res.body = body;
+	// If this is a 3xx status code and a target URL is configured,
+	// populate the Location header so that browsers actually follow the redirect.
+	if (res.status_code >= 300 && res.status_code < 400 && !loc.empty()) {
+		res.location = loc;
+	}
 	return res;
 }
 
