@@ -17,10 +17,7 @@
 	- text
 	- number
 
-- [x] make a bit of a beter testing enviroment.
-- [ ] add a root element to the server context for the error pages.
 - [ ] fix all the memory leacks in the file parsing.
-- [ ] make a header file for defines.
 
 - [x] web server
 	- [x] read the arguments.

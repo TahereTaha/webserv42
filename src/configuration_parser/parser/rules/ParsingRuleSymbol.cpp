@@ -9,6 +9,7 @@
 ParsingRuleSymbol::ParsingRuleSymbol(const ASymbol *symbol)
 {
 	this->_symbol = symbol->clone();
+	delete (symbol);
 }
 
 ParsingRuleSymbol::~ParsingRuleSymbol(void)
