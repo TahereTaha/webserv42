@@ -95,6 +95,7 @@ void	ConfigurationParser::scanning(void)
 		this->printTerminalList();
 }
 
+
 void	ConfigurationParser::parsing(void)
 {
 	std::cout << "\t-> parsing " << std::endl;
