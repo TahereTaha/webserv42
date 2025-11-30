@@ -4,14 +4,16 @@
 ServerResponse::ServerResponse()
 	: status_code(200),
 	  content_type("text/html"),  // default content type rn, see if needs change maybe (?)
-	  body("")
+	  body(""),
+	  location("")
 {}
 
 
 ServerResponse::ServerResponse(int code, const std::string &type, const std::string &b)
 	: status_code(code),
 	  content_type(type),
-	  body(b)
+	  body(b),
+	  location("")
 {}
 
 std::string ServerResponse::to_string() const {
@@ -32,6 +34,11 @@ std::string ServerResponse::to_string() const {
 
     // ---- Headers ----
     resp += "Content-Type: " + content_type + "\r\n";
+
+    // Optional Location header for redirects
+    if (!location.empty()) {
+        resp += "Location: " + location + "\r\n";
+    }
 
     {
         std::stringstream ss;

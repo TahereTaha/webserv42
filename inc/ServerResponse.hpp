@@ -8,6 +8,7 @@ public:
 	int         status_code;
 	std::string content_type;
 	std::string body;
+	std::string location; // optional Location header for redirects (empty when unused)
 
 	
 	ServerResponse();
