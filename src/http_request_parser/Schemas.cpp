@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 15:05:40 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/30 14:53:05 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "Schemas.hpp"
 
 
-#include "ReqScanner.hpp"
+
 
 
 // =====================================================================
@@ -73,6 +73,7 @@ inline bool isRequired(int flags, const std::string& value)
 
 std::string extractAndValidate(ReqScanner &scanner, const SchemaItem& item) {
     std::string value = scanner.getField(item.delimiter);
+    std::cout << "VALUE: " << value << "\n";
     value = applyFlags(value, item.flags);
     if (isRequired(item.flags, value) || (item.fn && !item.fn(value)))
     {
@@ -164,6 +165,41 @@ Request validateRequest(const std::string& raw) {
 
         std::string bodyBlock = extractAndValidate(scanner, requestItems[2]);
         req.setBody(bodyBlock);
+    }
+	catch (const std::runtime_error& e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+		return req;
+	}
+  
+    return req;
+}
+
+Request validateRequestParts(ReqScanner  scanner, int status) {
+    static  Request     req;
+
+    if (status == 0)
+    {
+        Request::setActiveRequest(&req);
+        Request::setActiveError(0);
+    }
+    try {
+        if (status == 1)
+        {
+            std::string controlBlock = extractAndValidate(scanner, requestItems[0]);
+            req.setControlData(validateControlData(controlBlock));
+        }
+        if (status == 2)
+        {
+            std::string headers = extractAndValidate(scanner, requestItems[1]);
+            headers += END_OF_LINE;
+            req.setHeaders(validateHeaders(headers));
+        }
+        if (status == 3)
+        {
+            std::string bodyBlock = extractAndValidate(scanner, requestItems[2]);
+            req.setBody(bodyBlock);
+        }
+
     }
 	catch (const std::runtime_error& e) {
 		std::cerr << "Error: " << e.what() << std::endl;

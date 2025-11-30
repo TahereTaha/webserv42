@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 19:23:48 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/30 14:59:00 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "Log.hpp"
 #include "../http_request_parser/Schemas.hpp"
 #include "colors.hpp"
+#include "../http_request_parser/ReqScanner.hpp"
 
 #include <sys/wait.h>
 
@@ -54,7 +55,6 @@ void EpollConnectionManager::setInstance(int fd, uint32_t events, int op) {
     ev.events = events | EPOLLET;
     ev.data.fd = fd;
     
-    std::cout << "events" << fd << std::endl;
     if (epoll_ctl(epfd, op, fd, &ev) == -1)
         exitWithError("Failed to set epoll instance");
   
@@ -173,8 +173,6 @@ void EpollConnectionManager::requestHandler(const int clientfd) {
     {
         badRequest(clientfd);
     }
-    // else if (connections[clientfd].request.getControlData().requestTarget == "/cgi")
-    //     CGIHandler(clientfd, ".cgiTest.py");
     else 
     {
         connections[clientfd].response = serverManager.handleRequest(connections[clientfd].request);
@@ -188,15 +186,62 @@ void EpollConnectionManager::requestHandler(const int clientfd) {
     }
 }
 
+#define MAX_REQ_LINE_LENGTH     40          // 4 KB
+#define MAX_HEADER_LINES_COUNT  100
+#define MAX_HEADER_SIZE         65536       // 64 KB
+#define MAX_READ_TIMEOUT        5000        // 5 seconds
+#define MAX_BODY_SIZE           (100 * 1024 * 1024)   // 100 MB
+#define MAX_CHUNK_SIZE          (8 * 1024 * 1024)     // 8 MB
+#define MAX_REQ_TIMEOUT         15000    // 15 seconds
+
+#define CONTROL_DATA_DONE       1 << 0
+#define HEADERS_DONE            1 << 2
+#define BODY_DONE               1 << 3            
+
+
+
 void EpollConnectionManager::handleRead(int clientfd) {
-    char    buf[4096];
+    char    buf_line[MAX_REQ_LINE_LENGTH];
     int     bytesRead;
+    int     state;
 
     EventLog::log(EPOLL_EVENT_READING, clientfd);
-    while ((bytesRead = read(clientfd, buf, sizeof(buf))) > 0)
+    state = 0;
+    ReqScanner  scanner("");
+    Request     req = validateRequestParts(scanner, state);
+    while ((bytesRead = read(clientfd, buf_line, sizeof(buf_line))) > 0)
     {
-        connections[clientfd].readBuffer.append(buf, bytesRead);
-        connections[clientfd].lastActive = getCurrentTimeMs();
+        scanner.append(buf_line);
+        std::string read = buf_line;
+        if (state == 0 && read.find("\r\n") != std::string::npos)
+        {
+            state++;
+            req = validateRequestParts(scanner, state);
+            if (req.getErrorCode() != 0)
+            {
+                std::cout << "error on request control data: "<< req.getErrorCode() << std::endl;
+                break;
+            }
+            else{
+                std::cout << "Request scanned succesfully \n\n" << std::endl;
+            }
+        }
+        if (state == 1 && read.find("\r\n\r\n") != std::string::npos)
+        {
+            state++;
+            req = validateRequestParts(scanner, state);
+            if (req.getErrorCode() != 0)
+            {
+                std::cout << "error on request headers "<< req.getErrorCode() << std::endl;
+                break;
+
+            }
+            else
+            {
+                std::cout << "Request scanned succesfully " << std::endl;
+            }
+        }
+        
     }
     if (bytesRead == 0)
         closeConnection(clientfd);

@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 09:58:11 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 15:05:00 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/30 14:15:32 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ public:
 	bool		get_ended();
 	size_t 		getEndPos(const std::string& delimiter);
 	bool		isEndPos();
+	void		append(const std::string& raw);
+	void		reset(const std::string& raw);
 
 private:
 	std::string 	_raw;

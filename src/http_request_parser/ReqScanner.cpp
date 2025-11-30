@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:02:01 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 15:11:45 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/30 15:00:02 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,21 @@ ReqScanner::~ReqScanner() {}
 
 // TODO: Unify optional spaces flags with Schemas.hpp
 
+void ReqScanner::append(const std::string& raw) {
+	if (isEndPos())
+		_pos = raw.size();
+	_raw.append(raw);
+	_size = raw.size();
+	std::cout << "NEW SCANNER APPEND: " << _raw << _pos << "\n";
+}
+
+void ReqScanner::reset(const std::string& raw) {
+	_pos = 0;
+	_raw = raw;
+	_size = raw.size();
+	if (_size == 0)
+		_pos = NOT_FOUND;
+}
 
 size_t ReqScanner::getEndPos(const std::string& delimiter)
 {

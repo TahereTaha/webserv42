@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:17:20 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 20:31:26 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/30 14:04:59 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ public:
     int 				getErrorCode() 		const;
 	static void 		setActiveRequest(Request* r);
     static void 		setActiveError(int code);
-
 private:
     ControlData 		controlData;
     Headers 			headers;

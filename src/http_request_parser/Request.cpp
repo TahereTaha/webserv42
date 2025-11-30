@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:20:26 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 20:31:11 by capapes          ###   ########.fr       */
+/*   Updated: 2025/11/30 14:04:55 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ Request& Request::operator=(const Request& other) {
 // }
 
 Request::~Request() {}
-
 
 void Request::setControlData(const ControlData& cd) {
     controlData = cd;
