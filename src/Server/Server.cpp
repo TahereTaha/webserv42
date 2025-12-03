@@ -356,12 +356,33 @@ Response Server::handleRequest(const Request &request) {
 		return r;
 	}
 
-	// 5) dispatch to STATIC or DEFAULT handling
+	// 5) determine full path for potential CGI execution
+	//    reuse the same URI -> filesystem mapping logic as in handleDefaultRoute
+	std::string rel = target;
+	if (route->uri != "/" && rel.compare(0, route->uri.size(), route->uri) == 0)
+		rel = rel.substr(route->uri.size());
+	if (rel.empty())
+		rel = "/";
+	std::string fullPath = joinPath(route->default_response.root, rel);
+
+	// consider it a CGI request if the mapped file ends with .py
+	bool isCgi = false;
+	if (fullPath.size() >= 3) {
+		std::string ext = fullPath.substr(fullPath.size() - 3);
+		if (ext == ".py")
+			isCgi = true;
+	}
+
+	// 6) dispatch to STATIC, CGI, or DEFAULT handling
 	Response r;
 	r.pathToCgi = "";
 	if (route->response_type == STATIC) {
 		r.status = RESP_OK;
 		r.sres = handleStaticRoute(*route);
+	} else if (isCgi) {
+		// populate full path to CGI script so EpollConnectionManager can execute it
+		r.status = RESP_CGI;
+		r.pathToCgi = fullPath;
 	} else {
 		r.status = RESP_OK;
 		r.sres = handleDefaultRoute(_config, *route, method, target, request);
