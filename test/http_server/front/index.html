@@ -25,38 +25,29 @@
   const sendBtn = document.getElementById('sendBtn');
 
   sendBtn.addEventListener('click', async () => {
-    const file = input.files[0];
-    if (!file) {
-      alert("Please select a file first.");
-      return;
-    }
+  const file = input.files[0];
+  if (!file) {
+    alert("Please select a file first.");
+    return;
+  }
 
-    const reader = new FileReader();
+  // Create multipart/form-data automatically
+  const formData = new FormData();
+  formData.append("file", file, file.name);
 
-    reader.onload = async function (e) {
-      const fileContent = e.target.result;   // This is text or Base64 depending on read method
+  try {
+    const response = await fetch("/profile/cgiTest.py", {
+      method: "POST",
+      body: formData   // <-- fetch sets multipart/form-data automatically
+    });
 
-      // Send it using fetch WITHOUT multipart/form-data
-      const response = await fetch("img/taha.png", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"   // JSON, not multipart
-        },
-        body: JSON.stringify({
-          filename: file.name,
-          content: fileContent
-        })
-      });
-
-      console.log(response);
-      alert("Sent! Check console for response.");
-    };
-
-    // Choose how you want to read:
-    // reader.readAsText(file);            // for text files
-    reader.readAsDataURL(file);            // Base64 for images/binary files
-    // reader.readAsArrayBuffer(file);     // raw binary (also works)
-  });
+    console.log(response);
+    alert("Sent! Check console for response.");
+  } catch (err) {
+    console.error(err);
+    alert("Upload failed — check console.");
+  }
+});
 </script>
 
 </body>
