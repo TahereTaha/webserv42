@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/03 21:26:51 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 21:30:29 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ void EpollConnectionManager::handleRead(int clientfd)
 void EpollConnectionManager::handleWrite(int clientfd)
 {
     Connection &conn = connections[clientfd];
+
     int bytesSent = write(clientfd, conn.writeBuffer.data(), conn.writeBuffer.size());
     if (bytesSent > 0) conn.writeBuffer.erase(0, bytesSent);
     if (conn.writeBuffer.empty()) {
@@ -258,8 +259,7 @@ void EpollConnectionManager::handleWrite(int clientfd)
     }
     else
     {
-        connections[clientfd].request.setErrorCode(500);
-        badRequest(clientfd);
+        closeConnection(clientfd);
     }
 
 }
