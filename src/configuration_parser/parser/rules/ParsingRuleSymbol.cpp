@@ -35,7 +35,15 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleSymbol::consumeTerminals(terminal_ite
 	if (nonTerminal)
 	{
 		AParser	*parser = nonTerminal->getParser();
-		return_val.push_back(parser->generateSubTree(iter, end));
+		try
+		{
+			return_val.push_back(parser->generateSubTree(iter, end));
+		}
+		catch (...)
+		{
+			delete (parser);
+			throw ;
+		}
 		delete (parser);
 		return (return_val);
 	}

@@ -95,6 +95,7 @@ void	ConfigurationParser::scanning(void)
 		this->printTerminalList();
 }
 
+//#include <SymbolLocation.hpp>
 
 void	ConfigurationParser::parsing(void)
 {
@@ -104,6 +105,7 @@ void	ConfigurationParser::parsing(void)
 	std::vector<ATerminal *>::iterator	end = this->_terminalList.end();
 
 	AParser	*parser = SymbolConfigContext().getParser();
+//	AParser	*parser = SymbolLocation().getParser();
 
 	try 
 	{
