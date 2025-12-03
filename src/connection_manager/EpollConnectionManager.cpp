@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/30 14:59:00 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:53:13 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,11 @@ void EpollConnectionManager::badRequest(const int fd) {
     std::ostringstream oss;
     oss << connections[fd].request.getErrorCode();
     // This wont be here
-    connections[fd].writeBuffer =   "HTTP/1.1 400 Bad Request\r\n"
+    connections[fd].writeBuffer =   "HTTP/1.1 " + oss.str() + " Bad Request\r\n"
                                     "Content-Length: 0\r\n"
                                     "Connection: close\r\n"
                                     "\r\n";
+                                    
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
 
@@ -163,16 +164,16 @@ void EpollConnectionManager::successRequest(const int fd) {
 
 
 void EpollConnectionManager::requestHandler(const int clientfd) {
-    connections[clientfd].request = validateRequest(connections[clientfd].readBuffer);
+    std::cout << "Handling request for client fd: " << clientfd << std::endl;
+    std::cout << "Request Method: " << connections[clientfd].request.getControlData().method << std::endl;
+    std::cout << "Error Code: " << connections[clientfd].request.getErrorCode() << std::endl;
     if (connections[clientfd].request.getHeaders().has("Connection")) {
         std::string connHeader = connections[clientfd].request.getHeaders().get("Connection");
         if (connHeader == "close")
             connections[clientfd].keepAlive = false;
     }
     if (connections[clientfd].request.getErrorCode() != 0)
-    {
         badRequest(clientfd);
-    }
     else 
     {
         connections[clientfd].response = serverManager.handleRequest(connections[clientfd].request);
@@ -186,65 +187,108 @@ void EpollConnectionManager::requestHandler(const int clientfd) {
     }
 }
 
-#define MAX_REQ_LINE_LENGTH     40          // 4 KB
-#define MAX_HEADER_LINES_COUNT  100
-#define MAX_HEADER_SIZE         65536       // 64 KB
-#define MAX_READ_TIMEOUT        5000        // 5 seconds
-#define MAX_BODY_SIZE           (100 * 1024 * 1024)   // 100 MB
-#define MAX_CHUNK_SIZE          (8 * 1024 * 1024)     // 8 MB
-#define MAX_REQ_TIMEOUT         15000    // 15 seconds
+#define MAX_REQ_LINE_LENGTH     40                      // 4 KB
+#define MAX_HEADER_SIZE         65536                   // 64 KB
+#define MAX_BODY_SIZE           (100 * 1024 * 1024)     // 100 MB
+#define MAX_CHUNK_SIZE          (8 * 1024 * 1024)       // 8 MB
+#define MAX_REQ_TIMEOUT         15000                   // 15 seconds
 
+#define NONE_DONE               0
 #define CONTROL_DATA_DONE       1 << 0
 #define HEADERS_DONE            1 << 2
 #define BODY_DONE               1 << 3            
 
-
+// =====================================================================
+// 	HANDLE READ EVENT
+// =====================================================================
 
 void EpollConnectionManager::handleRead(int clientfd) {
-    char    buf_line[MAX_REQ_LINE_LENGTH];
-    int     bytesRead;
-    int     state;
-
+    Connection  &conn = connections[clientfd];
+    char        buffer[MAX_REQ_LINE_LENGTH];
+    int         bytesRead;
+    int         totalBytesRead = 0;
+    int         state = NONE_DONE;
+    
     EventLog::log(EPOLL_EVENT_READING, clientfd);
-    state = 0;
-    ReqScanner  scanner("");
-    Request     req = validateRequestParts(scanner, state);
-    while ((bytesRead = read(clientfd, buf_line, sizeof(buf_line))) > 0)
+
+    while ((bytesRead = read(clientfd, buffer, MAX_REQ_LINE_LENGTH)) > 0)
     {
-        scanner.append(buf_line);
-        std::string read = buf_line;
-        if (state == 0 && read.find("\r\n") != std::string::npos)
+        std::cout << "Error code before validation: " << conn.request.getErrorCode() << std::endl;
+        if (conn.request.getErrorCode() != 0)
         {
-            state++;
-            req = validateRequestParts(scanner, state);
-            if (req.getErrorCode() != 0)
+
+            badRequest(clientfd);
+            return;
+        }
+        if (bytesRead == -1 || bytesRead == 0)
+        {
+            conn.request.setErrorCode(400);
+            badRequest(clientfd);
+            return;
+        }
+
+        std::string buf = std::string(buffer, bytesRead);
+        conn.scanner.append(buf);
+        totalBytesRead += bytesRead;
+
+        if (NONE_DONE == state++)
+        {
+            std::cout << "state "<< state << std::endl;
+            validateRequestParts(conn.scanner, state, conn.request);
+            std::cout << "Error code after validation: " << conn.request.getErrorCode() << std::endl;
+            if (conn.request.getErrorCode() != 0)
             {
-                std::cout << "error on request control data: "<< req.getErrorCode() << std::endl;
-                break;
-            }
-            else{
-                std::cout << "Request scanned succesfully \n\n" << std::endl;
+                badRequest(clientfd);
+                return;
             }
         }
-        if (state == 1 && read.find("\r\n\r\n") != std::string::npos)
+        if (state == CONTROL_DATA_DONE && totalBytesRead >= MAX_HEADER_SIZE)
         {
-            state++;
-            req = validateRequestParts(scanner, state);
-            if (req.getErrorCode() != 0)
+            conn.request.setErrorCode(400);
+            badRequest(clientfd);
+            return;
+        }
+        if (state == CONTROL_DATA_DONE && buf.find("\r\n\r\n") != std::string::npos)
+        {
+            state = HEADERS_DONE;
+            validateRequestParts(conn.scanner, state, conn.request);
+            if (conn.request.getErrorCode() != 0)
             {
-                std::cout << "error on request headers "<< req.getErrorCode() << std::endl;
-                break;
-
+                badRequest(clientfd);
+                return;
             }
-            else
+        }
+        if (state == HEADERS_DONE)
+        { 
+            if (conn.request.getHeaders().has("Content-Length")) 
             {
-                std::cout << "Request scanned succesfully " << std::endl;
+                std::string contentLength       = conn.request.getHeaders().get("Content-Length");
+                int contentLengthInt            = atoi_safe(contentLength);
+                size_t bodyStart                = conn.request.getControlData().size + conn.request.getHeaders().getSize();
+                size_t bodyBytesAvailable       = conn.scanner.getSize() - bodyStart;
+
+                if (bodyBytesAvailable < static_cast<unsigned long>(contentLengthInt))
+                    continue;
+                else if (bodyBytesAvailable == static_cast<unsigned long>(contentLengthInt))
+                    validateRequestParts(conn.scanner, state, conn.request);
+                else
+                {
+                    badRequest(clientfd);
+                    return;
+                }
+                
             }
         }
         
     }
+
     if (bytesRead == 0)
         closeConnection(clientfd);
+    if (state < 2)
+    {
+        badRequest(clientfd);
+        return;
+    }
     requestHandler(clientfd);
 }
 

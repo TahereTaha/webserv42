@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 19:01:30 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:38:18 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,18 @@
 #include <sys/time.h> 
 #include "../http_request_parser/Request.hpp"
 #include <ServerManager.hpp>
+#include "../http_request_parser/ReqScanner.hpp"
 
 
 struct Connection {
-    int          fd;
-    std::string  readBuffer;
-    Request      request;
-    Response     response;
-    std::string  writeBuffer;
-    bool         keepAlive;
-    double       lastActive;
+    int             fd;
+    std::string     readBuffer;
+    ReqScanner      scanner;
+    Request         request;
+    Response        response;
+    std::string     writeBuffer;
+    bool            keepAlive;
+    double          lastActive;
 };
 
 typedef std::map<int, Connection>::iterator ConnectionIterator;
@@ -67,4 +69,5 @@ class EpollConnectionManager {
         void CGIHandler(const int fd, const std::string& path);
         bool isPipeEvent(int fd);
         void handlePipeResponse(int fd);
+    
 };

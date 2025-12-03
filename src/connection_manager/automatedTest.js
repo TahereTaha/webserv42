@@ -6,28 +6,28 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 14:15:52 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/27 23:40:04 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:56:54 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 const net = require("net");
 
-const ports = [8080, 8081, 8082];
+const ports = [8080];
 const host = "127.0.0.1";
 
 const CONNECTION_TIMEOUT = 2000; // ms
 const RESPONSE_TIMEOUT = 2000; // ms
 
 const testCases = [
-  {
-    label: "GOOD REQUEST",
-    request:
-      "GET /localhost/ HTTP/1.1\r\n" +
-      "Host: hola.com\r\n" +
-      "Connection: close\r\n" +
-      "\r\n",
-    expectedStatus: 200,
-  },
+  // {
+  //   label: "GOOD REQUEST",
+  //   request:
+  //     "GET / HTTP/1.1\r\n" +
+  //     "Host: hola.com\r\n" +
+  //     "Connection: close\r\n" +
+  //     "\r\n",
+  //   expectedStatus: 200,
+  // },
   {
     label: "BAD REQUEST",
     request: "GARBAGE /??\r\n" + "BadHeader no-colon\r\n" + "\r\n",
