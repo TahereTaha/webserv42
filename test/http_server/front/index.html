@@ -13,5 +13,51 @@
 
 <img src="img/taha.png" alt="HTML5 Icon" style="width:128px;height:128px;">
 
+<hr>
+
+<h2>Upload & Send File (No multipart/form-data)</h2>
+
+<input type="file" id="fileInput">
+<button id="sendBtn">Send File</button>
+
+<script>
+  const input = document.getElementById('fileInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  sendBtn.addEventListener('click', async () => {
+    const file = input.files[0];
+    if (!file) {
+      alert("Please select a file first.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = async function (e) {
+      const fileContent = e.target.result;   // This is text or Base64 depending on read method
+
+      // Send it using fetch WITHOUT multipart/form-data
+      const response = await fetch("img/taha.png", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"   // JSON, not multipart
+        },
+        body: JSON.stringify({
+          filename: file.name,
+          content: fileContent
+        })
+      });
+
+      console.log(response);
+      alert("Sent! Check console for response.");
+    };
+
+    // Choose how you want to read:
+    // reader.readAsText(file);            // for text files
+    reader.readAsDataURL(file);            // Base64 for images/binary files
+    // reader.readAsArrayBuffer(file);     // raw binary (also works)
+  });
+</script>
+
 </body>
 </html>

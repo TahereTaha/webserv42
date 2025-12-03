@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/03 19:32:12 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/12/03 21:40:32 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,41 @@ double getCurrentTimeMs()
 
 std::string getReasonPhrase(int code) {
     switch (code) {
+         // --- 2xx Success ---
+        case 200: return "OK";
+        case 201: return "Created";
+        case 202: return "Accepted";
+        case 204: return "No Content";
+
+        // --- 3xx Redirection ---
+        case 300: return "Multiple Choices";
+        case 301: return "Moved Permanently";
+        case 302: return "Found";
+        case 303: return "See Other";
+        case 304: return "Not Modified";
+        case 305: return "Use Proxy";
+        case 307: return "Temporary Redirect";
+        case 308: return "Permanent Redirect";
+
+        // --- 4xx Client Errors ---
         case 400: return "Bad Request";
+        case 401: return "Unauthorized";
         case 403: return "Forbidden";
         case 404: return "Not Found";
         case 405: return "Method Not Allowed";
+        case 408: return "Request Timeout";
         case 411: return "Length Required";
         case 413: return "Payload Too Large";
+        case 414: return "URI Too Long";
+        case 415: return "Unsupported Media Type";
+
+        // --- 5xx Server Errors ---
         case 500: return "Internal Server Error";
         case 501: return "Not Implemented";
+        case 502: return "Bad Gateway";
+        case 503: return "Service Unavailable";
+        case 504: return "Gateway Timeout";
+
         default:  return "Unknown";
     }
 }
@@ -186,8 +213,7 @@ void EpollConnectionManager::requestHandler(const int clientfd)
     else 
     {
         connections[clientfd].response = serverManager.handleRequest(connections[clientfd].request);
-		std::cout << "\t\tthe path to the cgi is: " << connections[clientfd].response.pathToCgi << std::endl;
-        if (connections[clientfd].response.pathToCgi != "")
+		if (connections[clientfd].response.pathToCgi != "")
 			CGIHandler(clientfd, connections[clientfd].response.pathToCgi);
         else
         {
@@ -209,16 +235,19 @@ void EpollConnectionManager::handleRead(int clientfd)
         connections[clientfd].lastActive = getCurrentTimeMs();
     }
     if (bytesRead == 0)
-        closeConnection(clientfd);
+    {
+        connections[clientfd].request.setErrorCode(500);
+        badRequest(clientfd);
+    }
     requestHandler(clientfd);
 }
 
 void EpollConnectionManager::handleWrite(int clientfd)
 {
     Connection &conn = connections[clientfd];
+
     int bytesSent = write(clientfd, conn.writeBuffer.data(), conn.writeBuffer.size());
     if (bytesSent > 0) conn.writeBuffer.erase(0, bytesSent);
-
     if (conn.writeBuffer.empty()) {
         if (conn.keepAlive) {
             setInstance(clientfd, EPOLLIN, EPOLL_CTL_MOD);
@@ -227,6 +256,11 @@ void EpollConnectionManager::handleWrite(int clientfd)
         } else
             closeConnection(clientfd);
     }
+    else
+    {
+        closeConnection(clientfd);
+    }
+
 }
 
 void EpollConnectionManager::handlePipeRead(int pipefd)
@@ -237,7 +271,14 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
 
     EventLog::log(EPOLL_EVENT_READING, pipefd);
     while ((bytesRead = read(pipefd, buf, sizeof(buf))) > 0)
+    {
         readBuffer.append(buf, bytesRead);
+    }
+    if (bytesRead == 0)
+    {
+        // nothing to do keep current flow with pipe
+    }
+
     int CGIClient = findClientByPipe(pipefd);
 	if (CGIClient == -1)
 	{
@@ -266,10 +307,13 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
 		return;
 	}
     int bytesSent = write(pipefd, CGIConn[CGIClient].data.body.c_str(), CGIConn[CGIClient].data.body.size());
-    if (bytesSent > 0) CGIConn[CGIClient].data.body.erase(0, bytesSent);
-	CGIConn[CGIClient].lastActive = getCurrentTimeMs();
-
+    if (bytesSent == 0 && CGIConn[CGIClient].data.body.size() != 0)
+    {
+        connections[CGIClient].request.setErrorCode(500);
+        badRequest(CGIClient);
+    }
 	// CLEAN UP
+	CGIConn[CGIClient].lastActive = getCurrentTimeMs();
     CGIConn[CGIClient].data.body.erase();
 	CGIConn[CGIClient].stdIn = -1;
 	epoll_ctl(epfd, EPOLL_CTL_DEL, pipefd, NULL);
@@ -307,6 +351,8 @@ void EpollConnectionManager::cleanupIdleConnections(const double &now)
 				close(it->second.stdOut);
 				it->second.stdOut = -1;
 			}
+            connections[it->first].request.setErrorCode(500);
+            badRequest(it->first);
 			CGIConn.erase(it->first);
 		}
 	}
@@ -314,7 +360,7 @@ void EpollConnectionManager::cleanupIdleConnections(const double &now)
 
 // =====================================================================
 // 	CLOSE CONNECTION
-// Node.js wont close without shutting down connections check if valid
+//  Node.js wont close without shutting down connections check if valid
 // =====================================================================
 
 std::vector<int> getPipesForClient(int clientFd,
@@ -416,7 +462,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
     std::cout << path;
-    const char* cgiPath = path.c_str(); // Change this to path
+    const char* cgiPath = path.c_str();
 	int pipe_stdout[2];
 	int pipe_stdin[2];
 
