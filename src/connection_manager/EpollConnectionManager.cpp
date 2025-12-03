@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/03 18:19:14 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 19:32:12 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void EpollConnectionManager::requestHandler(const int clientfd)
     else 
     {
         connections[clientfd].response = serverManager.handleRequest(connections[clientfd].request);
+		std::cout << "\t\tthe path to the cgi is: " << connections[clientfd].response.pathToCgi << std::endl;
         if (connections[clientfd].response.pathToCgi != "")
 			CGIHandler(clientfd, connections[clientfd].response.pathToCgi);
         else
@@ -415,7 +416,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
     std::cout << path;
-    const char* cgiPath = "/home/capapes/Desktop/webserver/cgiTest.py"; // Change this to path
+    const char* cgiPath = path.c_str(); // Change this to path
 	int pipe_stdout[2];
 	int pipe_stdin[2];
 
