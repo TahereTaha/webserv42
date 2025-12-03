@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:02:42 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/30 14:31:29 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:01:25 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,4 @@ struct SchemaItem {
 };
 
 Request validateRequest(const std::string& raw);
-Request validateRequestParts(ReqScanner  scanner, int status);
+Request validateRequestParts(ReqScanner&  scanner, int status, Request& req);

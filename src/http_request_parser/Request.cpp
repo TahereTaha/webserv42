@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:20:26 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/30 14:04:55 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:55:19 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int Request::getErrorCode() const {
     return errorCode;
 }
 
+
 Request* Request::activeRequest = NULL;
 
 void Request::setActiveRequest(Request* r) {
@@ -92,5 +93,14 @@ void Request::setActiveRequest(Request* r) {
 void Request::setActiveError(int code) {
 	if (activeRequest)
 		activeRequest->setErrorCode(code);
+}
+
+Request* Request::getActiveRequest() {
+    return activeRequest;
+}
+int Request::getActiveError() {
+    if (activeRequest)
+        return activeRequest->getErrorCode();
+    return 0;
 }
 

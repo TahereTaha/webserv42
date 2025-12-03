@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:58:15 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 20:32:06 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:11:57 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,3 +67,4 @@ bool string_to_long(const std::string& s, size_t* pos, int base);
 bool isValidContentLength(const std::string& contentLength);
 void specificHeadersValidation(Headers& headers);
 void specificControlDataValidation(const std::string& target);
+int atoi_safe(const std::string& str);

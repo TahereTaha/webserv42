@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:17:20 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/30 14:04:59 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:57:51 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ public:
     Request& operator=(const Request& other);
     ~Request();
 
-    // bool                operator==(const Request& other) const;
+    // bool             operator==(const Request& other) const;
     void 				setControlData(const ControlData& cd);
     void 				setHeaders(const Headers& h);
     void 				setBody(const std::string& b);
-    void 				setErrorCode(int code);
 
     const ControlData& 	getControlData() 	const;
     const Headers& 		getHeaders() 		const;
@@ -35,6 +34,9 @@ public:
     int 				getErrorCode() 		const;
 	static void 		setActiveRequest(Request* r);
     static void 		setActiveError(int code);
+    static Request* 	getActiveRequest();
+    static int 		    getActiveError();
+    void                setErrorCode(int code);
 private:
     ControlData 		controlData;
     Headers 			headers;

@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:11:28 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 20:41:18 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:11:27 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,17 +84,34 @@ bool string_to_long(const std::string& s, size_t* pos = 0, int base = 10) {
     return result >= 0 && result <= INT_MAX;
 }
 
-bool isValidContentLength(const std::string& contentLength) {
-    if (contentLength.empty()) return false;
-    
-    std::string::const_iterator it = contentLength.begin();
-    for (;it != contentLength.end(); ++it) {
-        if (!isdigit(*it)) {
-			return (false);
-        }
+bool isValidContentLength(const std::string& s) {
+     if (s.empty()) return false;
+
+    for (std::string::const_iterator it = s.begin(); it != s.end(); ++it) {
+        if (!isdigit(*it))
+            return false;
     }
-    long length = string_to_long(contentLength);
-    return length >= 0 && length <= INT_MAX;
+
+    unsigned long value = 0;
+
+    for (size_t i = 0; i < s.size(); ++i) {
+        int digit = s[i] - '0';
+        if (value > (ULONG_MAX - digit) / 10)
+            return false;
+
+        value = value * 10 + digit;
+    }
+    return value <= INT_MAX;
+}
+
+int atoi_safe(const std::string& str) {
+    size_t pos = 0;
+    long result = std::strtol(str.c_str(), NULL, 10);
+
+    if (pos == 0 || result < INT_MIN || result > INT_MAX) {
+        return -1;
+    }
+    return static_cast<int>(result);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:53:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 20:29:03 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:00:52 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ public:
     const_iterator begin() const;
     const_iterator end() const;
 
+    int getSize() const {
+        return (_size);
+    }
+    void setSize(int s) {
+        _size = s + 4;
+    }
+
     void 				add(const std::string& key, const std::string& value);
     void 				remove(const std::string& key);
 
@@ -44,6 +51,8 @@ public:
 
     const std::map<std::string, std::string>& all() const;
 
-private:
-    std::map<std::string, std::string> values;
+    private:
+        std::map<std::string, std::string> values;
+        int _size;
+
 };

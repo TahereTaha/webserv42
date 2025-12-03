@@ -6,16 +6,12 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/30 14:53:05 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/01 18:54:42 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 #include "Schemas.hpp"
-
-
-
-
 
 // =====================================================================
 // 	Condiional Schemas flags
@@ -73,11 +69,11 @@ inline bool isRequired(int flags, const std::string& value)
 
 std::string extractAndValidate(ReqScanner &scanner, const SchemaItem& item) {
     std::string value = scanner.getField(item.delimiter);
-    std::cout << "VALUE: " << value << "\n";
     value = applyFlags(value, item.flags);
     if (isRequired(item.flags, value) || (item.fn && !item.fn(value)))
     {
         Request::setActiveError(item.errorCode);
+        std::cerr << "Error code: " << Request::getActiveError() << std::endl;
         throw std::runtime_error(item.error);
     }
     return value;
@@ -119,25 +115,26 @@ static SchemaItem requestItems[] = {
 //          |-> Body
 // =====================================================================
 
-ControlData validateControlData(const std::string& raw) {
-    ReqScanner scanner(raw);
+ControlData validateControlData(const std::string raw) {
+    ReqScanner scanner2(raw);
     ControlData result;
 
-    result.method        = extractAndValidate(scanner, controlDataItems[0]);
-    result.requestTarget = extractAndValidate(scanner, controlDataItems[1]);
-    result.httpVersion   = extractAndValidate(scanner, controlDataItems[2]);
+    result.method        = extractAndValidate(scanner2, controlDataItems[0]);
+    result.requestTarget = extractAndValidate(scanner2, controlDataItems[1]);
+    result.httpVersion   = extractAndValidate(scanner2, controlDataItems[2]);
     
     specificControlDataValidation(result.requestTarget);
+    result.size = raw.size();
     return result;
 }
 
 Headers validateHeaders(const std::string& raw) {
     Headers     result;
-    ReqScanner  scanner(raw);
+    ReqScanner  scanner3(raw);
 
-    while (!scanner.get_ended())  
+    while (!scanner3.get_ended())  
     {
-        std::string field   = extractAndValidate(scanner, headersFields[0]);
+        std::string field   = extractAndValidate(scanner3, headersFields[0]);
         
         ReqScanner  fieldScanner(field);
         std::string key     = extractAndValidate(fieldScanner, headersItems[0]);
@@ -147,23 +144,24 @@ Headers validateHeaders(const std::string& raw) {
     }
     
     specificHeadersValidation(result);
+    result.setSize(raw.size());
     return result;
 }
     
 Request validateRequest(const std::string& raw) {
     Request     req;
-    ReqScanner  scanner(raw);
+    ReqScanner  scanner4(raw);
     Request::setActiveRequest(&req);
     Request::setActiveError(0);
     try {
-        std::string controlBlock = extractAndValidate(scanner, requestItems[0]);
+        std::string controlBlock = extractAndValidate(scanner4, requestItems[0]);
         req.setControlData(validateControlData(controlBlock));
 
-        std::string headers = extractAndValidate(scanner, requestItems[1]);
+        std::string headers = extractAndValidate(scanner4, requestItems[1]);
         headers += END_OF_LINE;
         req.setHeaders(validateHeaders(headers));
 
-        std::string bodyBlock = extractAndValidate(scanner, requestItems[2]);
+        std::string bodyBlock = extractAndValidate(scanner4, requestItems[2]);
         req.setBody(bodyBlock);
     }
 	catch (const std::runtime_error& e) {
@@ -174,25 +172,24 @@ Request validateRequest(const std::string& raw) {
     return req;
 }
 
-Request validateRequestParts(ReqScanner  scanner, int status) {
-    static  Request     req;
+Request validateRequestParts(ReqScanner&  scanner, int status, Request& req) {
 
-    if (status == 0)
-    {
-        Request::setActiveRequest(&req);
-        Request::setActiveError(0);
-    }
     try {
         if (status == 1)
         {
+            Request::setActiveRequest(&req);
+            Request::setActiveError(0);
             std::string controlBlock = extractAndValidate(scanner, requestItems[0]);
             req.setControlData(validateControlData(controlBlock));
+            std::cout << "Control data validated." << std::endl;
+            std::cout << "error code: " << req.getErrorCode() << std::endl;
         }
         if (status == 2)
         {
             std::string headers = extractAndValidate(scanner, requestItems[1]);
             headers += END_OF_LINE;
             req.setHeaders(validateHeaders(headers));
+            
         }
         if (status == 3)
         {
