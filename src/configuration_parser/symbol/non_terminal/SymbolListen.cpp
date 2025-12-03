@@ -63,6 +63,13 @@ void		SymbolListen::evaluate(Tree<AEvaluable*> *self)
 			this->_sockets.push_back(socket);
 			j++;
 		}
+		j = 0;
+		while (j < socket_arr.size())
+		{
+			char	*ptr = (char *) socket_arr[j];
+			delete [] ptr;
+			j++;
+		}
 		i++;
 	}
 
