@@ -226,6 +226,9 @@ static ServerResponse handleStaticRoute(const t_route &route) {
 
 // build the response for a DEFAULT route: map URI, handle directories,dispatch
 // to method logic for files
+
+#include <iostream>
+
 static ServerResponse handleDefaultRoute(const t_server &cfg,
 	const t_route &route,
 	const std::string &method,
@@ -280,6 +283,7 @@ static ServerResponse handleDefaultRoute(const t_server &cfg,
 		// simple upload: overwrite target file with body
 		const std::string &reqBody = request.getBody();
 		std::ofstream out(fullPath.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
+		std::cout << "FULL PATH" << fullPath << std::endl;
 		if (!out)
 			return buildErrorResponse(cfg, 500, "500 Internal Server Error");
 		out.write(reqBody.c_str(), reqBody.size());

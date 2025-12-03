@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/03 21:30:29 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 21:40:32 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,8 +213,7 @@ void EpollConnectionManager::requestHandler(const int clientfd)
     else 
     {
         connections[clientfd].response = serverManager.handleRequest(connections[clientfd].request);
-		std::cout << "\t\tthe path to the cgi is: " << connections[clientfd].response.pathToCgi << std::endl;
-        if (connections[clientfd].response.pathToCgi != "")
+		if (connections[clientfd].response.pathToCgi != "")
 			CGIHandler(clientfd, connections[clientfd].response.pathToCgi);
         else
         {
