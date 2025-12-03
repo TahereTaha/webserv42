@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/03 21:24:52 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 21:26:51 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,6 +308,11 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
 		return;
 	}
     int bytesSent = write(pipefd, CGIConn[CGIClient].data.body.c_str(), CGIConn[CGIClient].data.body.size());
+    if (bytesSent == 0 && CGIConn[CGIClient].data.body.size() != 0)
+    {
+        connections[CGIClient].request.setErrorCode(500);
+        badRequest(CGIClient);
+    }
 	// CLEAN UP
 	CGIConn[CGIClient].lastActive = getCurrentTimeMs();
     CGIConn[CGIClient].data.body.erase();
