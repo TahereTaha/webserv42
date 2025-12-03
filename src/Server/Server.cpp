@@ -319,8 +319,6 @@ Response Server::handleRequest(const Request &request) {
 	const std::string  &method  = cd.method;                
 	const std::string  &target  = cd.requestTarget;       
 
-//	std::cout << "this is a server log:" << std::endl;
-//	std::cout << cd.requestTarget << std::endl;
 	// 1) validate method
 	if (!isSupportedMethod(method)) {
 		Response r;

@@ -6,32 +6,17 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:03:35 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 15:05:40 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 18:03:45 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FieldValidators.hpp"
 #include "Schemas.hpp"
-
-
 #include "ReqScanner.hpp"
-
-
-// =====================================================================
-// 	Condiional Schemas flags
-// =====================================================================
-enum SchemaFlags {    
-    NONE            = 0,
-    LEADING         = 1 << 0,
-    TRAILING        = 1 << 1,  
-    OPTIONAL_SPACES = (LEADING | TRAILING),
-    IS_REQUIRED     = 1 << 2,
-};
 
 // =====================================================================
 //  Flags utility functions
 // =====================================================================
-
 std::string remove_trailing(const std::string& str, const std::string& chars = SPACES)
 {
     size_t end = str.find_last_not_of(chars);
@@ -134,7 +119,7 @@ Headers validateHeaders(const std::string& raw) {
     Headers     result;
     ReqScanner  scanner(raw);
 
-    while (!scanner.get_ended())  
+    while (!scanner.isEndPos())  
     {
         std::string field   = extractAndValidate(scanner, headersFields[0]);
         

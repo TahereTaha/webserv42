@@ -52,8 +52,6 @@ static std::vector<struct sockaddr_storage>	get_distict_sockets(std::vector<t_se
 	return (diferent_sockets);
 }
 
-#include <iostream>
-
 std::map<int, Socket *>	set_up_sockets(std::vector<t_server> servers)
 {
 	std::vector<struct sockaddr_storage> diferent_sockets = get_distict_sockets(servers);
@@ -64,7 +62,6 @@ std::map<int, Socket *>	set_up_sockets(std::vector<t_server> servers)
 	{
 		Socket	*socket = new Socket(diferent_sockets[i]);
 		listeningSockets[socket->getFd()] = socket;
-		std::cout << socket->getFd() << "            " << diferent_sockets.size() << std::endl;
 		i++;
 	}
 	return (listeningSockets);

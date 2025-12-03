@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:53:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 20:29:03 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 17:58:04 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ public:
     bool 				has(const std::string& key) const;
     const std::string&	get(const std::string& key) const;
     std::string			&operator[](const std::string& key);
-
-    const std::map<std::string, std::string>& all() const;
 
 private:
     std::map<std::string, std::string> values;
