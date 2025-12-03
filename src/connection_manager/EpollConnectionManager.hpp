@@ -6,24 +6,24 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 19:01:30 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 18:15:47 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "Socket.hpp"
-#include <sys/epoll.h>
-#include <map>
-#include <vector>
-#include <sstream>
-#include <algorithm>
-#include <map>
-#include <ctime>    
-#include <sys/time.h> 
-#include "../http_request_parser/Request.hpp"
-#include <ServerManager.hpp>
+#include <sys/time.h>   //gettimeofday
+#include <sys/wait.h>   // waitpid
+#include <sys/epoll.h>  //epoll
+#include <cstring>      //memset
 
+// project
+#include <colors.hpp>
+#include <Log.hpp>
+#include <Request.hpp>
+#include <Schemas.hpp>
+#include <ServerManager.hpp>
+#include <Socket.hpp>
 
 struct Connection {
     int          fd;
@@ -35,7 +35,20 @@ struct Connection {
     double       lastActive;
 };
 
-typedef std::map<int, Connection>::iterator ConnectionIterator;
+struct CgiData {
+    std::vector<char*>  envp;
+    std::string         body;
+};
+
+struct CGIConnections {
+    int         stdIn;
+    int         stdOut;
+    CgiData     data;
+    double      lastActive;
+};
+
+typedef std::map<int, Connection>::iterator     ConnectionIterator;
+typedef std::map<int, CGIConnections>::iterator CGIIterator;
 
 typedef int clientFd;
 typedef int pipeFd;
@@ -45,26 +58,32 @@ class EpollConnectionManager {
         EpollConnectionManager(std::map<int, Socket*>, ServerManager);
 
     private:
-        int epfd;
-        std::map<int, Socket*>      listeningSockets;
-        ServerManager               serverManager;
-        std::map<int, Connection>   connections;
-        std::map<pipeFd, clientFd>  pipeToClient;
+        int                             epfd;
+        std::map<int, Socket*>          listeningSockets;
+        ServerManager                   serverManager;
+        std::map<int, Connection>       connections;
+        std::map<int, CGIConnections>   CGIConn;
 
-        void run();
-        void setInstance(int fd, uint32_t events, int op);
-        void handleNewConnection(Socket *sock);
-        void handleEvent(epoll_event &ev);
-        void handleRead(int clientfd);
-        void handleWrite(int clientfd);
-        void cleanupIdleConnections(const double &now);
-        void closeConnection(int fd);
+        void    run();
+        void    setInstance(int fd, uint32_t events, int op);
+
+        void    handleEvent(epoll_event &ev);
+        void    handleNewConnection(Socket *sock);
+        void    handleRead(int clientfd);
+        void    handleWrite(int clientfd);
+        void    handlePipeRead(int fd);
+        void    handlePipeWrite(int pipefd);
+
+        void    cleanupIdleConnections(const double &now);
+        void    closeConnection(int fd);
+
         // Request handler things
-        void badRequest(const int fd);
-        void successRequest(const int fd);
-        void requestHandler(const int clientfd);
-        void exitWithError(const std::string& message);
-        void CGIHandler(const int fd, const std::string& path);
-        bool isPipeEvent(int fd);
-        void handlePipeResponse(int fd);
+        void    badRequest(const int fd);
+        void    requestHandler(const int clientfd);
+        
+        // Utils
+        void    exitWithError(const std::string& message);
+        bool    isClient(int fd);
+        int     findClientByPipe(int pipefd);
+        void    CGIHandler(const int fd, const std::string& path);
 };

@@ -216,6 +216,11 @@ static ServerResponse handleStaticRoute(const t_route &route) {
 		body += "<a href=\"" + loc + "\">" + loc + "</a>";
 	body += "</body></html>";
 	res.body = body;
+	// If this is a 3xx status code and a target URL is configured,
+	// populate the Location header so that browsers actually follow the redirect.
+	if (res.status_code >= 300 && res.status_code < 400 && !loc.empty()) {
+		res.location = loc;
+	}
 	return res;
 }
 
@@ -314,8 +319,6 @@ Response Server::handleRequest(const Request &request) {
 	const std::string  &method  = cd.method;                
 	const std::string  &target  = cd.requestTarget;       
 
-//	std::cout << "this is a server log:" << std::endl;
-//	std::cout << cd.requestTarget << std::endl;
 	// 1) validate method
 	if (!isSupportedMethod(method)) {
 		Response r;

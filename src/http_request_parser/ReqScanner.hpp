@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 09:58:11 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/29 15:05:00 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/03 18:03:02 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 #pragma once
 #include <string>
 
-class ReqScanner {
+class ReqScanner
+{
 public:
 	ReqScanner(const std::string& raw);
 	~ReqScanner();
+
 	std::string getField(const std::string& delimiter);
-	bool		get_ended();
 	size_t 		getEndPos(const std::string& delimiter);
 	bool		isEndPos();
 
@@ -34,4 +35,3 @@ private:
 	size_t 			_size;
 	bool			_ended;
 };
-void reqScannerTest();
