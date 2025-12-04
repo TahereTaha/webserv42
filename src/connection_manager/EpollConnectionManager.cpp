@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 18:44:03 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 18:56:40 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void EpollConnectionManager::badRequest(const int fd)
 	
 	connections[fd].response = serverManager.handleErrorRequest(connections[fd].request);
    	connections[fd].writeBuffer = connections[fd].response.sres.to_string();
-    
+    std::cout << connections[fd].writeBuffer;
 //	int code = connections[fd].request.getErrorCode();
 //	std::ostringstream oss;
 //
@@ -476,7 +476,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 // =====================================================================
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
-//   std::cout << "im CGI handler" << path<< std::endl;
+  std::cout << "im CGI handler" << path<< std::endl;
     const char* cgiPath = path.c_str();
 	int pipe_stdout[2];
 	int pipe_stdin[2];
@@ -537,6 +537,7 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 			<< "\r\n";
 
 		std::cout << oss.str() << std::endl;
+        std::cerr << "exit" << std::endl;
 		exit (1);
 	}
     

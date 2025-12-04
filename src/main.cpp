@@ -71,6 +71,7 @@ int	main(int argc, char **argv)
 	}
 	catch (const std::exception & e)
 	{
+		std::cerr << "THROW" << std::endl;
 		if (argc > 0)
 			std::cerr << RED << e.what() << RESET << std::endl;
 		else
