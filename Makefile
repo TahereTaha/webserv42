@@ -6,7 +6,7 @@
 #    By: capapes <capapes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/11/30 13:57:35 by tatahere         ###   ########.fr        #
+#    Updated: 2025/12/04 19:38:47 by tatahere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ CINC		+=	-I$(INC_DIR)
 CINC		+=	-I$(subst : , -I,$(VPATH))
 CXXFLAGS	+=	$(CINC)
 
-CDEBUG		:=	-g
+CDEBUG		:=	-g -fsanitize=address 
 CXXFLAGS	+=	$(CDEBUG)
 
 CXXFLAGS	+= $(CXXMACROS)

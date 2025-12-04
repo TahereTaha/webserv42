@@ -48,8 +48,6 @@ static int	is_server_listeng_on_port(t_server server, Authority ip_port)
 	size_t i = 0;
 	while (i < server.socket.size())
 	{
-		std::cout << "the server is listenig in the port: " << (int) ntohs(((struct sockaddr_in *) &server.socket[i])->sin_port) << std::endl;
-		std::cout << "the socket is: " << ntohs(ip_port.getPort()) << std::endl;
 		if (ip_port.getPort() == ((struct sockaddr_in *) &server.socket[i])->sin_port)
 			return (1);
 		i++;
@@ -74,7 +72,6 @@ Server* ServerManager::findServer(const Request& request) {
 			Authority ip_port(hostHeader);
 			if (is_server_listeng_on_port(servers[i]->_config, ip_port))
 			{
-				std::cout << "this is working" << std::endl;
 				return (servers[i]);
 			}
         }

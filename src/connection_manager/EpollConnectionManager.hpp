@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 01:30:24 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 19:22:24 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ struct CGIConnections {
     int         stdOut;
     CgiData     data;
     double      lastActive;
+	int			pid;
 };
 
 typedef std::map<int, Connection>::iterator     ConnectionIterator;

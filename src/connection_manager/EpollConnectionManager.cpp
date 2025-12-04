@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 18:56:40 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 19:42:07 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void serverUpMessage(int port)
     std::cout << COLOR_GREEN << "✔ Server up and running "
       << COLOR_CYAN   << "on port "
       << COLOR_YELLOW << port
-      << COLOR_RESET  << std::endl;
+      << COLOR_RESET  << std::flush << std::endl;
 }
 
 double getCurrentTimeMs()
@@ -192,7 +192,7 @@ void EpollConnectionManager::badRequest(const int fd)
 	
 	connections[fd].response = serverManager.handleErrorRequest(connections[fd].request);
    	connections[fd].writeBuffer = connections[fd].response.sres.to_string();
-    std::cout << connections[fd].writeBuffer;
+    std::cout << connections[fd].writeBuffer << std::flush;
 //	int code = connections[fd].request.getErrorCode();
 //	std::ostringstream oss;
 //
@@ -336,13 +336,15 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
 	epoll_ctl(epfd, EPOLL_CTL_DEL, pipefd, NULL);
 }
 
+#include <signal.h>
+
 // =====================================================================
 // 	IDDLE CONNECTION CLEANUP
 // =====================================================================
 void EpollConnectionManager::cleanupIdleConnections(const double &now)
 { 
-    const int TIMEOUT_MS = 1000;
-    const int TIMEOUT_MS_SM = 500;
+    const int TIMEOUT_MS = 2000;
+    const int TIMEOUT_MS_SM = 1000;
     
     for (ConnectionIterator it = connections.begin(); it != connections.end();) {
         ConnectionIterator toDelete = it;
@@ -370,6 +372,8 @@ void EpollConnectionManager::cleanupIdleConnections(const double &now)
 			}
             connections[it->first].request.setErrorCode(500);
             badRequest(it->first);
+			std::cout << "this here" << it->second.pid << std::endl;
+			kill(it->second.pid, SIGTERM);
 			CGIConn.erase(it->first);
 		}
 	}
@@ -476,7 +480,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 // =====================================================================
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
-  std::cout << "im CGI handler" << path<< std::endl;
+//  std::cout << "im CGI handler" << path<< std::endl << std::flush;
     const char* cgiPath = path.c_str();
 	int pipe_stdout[2];
 	int pipe_stdin[2];
@@ -502,6 +506,10 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
         return ;
     }
     if (pid != 0) {
+		std::cerr << "this is the origin" << pid << std::endl << std::flush;
+		CGIConn[fd].pid = pid;
+		std::cerr << "check " << CGIConn[fd].pid << std::endl << std::flush;
+
 		setInstance(pipe_stdin[1], EPOLLOUT, EPOLL_CTL_ADD);
         setInstance(pipe_stdout[0], EPOLLIN, EPOLL_CTL_ADD);
     }
@@ -534,10 +542,10 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 		oss << "HTTP/1.1 " << 500 << " " << getReasonPhrase(500) << "\r\n"
 			<< "Content-Length: 0\r\n"
 			<< "Connection: close\r\n"
-			<< "\r\n";
+			<< "\r\n" << std::flush;
 
 		std::cout << oss.str() << std::endl;
-        std::cerr << "exit" << std::endl;
+ //       std::cerr << "exit" << std::endl;
 		exit (1);
 	}
     
