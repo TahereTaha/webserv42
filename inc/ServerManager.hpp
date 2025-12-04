@@ -13,6 +13,7 @@ public:
     
     void addServer(const t_server& config);
     Response handleRequest(const Request& request);
+    Response handleErrorRequest(const Request& request);
 
 private:
     std::vector<Server*> servers;

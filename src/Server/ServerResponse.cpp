@@ -57,7 +57,7 @@ std::string ServerResponse::to_string() const {
     return resp;
 }
 
-std::string ServerResponse::get_status_message(int code) const {
+std::string get_status_message(int code) {
     switch (code) {
          // --- 2xx Success ---
         case 200: return "OK";

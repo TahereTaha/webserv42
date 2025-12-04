@@ -14,6 +14,19 @@ void ServerManager::addServer(const t_server& config) {
 	servers.push_back(new Server(config));
 }
 
+Response ServerManager::handleErrorRequest(const Request& request)
+{
+	Server* server = findServer(request);
+	if (server) {
+		return server->handleErrorRequest(request);
+	}
+	Response r;
+	r.status = RESP_ERR;
+	r.sres = ServerResponse(request.getErrorCode(), "text/html", std::string("<html><body><h1>") + get_status_message(request.getErrorCode())  + "</h1></body></html>");
+	r.pathToCgi = "";
+	return (r);
+}
+
 Response ServerManager::handleRequest(const Request& request) {
 	Server* server = findServer(request);
 	if (server) {

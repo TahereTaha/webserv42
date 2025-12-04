@@ -170,6 +170,8 @@ static const t_error_page *findErrorPage(const t_server &cfg, int code) {
 	return NULL;                           // none found
 }
 
+
+
 // build a ServerResponse representing an error if a custom error page is
 // configured it is used as the body if not a
 // simple HTML message is generated
@@ -336,6 +338,18 @@ static ServerResponse handleDefaultRoute(const t_server &cfg,
 
 #include <iostream>
 
+#include <ServerResponse.hpp>
+
+Response Server::handleErrorRequest(const Request &request)
+{
+	Response r;
+
+	r.status = RESP_ERR;
+	r.sres = buildErrorResponse(_config, request.getErrorCode(), get_status_message(request.getErrorCode()));
+	r.pathToCgi = "";
+	return (r);
+}
+
 Response Server::handleRequest(const Request &request) {
 	const ControlData  &cd      = request.getControlData(); 
 	const std::string  &method  = cd.method;                
@@ -435,3 +449,5 @@ Response Server::handleRequest(const Request &request) {
 	}
 	return r;
 }
+
+

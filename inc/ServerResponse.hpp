@@ -15,7 +15,7 @@ public:
 	
 	ServerResponse(int code, const std::string &type, const std::string &b);
 	std::string to_string() const;
-	std::string get_status_message(int code) const;
+//	std::string get_status_message(int code) const;
 };
 
 enum ResponseStatus {
@@ -29,3 +29,5 @@ struct Response {
 	ServerResponse sres;
 	std::string    pathToCgi;
 };
+
+std::string get_status_message(int code);

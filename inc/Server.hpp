@@ -13,6 +13,7 @@ public:
 	Server &operator=(const Server &other);
 	~Server();
 
+	Response		handleErrorRequest(const Request &request);
 	Response       handleRequest(const Request &request);
 
 	const std::string   &getServerName() const;

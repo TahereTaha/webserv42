@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 13:54:09 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 14:48:52 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void EpollConnectionManager::setInstance(int fd, uint32_t events, int op)
 
     if (epoll_ctl(epfd, op, fd, &ev) == -1)
     {
-        perror("epoll_ctl failed");
+//        perror("epoll_ctl failed");
         return;
     }
 }
@@ -189,15 +189,19 @@ void EpollConnectionManager::badRequest(const int fd)
 {
     // EventLog::log(EPOLL_EVENT_ERROR, fd);
     connections[fd].readBuffer.clear();
-    int code = connections[fd].request.getErrorCode();
-	std::ostringstream oss;
-
-	oss << "HTTP/1.1 " << code << " " << getReasonPhrase(code) << "\r\n"
-		<< "Content-Length: 0\r\n"
-		<< "Connection: close\r\n"
-		<< "\r\n";
-
-	connections[fd].writeBuffer = oss.str();
+	
+	connections[fd].response = serverManager.handleErrorRequest(connections[fd].request);
+   	connections[fd].writeBuffer = connections[fd].response.sres.to_string();
+    
+//	int code = connections[fd].request.getErrorCode();
+//	std::ostringstream oss;
+//
+//	oss << "HTTP/1.1 " << code << " " << getReasonPhrase(code) << "\r\n"
+//		<< "Content-Length: 0\r\n"
+//		<< "Connection: close\r\n"
+//		<< "\r\n";
+//
+//	connections[fd].writeBuffer = oss.str();
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
 
@@ -267,7 +271,7 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
     char    		buf[4096];
     int     		bytesRead;
     std::string  	readBuffer;
- std::cout << "resd pipe" << std::endl;
+	//std::cout << "resd pipe" << std::endl;
     // EventLog::log(EPOLL_EVENT_READING, pipefd);
 
     while ((bytesRead = read(pipefd, buf, sizeof(buf))) > 0)
@@ -278,7 +282,7 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
     {
         
     }
-    std::cout << readBuffer << std::endl;
+    //std::cout << readBuffer << std::endl;
     int CGIClient = findClientByPipe(pipefd);
 	if (CGIClient == -1)
 	{
@@ -471,7 +475,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 // =====================================================================
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
-   std::cout << "im CGI handler" << path<< std::endl;
+//   std::cout << "im CGI handler" << path<< std::endl;
     const char* cgiPath = path.c_str();
 	int pipe_stdout[2];
 	int pipe_stdin[2];
