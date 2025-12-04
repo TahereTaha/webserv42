@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 10:53:56 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/12/04 12:38:23 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void EpollConnectionManager::setInstance(int fd, uint32_t events, int op)
     ev.data.fd = fd;
 
     if (epoll_ctl(epfd, op, fd, &ev) == -1)
-        exitWithError("Failed to set epoll instance");
+    {
+        perror("epoll_ctl failed");
+        return;
+    }
 }
 
 void EpollConnectionManager::exitWithError(const std::string& message)
@@ -180,8 +183,6 @@ void EpollConnectionManager::handleNewConnection(Socket *sock)
         connections[connfd].keepAlive = false;
         connections[connfd].lastActive = getCurrentTimeMs();
     }
-    if (errno != EAGAIN && errno != EWOULDBLOCK)
-        perror("accept");
 }
 
 void EpollConnectionManager::badRequest(const int fd)
@@ -238,6 +239,7 @@ void EpollConnectionManager::handleRead(int clientfd)
     {
         connections[clientfd].request.setErrorCode(500);
         badRequest(clientfd);
+        return ;
     }
     requestHandler(clientfd);
 }
@@ -245,7 +247,7 @@ void EpollConnectionManager::handleRead(int clientfd)
 void EpollConnectionManager::handleWrite(int clientfd)
 {
     Connection &conn = connections[clientfd];
-//    std::cout << "RESPONSE FOR CLIENT " << clientfd << ":\n" << conn.writeBuffer << std::endl;
+
     int bytesSent = write(clientfd, conn.writeBuffer.data(), conn.writeBuffer.size());
     if (bytesSent > 0) conn.writeBuffer.erase(0, bytesSent);
     if (conn.writeBuffer.empty()) {
@@ -256,10 +258,7 @@ void EpollConnectionManager::handleWrite(int clientfd)
         } else
             closeConnection(clientfd);
     }
-    // else
-    // {
-    //     closeConnection(clientfd);
-    // }
+
 
 }
 
@@ -268,27 +267,25 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
     char    		buf[4096];
     int     		bytesRead;
     std::string  	readBuffer;
-
+ std::cout << "resd pipe" << std::endl;
     EventLog::log(EPOLL_EVENT_READING, pipefd);
+
     while ((bytesRead = read(pipefd, buf, sizeof(buf))) > 0)
     {
         readBuffer.append(buf, bytesRead);
     }
     if (bytesRead == 0)
     {
-        // nothing to do keep current flow with pipe
-        return;
+        
     }
-    // std::cout << "CGI RESPONSE:\n" << readBuffer << std::endl;
+    std::cout << readBuffer << std::endl;
     int CGIClient = findClientByPipe(pipefd);
 	if (CGIClient == -1)
 	{
 		epoll_ctl(epfd, EPOLL_CTL_DEL, pipefd, NULL);
-		return;
 	}
     connections[CGIClient].readBuffer.clear();
     connections[CGIClient].writeBuffer = readBuffer;
-//    std::cout << "CGI RESPONSE FOR CLIENT " << CGIClient << ":\n" << connections[CGIClient].writeBuffer << std::endl;
     setInstance(CGIClient, EPOLLOUT, EPOLL_CTL_MOD);
     EventLog::log(EPOLL_EVENT_SUCCESS, CGIClient);
 
@@ -305,6 +302,7 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
 	if (CGIClient == -1)
 	{
 		epoll_ctl(epfd, EPOLL_CTL_DEL, pipefd, NULL);
+        close(pipefd);
 		return;
 	}
 
@@ -319,13 +317,14 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
         }
         total += n;
     }
-    close(pipefd);
 
     if (total == 0 && CGIConn[CGIClient].data.body.size() != 0)
     {
         connections[CGIClient].request.setErrorCode(500);
         badRequest(CGIClient);
+
     }
+    close(pipefd);
 	// CLEAN UP
 	CGIConn[CGIClient].lastActive = getCurrentTimeMs();
     CGIConn[CGIClient].data.body.erase();
@@ -472,7 +471,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 // =====================================================================
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
-  //  std::cout << path;
+   std::cout << "im CGI handler" << path<< std::endl;
     const char* cgiPath = path.c_str();
 	int pipe_stdout[2];
 	int pipe_stdin[2];
@@ -485,6 +484,8 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
     CGIConn[fd].stdOut = pipe_stdout[0];
     CGIConn[fd].stdIn = pipe_stdin[1];
     CGIConn[fd].lastActive = getCurrentTimeMs();
+    // std::cout << "PIPE OUT " << pipe_stdout[0] <<std::endl;
+    // std::cout << "PIPE IN " << pipe_stdin[1] <<std::endl;
 	pid_t pid = fork();
     if (pid == -1)
     {
@@ -514,24 +515,24 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 
         // Prepare envp
          // Set CGI environment variables
-	for (std::map<std::string,std::string>::iterator it = CGIConn[fd].data.envStrings.begin();
-         it != CGIConn[fd].data.envStrings.end(); ++it)
-    {
-//		std::cout << "this is it first: " << it->first << std::endl;
-//		std::cout << "this is it second: " << it->second << std::endl;
+        for (std::map<std::string,std::string>::iterator it = CGIConn[fd].data.envStrings.begin();
+            it != CGIConn[fd].data.envStrings.end(); ++it)
+        {
+		// std::cerr << "this is it first: " << it->first << std::endl;
+		// std::cerr << "this is it second: " << it->second << std::endl;
         setenv(it->first.c_str(), it->second.c_str(), 1);
-    }
+        }
 
 
 
-		 execl(cgiPath, cgiPath, (char*)NULL);
+		execl(cgiPath, cgiPath, (char*)NULL);
 		std::ostringstream oss;
 		oss << "HTTP/1.1 " << 500 << " " << getReasonPhrase(500) << "\r\n"
 			<< "Content-Length: 0\r\n"
 			<< "Connection: close\r\n"
 			<< "\r\n";
 
-//		std::cout << oss.str() << std::endl;
+		std::cout << oss.str() << std::endl;
 		exit (1);
 	}
     
