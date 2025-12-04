@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 10:17:22 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 10:53:56 by tatahere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ void EpollConnectionManager::handleRead(int clientfd)
 void EpollConnectionManager::handleWrite(int clientfd)
 {
     Connection &conn = connections[clientfd];
-    std::cout << "RESPONSE FOR CLIENT " << clientfd << ":\n" << conn.writeBuffer << std::endl;
+//    std::cout << "RESPONSE FOR CLIENT " << clientfd << ":\n" << conn.writeBuffer << std::endl;
     int bytesSent = write(clientfd, conn.writeBuffer.data(), conn.writeBuffer.size());
     if (bytesSent > 0) conn.writeBuffer.erase(0, bytesSent);
     if (conn.writeBuffer.empty()) {
@@ -288,7 +288,7 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
 	}
     connections[CGIClient].readBuffer.clear();
     connections[CGIClient].writeBuffer = readBuffer;
-    std::cout << "CGI RESPONSE FOR CLIENT " << CGIClient << ":\n" << connections[CGIClient].writeBuffer << std::endl;
+//    std::cout << "CGI RESPONSE FOR CLIENT " << CGIClient << ":\n" << connections[CGIClient].writeBuffer << std::endl;
     setInstance(CGIClient, EPOLLOUT, EPOLL_CTL_MOD);
     EventLog::log(EPOLL_EVENT_SUCCESS, CGIClient);
 
@@ -472,7 +472,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 // =====================================================================
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
-    std::cout << path;
+  //  std::cout << path;
     const char* cgiPath = path.c_str();
 	int pipe_stdout[2];
 	int pipe_stdin[2];
@@ -514,11 +514,14 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 
         // Prepare envp
          // Set CGI environment variables
-    for (std::map<std::string,std::string>::iterator it = CGIConn[fd].data.envStrings.begin();
+	for (std::map<std::string,std::string>::iterator it = CGIConn[fd].data.envStrings.begin();
          it != CGIConn[fd].data.envStrings.end(); ++it)
     {
+//		std::cout << "this is it first: " << it->first << std::endl;
+//		std::cout << "this is it second: " << it->second << std::endl;
         setenv(it->first.c_str(), it->second.c_str(), 1);
     }
+
 
 
 		 execl(cgiPath, cgiPath, (char*)NULL);
@@ -528,7 +531,7 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 			<< "Connection: close\r\n"
 			<< "\r\n";
 
-		std::cout << oss.str() << std::endl;
+//		std::cout << oss.str() << std::endl;
 		exit (1);
 	}
     

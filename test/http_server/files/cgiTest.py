@@ -42,6 +42,7 @@ for part in parts:
 # saves | create the file
 
 # Send HTTP response
+print("HTTP/1.1 201 Created")
 print("Status: 201 Created")
 print("Content-Type: text/plain")
 print()
