@@ -58,9 +58,23 @@ static bool methodAllowed(const t_route &route, const std::string &method) {
 	return false;        // method not in the allowed list
 }
 
+static int	is_http_method_accepted(std::vector<t_http_method> accepted_methods, t_http_method method)
+{
+	size_t i = 0;
+	while (i < accepted_methods.size())
+	{
+		if (accepted_methods[i] == method)
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 // find the best matching route for the given request path. It iterates over
 // all routes and chooses the one whose URI is the longest prefix of path
-static const t_route *findBestRoute(const t_server &cfg, const std::string &path) {
+static const t_route *findBestRoute(const t_server &cfg, const std::string &path, t_http_method method) {
 	const t_route *best = NULL;  // pointer to the best route found so far
 	std::string    bestUri;      // store the URI string of the best route
 
@@ -70,7 +84,9 @@ static const t_route *findBestRoute(const t_server &cfg, const std::string &path
 			continue;                      // skip empty route URIs
 		if (path.compare(0, loc.size(), loc) == 0) {
 			
-			if (best == NULL || loc.size() > bestUri.size()) {
+			if (best == NULL || (loc.size() > bestUri.size() && ((*it).response_type == STATIC || \
+						is_http_method_accepted((*it).default_response.accepted_methods, method ))))
+			{
 				best = &(*it);              
 				bestUri = loc;              
 			}
@@ -280,6 +296,7 @@ static ServerResponse handleDefaultRoute(const t_server &cfg,
 		res.body = body;                    // file contents
 		return res;
 	} else if (method == "POST") {
+		return buildErrorResponse(cfg, 403, "403 unauthorized");
 		// simple upload: overwrite target file with body
 		const std::string &reqBody = request.getBody();
 		std::ofstream out(fullPath.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
@@ -323,6 +340,16 @@ Response Server::handleRequest(const Request &request) {
 	const std::string  &method  = cd.method;                
 	const std::string  &target  = cd.requestTarget;       
 
+	t_http_method enum_method;
+	if (method == "GET")
+		enum_method = GET;
+	else if (method == "POST")
+		enum_method = POST;
+	else if (method == "DELETE")
+		enum_method = DELETE;
+	else 
+		enum_method = (t_http_method) (DELETE + 1);
+
 	// 1) validate method
 	if (!isSupportedMethod(method)) {
 		Response r;
@@ -342,7 +369,7 @@ Response Server::handleRequest(const Request &request) {
 	}
 
 	// 3) find best route
-	const t_route *route = findBestRoute(_config, target);
+	const t_route *route = findBestRoute(_config, target, enum_method);
 	if (!route) {
 		Response r;
 		r.status = RESP_ERR;
