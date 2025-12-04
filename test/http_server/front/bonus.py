@@ -163,7 +163,7 @@ html = f"""<!DOCTYPE html>
 <div class="section">
   <h2>Upload & Send File (multipart/form-data)</h2>
 
-  <form action="/files/cgiTest.py" method="POST" enctype="multipart/form-data">
+  <form action="/files/upload.py" method="POST" enctype="multipart/form-data">
     <input type="file" name="file" />
     <br />
     <button type="submit">Upload</button>
