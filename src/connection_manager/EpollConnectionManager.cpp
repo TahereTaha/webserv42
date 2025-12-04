@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 01:34:06 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 10:17:22 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ void EpollConnectionManager::handleRead(int clientfd)
 void EpollConnectionManager::handleWrite(int clientfd)
 {
     Connection &conn = connections[clientfd];
-
+    std::cout << "RESPONSE FOR CLIENT " << clientfd << ":\n" << conn.writeBuffer << std::endl;
     int bytesSent = write(clientfd, conn.writeBuffer.data(), conn.writeBuffer.size());
     if (bytesSent > 0) conn.writeBuffer.erase(0, bytesSent);
     if (conn.writeBuffer.empty()) {
@@ -256,10 +256,10 @@ void EpollConnectionManager::handleWrite(int clientfd)
         } else
             closeConnection(clientfd);
     }
-    else
-    {
-        closeConnection(clientfd);
-    }
+    // else
+    // {
+    //     closeConnection(clientfd);
+    // }
 
 }
 
@@ -277,8 +277,9 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
     if (bytesRead == 0)
     {
         // nothing to do keep current flow with pipe
+        return;
     }
-    std::cout << "CGI RESPONSE:\n" << readBuffer << std::endl;
+    // std::cout << "CGI RESPONSE:\n" << readBuffer << std::endl;
     int CGIClient = findClientByPipe(pipefd);
 	if (CGIClient == -1)
 	{
@@ -287,7 +288,7 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
 	}
     connections[CGIClient].readBuffer.clear();
     connections[CGIClient].writeBuffer = readBuffer;
-
+    std::cout << "CGI RESPONSE FOR CLIENT " << CGIClient << ":\n" << connections[CGIClient].writeBuffer << std::endl;
     setInstance(CGIClient, EPOLLOUT, EPOLL_CTL_MOD);
     EventLog::log(EPOLL_EVENT_SUCCESS, CGIClient);
 
@@ -479,7 +480,7 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 	pipe(pipe_stdout);
 	pipe(pipe_stdin);
 	makeNonBlocking(pipe_stdout[0]);
-	makeNonBlocking(pipe_stdin[1]);
+	// makeNonBlocking(pipe_stdin[1]);
     CGIConn[fd].data = prepareCgiEnvironment(connections[fd].request, path);
     CGIConn[fd].stdOut = pipe_stdout[0];
     CGIConn[fd].stdIn = pipe_stdin[1];

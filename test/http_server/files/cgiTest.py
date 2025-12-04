@@ -1,96 +1,48 @@
 #!/usr/bin/env python3
-import cgi
-import os
-import cgitb
 import sys
+import os
 
-cgitb.enable()
+# Set up CGI environment variables
+for key, value in os.environ.items():
+    if key.startswith("HTTP_") or key in [
+        "CONTENT_LENGTH",
+        "CONTENT_TYPE",
+        "GATEWAY_INTERFACE",
+        "PATH_INFO",
+        "QUERY_STRING",
+        "REMOTE_ADDR",
+        "REQUEST_METHOD",
+        "SCRIPT_NAME",
+        "SERVER_NAME",
+        "SERVER_PORT",
+        "SERVER_PROTOCOL",
+        "SERVER_SOFTWARE"
+    ]:
+        os.environ[key] = value
+# this cgi receives a POST request with a file as a multipart/form-data
+UPLOAD_DIR = "/tmp/http_server/files"
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+# parse the multipart/form-data
+content_type = os.environ.get("CONTENT_TYPE", "")
+boundary = content_type.split("boundary=")[-1].encode()
+body = sys.stdin.buffer.read()
+parts = body.split(b"--" + boundary)
+for part in parts:
+    if b'Content-Disposition' in part:
+        headers, file_data = part.split(b"\r\n\r\n", 1)
+        file_data = file_data.rsplit(b"\r\n", 1)[0]  # remove trailing \r\n
+        disposition = headers.decode()
+        if 'filename="' in disposition:
+            filename = disposition.split('filename="')[1].split('"')[0]
+            filepath = os.path.join(UPLOAD_DIR, filename)
+            with open(filepath, "wb") as f:
+                f.write(file_data)
 
-UPLOAD_DIR = "/tmp/http_server/files"  # ensure this exists
+# saves | create the file
 
-def send_response(status_code="200 OK", body=""):
-    body_bytes = body.encode("utf-8")
-    content_length = len(body_bytes)
-
-    # Send a full HTTP response
-    print(f"HTTP/1.1 {status_code}")
-    print("Content-Type: text/html; charset=utf-8")
-    print(f"Content-Length: {content_length}")
-    print("Connection: close")
-    print()
-    print(body, end="")
-
-# ------------------------------------------------------------
-# DEBUG RAW STDIN INPUT
-# ------------------------------------------------------------
-raw = sys.stdin.buffer.read()
-
-with open("/tmp/cgi_raw.log", "wb") as f:
-    f.write(raw)
-
-# Reset stdin so FieldStorage can parse from the raw buffer
-sys.stdin = open('/tmp/cgi_raw.log', 'rb')
-
-# ------------------------------------------------------------
-# PARSE MULTIPART
-# ------------------------------------------------------------
-form = cgi.FieldStorage()
-
-# Debug info
-with open("/tmp/cgi_debug.log", "a") as log:
-    log.write("---- NEW REQUEST ----\n")
-    log.write(f"CONTENT_LENGTH={os.environ.get('CONTENT_LENGTH')}\n")
-    log.write(f"CONTENT_TYPE={os.environ.get('CONTENT_TYPE')}\n")
-    log.write(f"REQUEST_METHOD={os.environ.get('REQUEST_METHOD')}\n")
-    log.write(f"RAW_SIZE={len(raw)}\n")
-    log.write(f"Form keys: {list(form.keys())}\n")
-    if "file" in form:
-        log.write(f"Filename: {form['file'].filename}\n")
-    else:
-        log.write("No 'file' field received.\n")
-
-# ------------------------------------------------------------
-# HANDLE FILE
-# ------------------------------------------------------------
-file_item = form["file"] if "file" in form else None
-
-if file_item and file_item.filename:
-    filename = os.path.basename(file_item.filename)
-    save_path = os.path.join(UPLOAD_DIR, filename)
-
-    try:
-        with open(save_path, "wb") as f:
-            f.write(file_item.file.read())
-
-        body = f"""<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Upload successful</title></head>
-<body>
-  <h2>Upload successful!</h2>
-  <p>Saved as: <code>{save_path}</code></p>
-</body>
-</html>"""
-
-        send_response("200 OK", body)
-
-    except Exception as e:
-        send_response("500 Internal Server Error",
-f"""<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Server error</title></head>
-<body>
-  <h2>Internal Server Error</h2>
-  <p>{e}</p>
-</body>
-</html>""")
-
-else:
-    send_response("400 Bad Request",
-"""<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Bad request</title></head>
-<body>
-  <h2>No file uploaded!</h2>
-  <p>Please choose a file and try again.</p>
-</body>
-</html>""")
+# Send HTTP response
+print("Status: 201 Created")
+print("Content-Type: text/plain")
+print()
+print("File uploaded successfully.")  
