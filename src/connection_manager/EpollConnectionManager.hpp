@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:08 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/03 18:15:47 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 01:30:24 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <sys/wait.h>   // waitpid
 #include <sys/epoll.h>  //epoll
 #include <cstring>      //memset
+#include <algorithm>  // for std::replace, std::transform
+#include <cctype>     // for ::toupper
 
 // project
 #include <colors.hpp>
@@ -36,8 +38,9 @@ struct Connection {
 };
 
 struct CgiData {
-    std::vector<char*>  envp;
-    std::string         body;
+    std::map<std::string, std::string>   envStrings; 
+    std::vector<char*>          envp;            
+    std::string                 body;
 };
 
 struct CGIConnections {

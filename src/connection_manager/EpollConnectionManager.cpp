@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/03 21:40:32 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 01:34:06 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,7 +278,7 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
     {
         // nothing to do keep current flow with pipe
     }
-
+    std::cout << "CGI RESPONSE:\n" << readBuffer << std::endl;
     int CGIClient = findClientByPipe(pipefd);
 	if (CGIClient == -1)
 	{
@@ -306,8 +306,21 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
 		epoll_ctl(epfd, EPOLL_CTL_DEL, pipefd, NULL);
 		return;
 	}
-    int bytesSent = write(pipefd, CGIConn[CGIClient].data.body.c_str(), CGIConn[CGIClient].data.body.size());
-    if (bytesSent == 0 && CGIConn[CGIClient].data.body.size() != 0)
+
+    const std::string &body = CGIConn[CGIClient].data.body;
+
+    size_t total = 0;
+    while (total < body.size()) {
+        ssize_t n = write(pipefd, body.data() + total, body.size() - total);
+        if (n <= 0) {
+            perror("write to CGI stdin");
+            break;
+        }
+        total += n;
+    }
+    close(pipefd);
+
+    if (total == 0 && CGIConn[CGIClient].data.body.size() != 0)
     {
         connections[CGIClient].request.setErrorCode(500);
         badRequest(CGIClient);
@@ -317,7 +330,6 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
     CGIConn[CGIClient].data.body.erase();
 	CGIConn[CGIClient].stdIn = -1;
 	epoll_ctl(epfd, EPOLL_CTL_DEL, pipefd, NULL);
-	close(pipefd);
 }
 
 // =====================================================================
@@ -405,54 +417,52 @@ void EpollConnectionManager::closeConnection(int fd)
 // =====================================================================
 // 		CGI utils
 // =====================================================================
-
-inline void addEnv(std::vector<std::string> &envStrings,
+inline void addEnv(std::map<std::string, std::string> &env,
                    const std::string &key,
                    const std::string &value)
 {
-    envStrings.push_back(key + "=" + value);
+    env[key] = value;
 }
 
 CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 {
     CgiData data;
-    std::vector<std::string> envStrings;
 
-    addEnv(envStrings, "GATEWAY_INTERFACE", "CGI/1.1");
-    addEnv(envStrings, "SERVER_PROTOCOL", "HTTP/1.1");
-    addEnv(envStrings, "REQUEST_METHOD", req.getControlData().method);
-    addEnv(envStrings, "SCRIPT_FILENAME", scriptPath);
-    addEnv(envStrings, "SCRIPT_NAME", scriptPath);
-    addEnv(envStrings, "REQUEST_URI", req.getControlData().requestTarget);
+    // IMPORTANT: use data.envStrings, not a local vector
+    std::map< std::string, std::string> &env = data.envStrings;
 
-	Headers headers = req.getHeaders();
+    addEnv(env, "GATEWAY_INTERFACE", "CGI/1.1");
+    addEnv(env, "SERVER_PROTOCOL",  "HTTP/1.1");
+    addEnv(env, "REQUEST_METHOD",   req.getControlData().method);
+    addEnv(env, "SCRIPT_FILENAME",  scriptPath);
+    addEnv(env, "SCRIPT_NAME",      scriptPath);
+    addEnv(env, "REQUEST_URI",      req.getControlData().requestTarget);
+
+    Headers headers = req.getHeaders();
 
     if (headers.has("Content-Length"))
-        addEnv(envStrings, "CONTENT_LENGTH", headers.get("Content-Length"));
-    else
-        addEnv(envStrings, "CONTENT_LENGTH", "0");
+        addEnv(env, "CONTENT_LENGTH", headers.get("Content-Length"));
 
     if (headers.has("Content-Type"))
-        addEnv(envStrings, "CONTENT_TYPE", headers.get("Content-Type"));
+        addEnv(env, "CONTENT_TYPE", headers.get("Content-Type"));
 
-    if (headers.has("Host"))
-        addEnv(envStrings, "HTTP_HOST", headers.get("Host"));
-
+    // Add remaining headers as HTTP_* (avoid duplicates)
     for (Headers::iterator it = headers.begin(); it != headers.end(); ++it)
-	{
-		const std::string &key   = it->first;
-		const std::string &value = it->second;
+    {
+        const std::string &key   = it->first;
+        const std::string &value = it->second;
 
-		std::cout << key << ": " << value << std::endl;
-	}
+        if (key == "Content-Length" || key == "Content-Type")
+            continue;
+
+        std::string envKey = "HTTP_" + key;
+        std::replace(envKey.begin(), envKey.end(), '-', '_');
+        std::transform(envKey.begin(), envKey.end(), envKey.begin(), ::toupper);
+
+        addEnv(env, envKey, value);
+    }
 
     data.body = req.getBody();
-
-    for (size_t i = 0; i < envStrings.size(); ++i)
-        data.envp.push_back(const_cast<char*>(envStrings[i].c_str()));
-
-    data.envp.push_back(0);
-
     return data;
 }
 
@@ -470,6 +480,10 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 	pipe(pipe_stdin);
 	makeNonBlocking(pipe_stdout[0]);
 	makeNonBlocking(pipe_stdin[1]);
+    CGIConn[fd].data = prepareCgiEnvironment(connections[fd].request, path);
+    CGIConn[fd].stdOut = pipe_stdout[0];
+    CGIConn[fd].stdIn = pipe_stdin[1];
+    CGIConn[fd].lastActive = getCurrentTimeMs();
 	pid_t pid = fork();
     if (pid == -1)
     {
@@ -481,19 +495,13 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
         badRequest(fd);
         return ;
     }
-	CGIConn[fd].data = prepareCgiEnvironment(connections[fd].request, path);
-	CGIConn[fd].stdOut = pipe_stdout[0];
-	CGIConn[fd].stdIn = pipe_stdin[1];
-	CGIConn[fd].lastActive = getCurrentTimeMs();
     if (pid != 0) {
 		setInstance(pipe_stdin[1], EPOLLOUT, EPOLL_CTL_ADD);
         setInstance(pipe_stdout[0], EPOLLIN, EPOLL_CTL_ADD);
     }
 	if (pid == 0)
 	{
-		char* args[2];
-		args[0] = const_cast<char*>(cgiPath);
-		args[1] = 0;   
+	  
 		
 		dup2(pipe_stdout[1], STDOUT_FILENO);
     	dup2(pipe_stdin[0], STDIN_FILENO);
@@ -503,7 +511,16 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 		close(pipe_stdin[0]);
 		close(pipe_stdin[1]);
 
-		execve(cgiPath, args, &CGIConn[fd].data.envp[0]);
+        // Prepare envp
+         // Set CGI environment variables
+    for (std::map<std::string,std::string>::iterator it = CGIConn[fd].data.envStrings.begin();
+         it != CGIConn[fd].data.envStrings.end(); ++it)
+    {
+        setenv(it->first.c_str(), it->second.c_str(), 1);
+    }
+
+
+		 execl(cgiPath, cgiPath, (char*)NULL);
 		std::ostringstream oss;
 		oss << "HTTP/1.1 " << 500 << " " << getReasonPhrase(500) << "\r\n"
 			<< "Content-Length: 0\r\n"

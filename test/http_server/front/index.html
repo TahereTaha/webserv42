@@ -1,54 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Free Web tutorials">
-  <meta name="keywords" content="HTML, CSS, JavaScript">
-  <meta name="author" content="John Doe">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Free Web tutorials" />
+    <meta name="keywords" content="HTML, CSS, JavaScript" />
+    <meta name="author" content="John Doe" />
+  </head>
+  <body>
+    <h2>Images in Another Folder</h2>
+    <p>
+      It is common to store images in a sub-folder. You must then include the
+      folder name in the src attribute:
+    </p>
 
-<h2>Images in Another Folder</h2>
-<p>It is common to store images in a sub-folder. You must then include the folder name in the src attribute:</p>
+    <img
+      src="img/taha.png"
+      alt="HTML5 Icon"
+      style="width: 128px; height: 128px"
+    />
 
-<img src="img/taha.png" alt="HTML5 Icon" style="width:128px;height:128px;">
+    <hr />
 
-<hr>
+    <h2>Upload & Send File (No multipart/form-data)</h2>
 
-<h2>Upload & Send File (No multipart/form-data)</h2>
-
-<input type="file" id="fileInput">
-<button id="sendBtn">Send File</button>
-
-<script>
-  const input = document.getElementById('fileInput');
-  const sendBtn = document.getElementById('sendBtn');
-
-  sendBtn.addEventListener('click', async () => {
-  const file = input.files[0];
-  if (!file) {
-    alert("Please select a file first.");
-    return;
-  }
-
-  // Create multipart/form-data automatically
-  const formData = new FormData();
-  formData.append("file", file, file.name);
-
-  try {
-    const response = await fetch("/profile/cgiTest.py", {
-      method: "POST",
-      body: formData   // <-- fetch sets multipart/form-data automatically
-    });
-
-    console.log(response);
-    alert("Sent! Check console for response.");
-  } catch (err) {
-    console.error(err);
-    alert("Upload failed — check console.");
-  }
-});
-</script>
-
-</body>
+    <form
+      action="/files/cgiTest.py"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="file" />
+      <button type="submit">Upload</button>
+    </form>
+  </body>
 </html>
