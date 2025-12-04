@@ -415,6 +415,15 @@ Response Server::handleRequest(const Request &request) {
 		// populate full path to CGI script so EpollConnectionManager can execute it
 		r.status = RESP_CGI;
 		r.pathToCgi = fullPath;
+		{
+			std::ifstream file(fullPath.c_str(), std::ios::in | std::ios::binary); // open file
+			if (!file)
+			{
+				r.status = RESP_OK;
+				r.pathToCgi = "";
+				r.sres = buildErrorResponse(_config, 404, "404 Not Found");
+			}
+		}
 	} else {
 		r.status = RESP_OK;
 		r.sres = handleDefaultRoute(_config, *route, method, target, request);
