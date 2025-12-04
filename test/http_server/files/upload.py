@@ -2,7 +2,7 @@
 import sys
 import os
 
-UPLOAD_DIR = "/tmp/http_server/files"
+UPLOAD_DIR = "/tmp/http_server/files/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 content_type = os.environ.get("CONTENT_TYPE", "")
@@ -158,7 +158,7 @@ if saved_filename is None:
         "<p><a href='/'>Back to Home</a></p>"
     )
 else:
-    file_url = f"/files/{saved_filename}"  # Public URL link
+    file_url = f"/files/uploads/{saved_filename}"  # Public URL link
 
     sys.stdout.write(
         "HTTP/1.1 201 Created\r\n"

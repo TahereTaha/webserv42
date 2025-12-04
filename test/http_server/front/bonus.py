@@ -155,7 +155,22 @@ html = f"""<!DOCTYPE html>
 <div class="section">
   <h2>Images in Another Folder</h2>
   <p>It is common to store images in a sub-folder.</p>
-  <img src="img/taha.png" alt="HTML Icon" style="width:128px;height:128px;" />
+      
+      <img
+        src="img/capapes.png"
+        alt="HTML5 Icon"
+        style="width: 128px; height: 128px"
+      />
+      <img
+        src="img/rgiambon.jpg"
+        alt="HTML5 Icon"
+        style="width: 128px; height: 128px"
+      />
+      <img
+        src="img/taha.png"
+        alt="HTML5 Icon"
+        style="width: 128px; height: 128px"
+      />
 </div>
 
 <hr />
