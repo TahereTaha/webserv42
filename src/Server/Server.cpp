@@ -404,6 +404,11 @@ Response Server::handleRequest(const Request &request) {
 		if (ext == ".py")
 			isCgi = true;
 	}
+	if (fullPath.size() >= 4) {
+		std::string ext = fullPath.substr(fullPath.size() - 4);
+		if (ext == ".php")
+			isCgi = true;
+	}
 
 	// 6) dispatch to STATIC, CGI, or DEFAULT handling
 	Response r;
