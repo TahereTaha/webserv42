@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 14:48:52 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/12/04 18:56:40 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void EpollConnectionManager::run()
     epoll_event events[MAX_EVENTS];
       
     while (true) {
-        int n           = epoll_wait(epfd, events, 1024, 5000);
+        int n           = epoll_wait(epfd, events, 1024, 500);
         double now      = getCurrentTimeMs();
 
         for (int i = 0; i < n; i++) 
@@ -192,7 +192,7 @@ void EpollConnectionManager::badRequest(const int fd)
 	
 	connections[fd].response = serverManager.handleErrorRequest(connections[fd].request);
    	connections[fd].writeBuffer = connections[fd].response.sres.to_string();
-    
+    std::cout << connections[fd].writeBuffer;
 //	int code = connections[fd].request.getErrorCode();
 //	std::ostringstream oss;
 //
@@ -342,6 +342,7 @@ void EpollConnectionManager::handlePipeWrite(int pipefd)
 void EpollConnectionManager::cleanupIdleConnections(const double &now)
 { 
     const int TIMEOUT_MS = 1000;
+    const int TIMEOUT_MS_SM = 500;
     
     for (ConnectionIterator it = connections.begin(); it != connections.end();) {
         ConnectionIterator toDelete = it;
@@ -353,7 +354,7 @@ void EpollConnectionManager::cleanupIdleConnections(const double &now)
 	{
 		CGIIterator toDelete = it;
 		++it;
-		if (now - toDelete->second.lastActive > TIMEOUT_MS)
+		if (now - toDelete->second.lastActive > TIMEOUT_MS_SM)
         {
 			if (it->second.stdIn != -1)
 			{
@@ -475,7 +476,7 @@ CgiData prepareCgiEnvironment(const Request &req, const std::string &scriptPath)
 // =====================================================================
 void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 {
-//   std::cout << "im CGI handler" << path<< std::endl;
+  std::cout << "im CGI handler" << path<< std::endl;
     const char* cgiPath = path.c_str();
 	int pipe_stdout[2];
 	int pipe_stdin[2];
@@ -483,7 +484,7 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 	pipe(pipe_stdout);
 	pipe(pipe_stdin);
 	makeNonBlocking(pipe_stdout[0]);
-
+    makeNonBlocking(pipe_stdin[1]);
     CGIConn[fd].data = prepareCgiEnvironment(connections[fd].request, path);
     CGIConn[fd].stdOut = pipe_stdout[0];
     CGIConn[fd].stdIn = pipe_stdin[1];
@@ -536,6 +537,7 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 			<< "\r\n";
 
 		std::cout << oss.str() << std::endl;
+        std::cerr << "exit" << std::endl;
 		exit (1);
 	}
     

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import os
+import time
 
 UPLOAD_DIR = "/tmp/http_server/files/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
