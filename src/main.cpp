@@ -45,7 +45,7 @@ int	main(int argc, char **argv)
 		parser.scanning();
 		parser.parsing();
 		parser.analysis();
-		
+
 		std::vector<t_server>	servers = parser.getServers();
 
 		ServerManager	server_manager;

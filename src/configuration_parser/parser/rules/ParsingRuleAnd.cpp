@@ -41,6 +41,7 @@ std::vector<Tree<AEvaluable*>*>	ParsingRuleAnd::consumeTerminals(terminal_iter &
 		{
 			temp_vector = this->_rules[i]->consumeTerminals(iter, end);
 			return_val.insert(return_val.end(), temp_vector.begin(), temp_vector.end());
+			temp_vector = std::vector<Tree<AEvaluable*>*>();
 			i++;
 		}
 	}

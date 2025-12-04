@@ -17,7 +17,8 @@
 	- text
 	- number
 
-- [ ] fix all the memory leacks in the file parsing.
+- [ ] incorrect config file segfaults.
+- [x] fix all the memory leacks in the file parsing.
 
 - [x] web server
 	- [x] read the arguments.
