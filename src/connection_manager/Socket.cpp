@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:23:53 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 21:07:40 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/12/04 13:54:40 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ Socket::Socket(struct sockaddr_storage socket_addr) {
     }
 
     makeNonBlocking(fd);
-    EventLog::log(SOCKET_BIND, port);
+    // EventLog::log(SOCKET_BIND, port);
     this->port = ntohs(((struct sockaddr_in *)&socket_addr)->sin_port);
 }
 

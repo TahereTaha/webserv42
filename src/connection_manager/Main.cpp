@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:30:40 by capapes           #+#    #+#             */
-/*   Updated: 2025/11/28 18:45:18 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/12/04 13:54:43 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 int main() {
     try {
-        EventLog::init("event.log");
+        // EventLog::init("event.log");
 
         int ports[] = {8080, 8081, 8082}; // Example ports
         std::map<int, Socket*> listeningSockets;
@@ -33,7 +33,7 @@ int main() {
         listeningSockets[sock2.getFd()] = &sock2;
         
         EpollConnectionManager manager(listeningSockets);
-        EventLog::shutdown();
+        // EventLog::shutdown();
 
     } catch (const std::exception &ex) {
         std::cerr << "Exception: " << ex.what() << "\n";

@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 12:38:23 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/04 13:54:09 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ EpollConnectionManager::EpollConnectionManager(std::map<int, Socket*> socks, Ser
     for (std::map<int, Socket*>::iterator it = listeningSockets.begin(); it != listeningSockets.end(); ++it)
     {
         setInstance(it->first, EPOLLIN, EPOLL_CTL_ADD);
-        EventLog::log(EPOLL_ADD_SOCKET, it->first);
+        // EventLog::log(EPOLL_ADD_SOCKET, it->first);
         serverUpMessage(it->second->getPort());
     }
     run();
@@ -174,11 +174,11 @@ void EpollConnectionManager::handleNewConnection(Socket *sock)
 {
     int         connfd;
     
-    EventLog::log(NEW_CONNECTION, sock->getFd());
+    // EventLog::log(NEW_CONNECTION, sock->getFd());
     while ((connfd = sock->acceptConnection()) > 0) {
         makeNonBlocking(connfd);
         setInstance(connfd, EPOLLIN , EPOLL_CTL_ADD);
-        EventLog::log(EPOLL_ADD_CONNECTION, connfd);
+        // EventLog::log(EPOLL_ADD_CONNECTION, connfd);
         connections[connfd].fd = connfd;
         connections[connfd].keepAlive = false;
         connections[connfd].lastActive = getCurrentTimeMs();
@@ -187,7 +187,7 @@ void EpollConnectionManager::handleNewConnection(Socket *sock)
 
 void EpollConnectionManager::badRequest(const int fd)
 {
-    EventLog::log(EPOLL_EVENT_ERROR, fd);
+    // EventLog::log(EPOLL_EVENT_ERROR, fd);
     connections[fd].readBuffer.clear();
     int code = connections[fd].request.getErrorCode();
 	std::ostringstream oss;
@@ -229,7 +229,7 @@ void EpollConnectionManager::handleRead(int clientfd)
     char    buf[4096];
     int     bytesRead;
 
-    EventLog::log(EPOLL_EVENT_READING, clientfd);
+    // EventLog::log(EPOLL_EVENT_READING, clientfd);
     while ((bytesRead = read(clientfd, buf, sizeof(buf))) > 0)
     {
         connections[clientfd].readBuffer.append(buf, bytesRead);
@@ -268,7 +268,7 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
     int     		bytesRead;
     std::string  	readBuffer;
  std::cout << "resd pipe" << std::endl;
-    EventLog::log(EPOLL_EVENT_READING, pipefd);
+    // EventLog::log(EPOLL_EVENT_READING, pipefd);
 
     while ((bytesRead = read(pipefd, buf, sizeof(buf))) > 0)
     {
@@ -287,7 +287,7 @@ void EpollConnectionManager::handlePipeRead(int pipefd)
     connections[CGIClient].readBuffer.clear();
     connections[CGIClient].writeBuffer = readBuffer;
     setInstance(CGIClient, EPOLLOUT, EPOLL_CTL_MOD);
-    EventLog::log(EPOLL_EVENT_SUCCESS, CGIClient);
+    // EventLog::log(EPOLL_EVENT_SUCCESS, CGIClient);
 
 	// CLEAN UP
     CGIConn[CGIClient].stdOut = -1;
@@ -392,7 +392,7 @@ std::vector<int> getPipesForClient(int clientFd,
 
 void EpollConnectionManager::closeConnection(int fd)
 {
-	EventLog::log(EPOLL_EVENT_CLOSE, fd);
+	// EventLog::log(EPOLL_EVENT_CLOSE, fd);
 	epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
 	shutdown(fd, SHUT_RDWR);
 	close(fd);
@@ -479,13 +479,12 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 	pipe(pipe_stdout);
 	pipe(pipe_stdin);
 	makeNonBlocking(pipe_stdout[0]);
-	// makeNonBlocking(pipe_stdin[1]);
+
     CGIConn[fd].data = prepareCgiEnvironment(connections[fd].request, path);
     CGIConn[fd].stdOut = pipe_stdout[0];
     CGIConn[fd].stdIn = pipe_stdin[1];
     CGIConn[fd].lastActive = getCurrentTimeMs();
-    // std::cout << "PIPE OUT " << pipe_stdout[0] <<std::endl;
-    // std::cout << "PIPE IN " << pipe_stdin[1] <<std::endl;
+
 	pid_t pid = fork();
     if (pid == -1)
     {

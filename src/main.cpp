@@ -56,11 +56,11 @@ int	main(int argc, char **argv)
 			i++;
 		}
         
-		EventLog::init("event.log");
+		// EventLog::init("event.log");
 		std::map<int, Socket *>	listeningSockets = set_up_sockets(servers);
 
         EpollConnectionManager manager(listeningSockets, server_manager);
-        EventLog::shutdown();
+        // EventLog::shutdown();
 
 		std::cout << "starting web server." << std::endl;
 	}
