@@ -17,8 +17,8 @@ public:
 	Response       handleRequest(const Request &request);
 
 	const std::string   &getServerName() const;
+	t_server    _config;
 
 private:
 	
-	t_server    _config;
 };

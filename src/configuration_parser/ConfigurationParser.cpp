@@ -124,6 +124,7 @@ void	ConfigurationParser::parsing(void)
 	// checking if there are still tokens left to consume.
 	if (iter != end)
 	{
+		std::cout << "this is it " << std::endl;
 		parse_exception	e(UNRECOGNIZED_SYMBOL);
 		e.setLine((*iter)->getLine());
 		e.setColumn((*iter)->getColumn());
