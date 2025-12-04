@@ -244,6 +244,7 @@ static ServerResponse handleStaticRoute(const t_route &route) {
 // to method logic for files
 
 #include <iostream>
+#include <percent_encoding_utils.hpp>
 
 static ServerResponse handleDefaultRoute(const t_server &cfg,
 	const t_route &route,
@@ -257,7 +258,7 @@ static ServerResponse handleDefaultRoute(const t_server &cfg,
 	if (rel.empty())
 		rel = "/";                     
 
-	std::string fullPath = joinPath(route.default_response.root, rel);
+	std::string fullPath = decode_pct_encoded_string(joinPath(route.default_response.root, rel));
 
 	// if the result is a directory handle index or autoindex
 	if (isDirectory(fullPath)) {
