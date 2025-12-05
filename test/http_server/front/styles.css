@@ -1,0 +1,119 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   styles.css                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/05 13:13:51 by capapes           #+#    #+#             */
+/*   Updated: 2025/12/05 13:48:02 by capapes          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+:root[data-theme="light"] {
+	--bg: #f5f5f5;
+	--text: #333;
+	--text-negative: #e0e0e0;
+	--card: white;
+	--accent: #4caf50;
+	--accent-hover: #45a047;
+	--border: #ccc;
+  }
+
+
+:root[data-theme="dark"] {
+	--bg: #1e1e1e;
+	--text: #e0e0e0;
+	--text-negative: #333;
+	--card: #2a2a2a;
+	--accent: #8cff87;
+	--accent-hover: #74ff6a;
+	--border: #444;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background: var(--bg);
+	margin: 0;
+	padding: 1rem 4rem;
+	color: var(--text);
+	box-sizing: border-box;
+}
+
+.nav
+{
+	display: flex;
+	justify-content:space-between;
+	align-items: center;
+}
+
+h1
+{
+	display: inline-block;
+}
+
+main
+{
+	display: grid;
+    gap: 4rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+  h2 {
+	color: var(--text);
+	border-left: 4px solid var(--accent);
+	padding-left: 10px;
+	font-size: 1rem;
+  }
+
+  img {
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	width: 100%;
+  }
+
+  form {
+	background: var(--card);
+	padding: 15px;
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  }
+
+  input[type="file"] {
+	margin-bottom: 10px;
+  }
+
+  button {
+	background: var(--accent);
+	color: var(--text-negative);
+	padding: 8px 12px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.2s;
+  }
+
+  button:hover {
+	background: var(--accent-hover);
+  }
+
+  hr {
+	border: none;
+	border-bottom: 1px solid var(--border);
+	margin: 25px 0;
+  }
+
+  .section {
+	margin-bottom: 30px;
+  }
+
+  /* theme selector */
+  #themeSelect {
+	background: var(--card);
+	color: var(--text);
+	border: 1px solid var(--border);
+	padding: 5px;
+	border-radius: 5px;
+  }
+
