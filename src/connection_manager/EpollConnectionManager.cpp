@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/05 09:59:04 by capapes          ###   ########.fr       */
+/*   Updated: 2025/12/05 10:05:39 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -475,7 +475,7 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 	pipe(pipe_stdout);
 	pipe(pipe_stdin);
 	makeNonBlocking(pipe_stdout[0]);
-    makeNonBlocking(pipe_stdin[1]);
+    // makeNonBlocking(pipe_stdin[1]);
     CGIConn[fd].data = prepareCgiEnvironment(connections[fd].request, path);
     CGIConn[fd].stdOut = pipe_stdout[0];
     CGIConn[fd].stdIn = pipe_stdin[1];
