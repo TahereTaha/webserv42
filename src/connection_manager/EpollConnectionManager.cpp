@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:25:34 by capapes           #+#    #+#             */
-/*   Updated: 2025/12/04 19:42:07 by tatahere         ###   ########.fr       */
+/*   Updated: 2025/12/05 09:59:04 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,11 +174,9 @@ void EpollConnectionManager::handleNewConnection(Socket *sock)
 {
     int         connfd;
     
-    // EventLog::log(NEW_CONNECTION, sock->getFd());
     while ((connfd = sock->acceptConnection()) > 0) {
         makeNonBlocking(connfd);
         setInstance(connfd, EPOLLIN , EPOLL_CTL_ADD);
-        // EventLog::log(EPOLL_ADD_CONNECTION, connfd);
         connections[connfd].fd = connfd;
         connections[connfd].keepAlive = false;
         connections[connfd].lastActive = getCurrentTimeMs();
@@ -187,21 +185,11 @@ void EpollConnectionManager::handleNewConnection(Socket *sock)
 
 void EpollConnectionManager::badRequest(const int fd)
 {
-    // EventLog::log(EPOLL_EVENT_ERROR, fd);
     connections[fd].readBuffer.clear();
 	
 	connections[fd].response = serverManager.handleErrorRequest(connections[fd].request);
    	connections[fd].writeBuffer = connections[fd].response.sres.to_string();
-    std::cout << connections[fd].writeBuffer << std::flush;
-//	int code = connections[fd].request.getErrorCode();
-//	std::ostringstream oss;
-//
-//	oss << "HTTP/1.1 " << code << " " << getReasonPhrase(code) << "\r\n"
-//		<< "Content-Length: 0\r\n"
-//		<< "Connection: close\r\n"
-//		<< "\r\n";
-//
-//	connections[fd].writeBuffer = oss.str();
+
     setInstance(fd, EPOLLOUT, EPOLL_CTL_MOD);
 }
 
@@ -358,23 +346,22 @@ void EpollConnectionManager::cleanupIdleConnections(const double &now)
 		++it;
 		if (now - toDelete->second.lastActive > TIMEOUT_MS_SM)
         {
-			if (it->second.stdIn != -1)
+			if (toDelete->second.stdIn != -1)
 			{
-				epoll_ctl(epfd, EPOLL_CTL_DEL, it->second.stdIn, NULL);
-				close(it->second.stdIn);
-				it->second.stdIn = -1;
+				epoll_ctl(epfd, EPOLL_CTL_DEL, toDelete->second.stdIn, NULL);
+				close(toDelete->second.stdIn);
+				toDelete->second.stdIn = -1;
 			}
-			if (it->second.stdOut != -1)
+			if (toDelete->second.stdOut != -1)
 			{
-				epoll_ctl(epfd, EPOLL_CTL_DEL, it->second.stdOut, NULL);
-				close(it->second.stdOut);
-				it->second.stdOut = -1;
+				epoll_ctl(epfd, EPOLL_CTL_DEL, toDelete->second.stdOut, NULL);
+				close(toDelete->second.stdOut);
+				toDelete->second.stdOut = -1;
 			}
-            connections[it->first].request.setErrorCode(500);
-            badRequest(it->first);
-			std::cout << "this here" << it->second.pid << std::endl;
-			kill(it->second.pid, SIGTERM);
-			CGIConn.erase(it->first);
+            connections[toDelete->first].request.setErrorCode(500);
+            badRequest(toDelete->first);
+			kill(toDelete->second.pid, SIGTERM);
+			CGIConn.erase(toDelete->first);
 		}
 	}
 }
@@ -506,9 +493,7 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
         return ;
     }
     if (pid != 0) {
-		std::cerr << "this is the origin" << pid << std::endl << std::flush;
 		CGIConn[fd].pid = pid;
-		std::cerr << "check " << CGIConn[fd].pid << std::endl << std::flush;
 
 		setInstance(pipe_stdin[1], EPOLLOUT, EPOLL_CTL_ADD);
         setInstance(pipe_stdout[0], EPOLLIN, EPOLL_CTL_ADD);
@@ -542,10 +527,9 @@ void EpollConnectionManager::CGIHandler(const int fd, const std::string& path)
 		oss << "HTTP/1.1 " << 500 << " " << getReasonPhrase(500) << "\r\n"
 			<< "Content-Length: 0\r\n"
 			<< "Connection: close\r\n"
-			<< "\r\n" << std::flush;
+			<< "\r\n";
 
 		std::cout << oss.str() << std::endl;
- //       std::cerr << "exit" << std::endl;
 		exit (1);
 	}
     
