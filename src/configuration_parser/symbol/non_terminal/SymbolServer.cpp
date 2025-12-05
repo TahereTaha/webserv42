@@ -76,7 +76,7 @@ int			SymbolServer::set_up_directive_listen(SymbolListen *directive)
 
 int			SymbolServer::set_up_directive_name(SymbolServerName *directive)
 {
-	(void)directive;
+	this->_server.server_name = directive->getNames();
 	return (SERVER_NAME);
 }
 

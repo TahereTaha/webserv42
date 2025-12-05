@@ -33,7 +33,17 @@ SymbolServerName	*SymbolServerName::clone(void) const
 
 void		SymbolServerName::evaluate(Tree<AEvaluable*> *self)
 {
-	(void) self;
+	TextConfigFile	*text;
+
+	size_t	i = 0;
+	while (i < self->getChildNodeSize())
+	{
+		text = dynamic_cast<TextConfigFile *>(self->getChildNode(i)->getContent());
+		if (!text)
+			throw (std::invalid_argument("incorrect arrguments to limitexcept."));
+		this->_names.push_back(text->getText());
+		i++;
+	}
 }
 
 AParser	*SymbolServerName::getParser(void) const
@@ -46,3 +56,7 @@ AParser	*SymbolServerName::getParser(void) const
 	return (new AParser(this->clone(), rule));
 }
 
+std::vector<std::string>	SymbolServerName::getNames(void) const
+{
+	return (this->_names);
+}

@@ -55,7 +55,7 @@ typedef struct
 typedef struct
 {
 	std::vector<struct sockaddr_storage>	socket;
-	std::string						server_name;
+	std::vector<std::string>				server_name;
 	std::vector<t_error_page>		error_page;
 	size_t							client_max_body_size;
 	std::vector<t_route>			route;

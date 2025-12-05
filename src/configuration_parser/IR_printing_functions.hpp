@@ -16,7 +16,7 @@ void	printSocket(struct sockaddr_storage);
 
 void	printClientMaxBodySize(size_t size);
 
-void	printServerName(std::string	name);
+void	printServerName(std::vector<std::string>	name);
 
 void	printServer(t_server server);
 

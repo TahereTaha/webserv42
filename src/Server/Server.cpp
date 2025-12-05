@@ -26,7 +26,7 @@ Server &Server::operator=(const Server &other) {
 Server::~Server() {}
 
 
-const std::string &Server::getServerName() const {
+const std::vector<std::string> &Server::getServerName() const {
 	return _config.server_name;
 }
 

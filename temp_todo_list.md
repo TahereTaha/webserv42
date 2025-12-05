@@ -17,8 +17,14 @@
 	- text
 	- number
 
-- [ ] incorrect config file segfaults.
+- [x] incorrect config file segfaults.
 - [x] fix all the memory leacks in the file parsing.
+- [ ] make the server name to be able to suport virtual servers.
+	- [x] change the IR for handeling more than one server.
+	- [x] fix the server manager from yesterday.
+	- [x] make evaluate for the server name.
+	- [ ] make the server evaluator take the server name info.
+- [ ] fix the thing with the pipes.
 
 - [x] web server
 	- [x] read the arguments.

@@ -207,9 +207,18 @@ void	printClientMaxBodySize(size_t size)
 	return ;
 }
 
-void	printServerName(std::string name)
+void	printServerName(std::vector<std::string> name)
 {
-	std::cout << "server_name: " << name << ";\n";
+	std::cout << "server_name: ";
+	size_t i = 0;
+	while (i < name.size())
+	{
+		std::cout << name[i];
+		i++;
+		if (i < name.size())
+			std::cout << " ";
+	}
+	std::cout << ";\n";
 }
 
 void	printServer(t_server server)

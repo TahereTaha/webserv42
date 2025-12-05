@@ -8,6 +8,7 @@
 class SymbolServerName : public ANonTerminal
 {
 	private:
+		std::vector<std::string>	_names;
 	protected:
 	public:
 		SymbolServerName(void);
@@ -18,4 +19,5 @@ class SymbolServerName : public ANonTerminal
 		void			evaluate(Tree<AEvaluable*> *self);
 
 		AParser	*getParser(void) const;
+		std::vector<std::string>	getNames(void) const ;
 };

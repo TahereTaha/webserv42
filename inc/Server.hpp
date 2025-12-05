@@ -16,7 +16,7 @@ public:
 	Response		handleErrorRequest(const Request &request);
 	Response       handleRequest(const Request &request);
 
-	const std::string   &getServerName() const;
+	const std::vector<std::string>   &getServerName() const;
 	t_server    _config;
 
 private:
