@@ -6,7 +6,7 @@
 #    By: capapes <capapes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2026/07/23 18:32:34 by tatahere         ###   ########.fr        #
+#    Updated: 2026/08/03 10:43:28 by taha             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -178,11 +178,17 @@ fclean : clean
 
 re : fclean all
 
+demo:
+	rm -rf /tmp/http_server
+	cp -r ./demos/complet_example/http_server /tmp/http_server/
+	./webserv ./demos/complet_example/parser_rules_test_7.conf
+	
+
 test : build_test
 	@echo //
 	@echo //	runing all the tests
 	@echo //
-	@./run_tests.sh
+	zsh run_tests.sh
 
 build_test: $(TEST_DIR) $(TEST_OBJ_DIR) $(TESTS)
 
