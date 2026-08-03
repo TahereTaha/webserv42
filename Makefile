@@ -6,7 +6,7 @@
 #    By: capapes <capapes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2026/08/03 10:43:28 by taha             ###   ########.fr        #
+#    Updated: 2026/08/03 12:05:04 by taha             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -152,7 +152,7 @@ TESTS_SRCS	:=	$(notdir $(shell find . -name "*.test.cpp"))
 
 TESTS_OBJ	:=	$(patsubst %.cpp, $(TEST_BIN_DIR)%.o,$(TESTS_SRCS))
 
-TESTS		:=	$(patsubst %.cpp, $(TEST_DIR)%.o,$(TESTS_SRCS))
+TESTS		:=	$(patsubst %.cpp, $(TEST_DIR)%.run,$(TESTS_SRCS))
 
 OBJ		:=	$(addprefix $(BIN_DIR), $(OBJ))
 
@@ -169,12 +169,20 @@ $(NAME) : $(OBJ) Makefile
 $(BIN_DIR)%.o : %.cpp	Makefile 
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(TEST_BIN_DIR)%.o : %.cpp	Makefile 
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(TEST_DIR)%.run: $(TEST_BIN_DIR)%.o $(OBJ) Makefile
+	$(CXX) $(CXXFLAGS) $< $(filter-out bin/main.o,$(OBJ)) -o $@
+
 clean :
 	echo $(CINC)
 	$(RM) $(BIN_DIR)
+	$(RM) $(TEST_BIN_DIR)
 
 fclean : clean
 	$(RM) $(NAME)
+	$(RM) $(TEST_DIR)
 
 re : fclean all
 
@@ -184,22 +192,20 @@ demo:
 	./webserv ./demos/complet_example/parser_rules_test_7.conf
 	
 
-test : build_test
+test : all build_test
 	@echo //
 	@echo //	runing all the tests
 	@echo //
 	zsh run_tests.sh
 
-build_test: $(TEST_DIR) $(TEST_OBJ_DIR) $(TESTS)
+build_test: $(TEST_DIR) $(TEST_BIN_DIR) $(TESTS)
+
 
 $(TEST_DIR):
 	mkdir -p $(TEST_DIR)
 
-$(TEST_OBJ_DIR):
-	mkdir -p $(TEST_OBJ_DIR)
-
-$(TEST_DIR)%.run: $(TEST_OBJ_DIR)%.o $(NAME) Makefile
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(TEST_BIN_DIR):
+	mkdir -p $(TEST_BIN_DIR)
 
 run : all
 	bash setup.sh
