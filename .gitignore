@@ -3,9 +3,11 @@
 webserv
 a.out
 **/*.o
+**/*.run
 **/*.a
 **/*.d
 bin/
+test/
 
 # tmp files
 

@@ -6,7 +6,7 @@
 #    By: capapes <capapes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 09:52:48 by tatahere          #+#    #+#              #
-#    Updated: 2025/12/04 19:38:47 by tatahere         ###   ########.fr        #
+#    Updated: 2026/08/03 12:05:04 by taha             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ ROOT_DIR	=	./
 BIN_DIR		=	bin/
 SRC_DIR		=	src/
 INC_DIR		=	inc/
+TEST_DIR	=	test/
+TEST_BIN_DIR	=	test/bin/
 
 RM		=	rm -rf
 CXX		=	g++
@@ -145,15 +147,16 @@ OBJ		:=	main.o						\
 			ServerManager.o				\
 			ServerResponse.o			\
 
-#			subTreeGenerationUtils.o	\
-			SymbolServer.o				\
-			SymbolServerName.o			\
-										\
 
+TESTS_SRCS	:=	$(notdir $(shell find . -name "*.test.cpp"))
+
+TESTS_OBJ	:=	$(patsubst %.cpp, $(TEST_BIN_DIR)%.o,$(TESTS_SRCS))
+
+TESTS		:=	$(patsubst %.cpp, $(TEST_DIR)%.run,$(TESTS_SRCS))
 
 OBJ		:=	$(addprefix $(BIN_DIR), $(OBJ))
 
-DEP		:=	$(OBJ:.o=.d)
+DEP		:=	$(OBJ:.o=.d) $(TESTS_OBJ:.o=.d)
 
 all	:	$(BIN_DIR) $(NAME)
 
@@ -166,16 +169,45 @@ $(NAME) : $(OBJ) Makefile
 $(BIN_DIR)%.o : %.cpp	Makefile 
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(TEST_BIN_DIR)%.o : %.cpp	Makefile 
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(TEST_DIR)%.run: $(TEST_BIN_DIR)%.o $(OBJ) Makefile
+	$(CXX) $(CXXFLAGS) $< $(filter-out bin/main.o,$(OBJ)) -o $@
+
 clean :
 	echo $(CINC)
 	$(RM) $(BIN_DIR)
+	$(RM) $(TEST_BIN_DIR)
 
 fclean : clean
 	$(RM) $(NAME)
+	$(RM) $(TEST_DIR)
 
 re : fclean all
 
-test : all
+demo:
+	rm -rf /tmp/http_server
+	cp -r ./demos/complet_example/http_server /tmp/http_server/
+	./webserv ./demos/complet_example/parser_rules_test_7.conf
+	
+
+test : all build_test
+	@echo //
+	@echo //	runing all the tests
+	@echo //
+	zsh run_tests.sh
+
+build_test: $(TEST_DIR) $(TEST_BIN_DIR) $(TESTS)
+
+
+$(TEST_DIR):
+	mkdir -p $(TEST_DIR)
+
+$(TEST_BIN_DIR):
+	mkdir -p $(TEST_BIN_DIR)
+
+run : all
 	bash setup.sh
 	./webserv test/parser_rules_test_7.conf
 
