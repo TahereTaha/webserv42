@@ -13,5 +13,5 @@ int main(void)
 	if (test.getSchemeType() != scheme_UNOFFICIAL)
 		return (1);
 	
-	return (0);
+	return (1);
 }
